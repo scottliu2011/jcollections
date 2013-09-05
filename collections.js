@@ -112,9 +112,13 @@
 
 	collections.expose = function(module) {
 		if (module === '*') {
-			
+			for (var elem in collections) {
+				if (elem !== 'expose') {
+					global[elem] = collections[elem];
+				}
+			}
 		} else {
-
+			collections[module] && (global[module] = collections[module]);
 		}
 	};
 

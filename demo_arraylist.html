@@ -71,7 +71,9 @@
 
 			var Funcs = function() {
 				this.func0 = function() {
-					this.list = new Collections.ArrayList();
+					//this.list = new Collections.ArrayList();
+					Collections.expose('*');
+					this.list = new ArrayList();
 				};
 				this.func1 = function() {
 					var list = this.list;
