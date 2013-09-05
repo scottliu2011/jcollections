@@ -24,7 +24,7 @@
 	var currStep = 0;
 
 	var printCode = function() {
-		if (currStep >= simulator.codes.length) {
+		if (currStep >= demo.codes.length) {
 			return;
 		}
 
@@ -40,7 +40,7 @@
 			});
 		}
 
-		var step = simulator.codes[currStep], stepLine = 0;
+		var step = demo.codes[currStep], stepLine = 0;
 
 		function printStep() {
 			if (currStep > 0 && stepLine == 0) {
@@ -49,9 +49,9 @@
 				codePrint.appendChild(p);
 			}
 			if (stepLine >= step.length) {//step is over.
-				simulator.tasks['task' + currStep] && simulator.tasks['task' + currStep]();
+				demo.tasks['task' + currStep] && demo.tasks['task' + currStep]();
 				currStep++;
-				if (currStep == simulator.codes.length) {
+				if (currStep == demo.codes.length) {
 					nextStep.innerHTML = 'restart';
 				}
 				return;
@@ -67,18 +67,18 @@
 		printStep();
 	}
 
-	simulator.log = function(obj) {
+	demo.log = function(obj) {
 		var p = document.createElement('p');
 		p.innerHTML = obj.toString();
 		consolePrint.appendChild(p);
 	};
 
-	simulator.init = function(codes, tasks) {
-		simulator.codes = codes;
-		simulator.tasks = tasks;
+	demo.run = function(codes, tasks) {
+		demo.codes = codes;
+		demo.tasks = tasks;
 
 		nextStep.onclick = function() {
-			if (currStep == simulator.codes.length) {
+			if (currStep == demo.codes.length) {
 				codePrint.innerHTML = '';
 				consolePrint.innerHTML = '';
 				currStep = 0;
@@ -98,6 +98,6 @@
 		}, 500);
 	};
 
-	global.Simulator = simulator;
+	global.Demo = demo;
 
 })(window);

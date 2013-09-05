@@ -53,9 +53,9 @@
 					'}',
 					'$comment{//end}'
 				]
-			];
+			],
 
-			var Tasks = function() {
+			Tasks = function() {
 				this.task0 = function() {
 					Collections.expose('*');
 					this.list = new ArrayList();
@@ -82,11 +82,11 @@
 
 				};
 				this.log = function(obj) {
-					Simulator.log(obj);
+					Demo.log(obj);
 				};
 			}
 
-			Simulator.init(codes, new Tasks());
+			Demo.run(codes, new Tasks());
 			
 		</script>
 	</body>

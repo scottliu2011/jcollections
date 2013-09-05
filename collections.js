@@ -2,6 +2,8 @@
 
 	var collections = {};
 
+	//@ArrayList
+
 	function ArrayList() {
 		if (!(this instanceof ArrayList)) {
 			return new ArrayList();
@@ -39,18 +41,18 @@
 		index = parseInt(index);	//only int is supported.
 
 		var data = this._data,
-			tmp = [];
+			temp = [];
 		if (index < 0 || index > data.length) {
 			throw new Error('index error');
 		}
 		for (var i = 0; i < index; i++) {
-			tmp.push(data[i]);
+			temp.push(data[i]);
 		}
-		tmp.push(elem);
+		temp.push(elem);
 		for (var i = index; i < data.length; i++) {
-			tmp.push(data[i]);
+			temp.push(data[i]);
 		}
-		this._data = tmp;
+		this._data = temp;
 	};
 
 	/**
@@ -134,6 +136,14 @@
 	};
 
 	/**
+	*remove(fromIndex, toIndex);
+	*fromIndex inclusive, toIndex exclusive.
+	*/
+	ArrayList.prototype.removeRange = function(fromIndex, toIndex) {
+		this_data.splice(fromIndex, toIndex - fromIndex);
+	};
+
+	/**
 	*remove(elem);
 	*/
 	ArrayList.prototype.removeElement = function(elem) {
@@ -156,7 +166,20 @@
 				return i;
 			}
 		}
-		return null;
+		return -1;
+	};
+
+	/**
+	*lastIndexOf(elem);
+	*/
+	ArrayList.prototype.lastIndexOf = function(elem) {
+		var data = this._data;
+		for (var i = data.length - 1; i >= 0; i--) {
+			if (data[i] === elem) {
+				return i;
+			}
+		}
+		return -1;
 	};
 	
 	ArrayList.prototype.toString = function() {
@@ -183,8 +206,79 @@
 		return new ArrayListIterator(this);
 	};
 
-	collections.ArrayList = ArrayList;
+	//@LinkedList
 
+	function LinkedList() {
+		if (!(this instanceof LinkedList)) {
+			return new LinkedList();
+		}
+		this._data  = {};
+	}
+
+	//@HashSet
+
+	function HashSet() {
+		if (!(this instanceof HashSet)) {
+			return new HashSet();
+		}
+		this._data  = {};	
+	}
+
+	//@HashMap
+
+	function HashMap() {
+		if (!(this instanceof HashMap)) {
+			return new HashMap();
+		}
+		this._data = {};
+	}
+
+	HashMap.prototype.put = function(key, value) {
+
+	};
+
+	HashMap.prototype.get = function(key) {
+
+	};
+
+	HashMap.prototype.remove = function(key) {
+
+	};
+
+	HashMap.prototype.size = function() {
+
+	};
+
+	HashMap.prototype.isEmpty = function() {
+
+	};
+
+	HashMap.prototype.containsKey = function(key) {
+
+	};
+
+	HashMap.prototype.containsValue = function(value) {
+		
+	};
+
+	HashMap.prototype.keySet = function() {
+		
+	};
+
+	HashMap.prototype.entrySet = function() {
+		
+	};
+
+	collections.ArrayList = ArrayList;
+	collections.LinkedList = LinkedList;
+	collections.HashSet = HashSet;
+	collections.HashMap = HashMap;
+
+	/*
+	*expose('*');
+	*expose('ArrayList');
+	*expose('HashMap');
+	*/
 	collections.expose = function(module) {
 		if (module === '*') {
 			for (var elem in collections) {
