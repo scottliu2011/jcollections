@@ -21,12 +21,12 @@
 			argsNum = args.length,
 			arg0 = args[0],
 			arg1 = args[1];
-		if (argsNum == 0) {
+		if (argsNum === 0) {
 			throw new Error('arguments required.');
-		} else if (argsNum == 1) {
+		} else if (argsNum === 1) {
 			this._data.push(arg0);
 		} else {
-			(arg0.constructor == Number && this.insert.call(this, arg0, arg1))
+			(arg0.constructor === Number && this.insert.call(this, arg0, arg1))
 			|| (this._data.concat(Array.prototype.slice.call(args)));
 		}
 	};
@@ -116,7 +116,7 @@
 	*isEmpty();
 	*/
 	ArrayList.prototype.isEmpty = function() {
-		return this._data.length == 0;
+		return this._data.length === 0;
 	};
 
 	/**
@@ -193,7 +193,7 @@
 				data = arrayList._data,
 				curr;
 			this.hasNext = function() {
-				return cursor != arrayList.size();
+				return cursor !== arrayList.size();
 			};
 			this.next = function() {
 				curr = data[cursor++];

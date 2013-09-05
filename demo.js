@@ -40,10 +40,11 @@
 			});
 		}
 
-		var step = demo.codes[currStep], stepLine = 0;
+		var step = demo.codes[currStep],
+			stepLine = 0;
 
 		function printStep() {
-			if (currStep > 0 && stepLine == 0) {
+			if (currStep > 0 && stepLine === 0) {
 				var p = document.createElement('p');
 				p.innerHTML = '&nbsp;';
 				codePrint.appendChild(p);
@@ -51,7 +52,7 @@
 			if (stepLine >= step.length) {//step is over.
 				demo.tasks['task' + currStep] && demo.tasks['task' + currStep]();
 				currStep++;
-				if (currStep == demo.codes.length) {
+				if (currStep === demo.codes.length) {
 					nextStep.innerHTML = 'restart';
 				}
 				return;
@@ -78,7 +79,7 @@
 		demo.tasks = tasks;
 
 		nextStep.onclick = function() {
-			if (currStep == demo.codes.length) {
+			if (currStep === demo.codes.length) {
 				codePrint.innerHTML = '';
 				consolePrint.innerHTML = '';
 				currStep = 0;
@@ -93,8 +94,8 @@
 
 			var codeTipStyle = codeTip.style;
 			var consoleTipStyle = consoleTip.style;
-			codeTipStyle.visibility = codeTipStyle.visibility != 'hidden' ? 'hidden' : 'visible';
-			consoleTipStyle.visibility = consoleTipStyle.visibility != 'hidden' ? 'hidden' : 'visible';
+			codeTipStyle.visibility = codeTipStyle.visibility !== 'hidden' ? 'hidden' : 'visible';
+			consoleTipStyle.visibility = consoleTipStyle.visibility !== 'hidden' ? 'hidden' : 'visible';
 		}, 500);
 	};
 
