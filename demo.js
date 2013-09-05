@@ -1,5 +1,5 @@
 (function(global, undefined) {
-	var simulator = {};
+	var demo = {};
 
 	var $ = function(id) {
 		return document.getElementById(id);
