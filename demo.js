@@ -48,7 +48,7 @@
 				p.innerHTML = '&nbsp;';
 				codePrint.appendChild(p);
 			}
-			if (stepLine >= step.length) {//over one step.
+			if (stepLine >= step.length) {//step is over.
 				simulator.tasks['task' + currStep] && simulator.tasks['task' + currStep]();
 				currStep++;
 				if (currStep == simulator.codes.length) {
@@ -90,16 +90,11 @@
 		setInterval(function() {
 			codeTip.scrollIntoView();
 			consoleTip.scrollIntoView();
-			if (codeTip.style.visibility != 'hidden') {
-				codeTip.style.visibility = 'hidden';
-			} else {
-				codeTip.style.visibility = 'visible';
-			}
-			if (consoleTip.style.visibility != 'hidden') {
-				consoleTip.style.visibility = 'hidden';
-			} else {
-				consoleTip.style.visibility = 'visible';
-			}
+
+			var codeTipStyle = codeTip.style;
+			var consoleTipStyle = consoleTip.style;
+			codeTipStyle.visibility = codeTipStyle.visibility != 'hidden' ? 'hidden' : 'visible';
+			consoleTipStyle.visibility = consoleTipStyle.visibility != 'hidden' ? 'hidden' : 'visible';
 		}, 500);
 	};
 

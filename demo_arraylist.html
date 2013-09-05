@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meat charset="utf-8"/>
-		<title>list demo</title>
+		<meta charset="utf-8"/>
+		<title>arraylist demo</title>
 		<style>
 		body{background:#ddd;color:#fff;font-family: Courier, "Courier New", monospace;}
 		p{margin:0;}
@@ -36,11 +36,12 @@
 			var codes = [
 				[
 					'$comment{//begin}',
-					'$declare{var} list $operator{=} $keyword{new} $class{Collections}.$class{ArrayList}();$comment{//create a new List object}'
+					'$declare{var} list $operator{=} $keyword{new} $class{Collections}.$class{ArrayList}();',
+					'console.$method{log}(list);$comment{//[]}'
 				],
 				[
-					'list.$method{add}($string{"hello"});$comment{//add first element}',
-					'list.$method{add}($string{"world"});$comment{//add second element}',
+					'list.$method{add}($string{"hello"});$comment{//["hello"]}',
+					'list.$method{add}($string{"world"});$comment{//["hello", world"]}',
 					'list.$method{add}($number{1}, $string{"scott"});$comment{//insert an element}',
 					'console.$method{log}(list);'
 				],
@@ -58,12 +59,14 @@
 				this.task0 = function() {
 					Collections.expose('*');
 					this.list = new ArrayList();
+					this.log(this.list);
 				};
 				this.task1 = function() {
 					var list = this.list;
 					list.add('hello');
 					list.add('world');
 					list.add(1, 'scott');
+					list.add({});
 					this.log(list);
 				};
 				this.task2 = function() {
