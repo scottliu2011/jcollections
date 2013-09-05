@@ -7,47 +7,37 @@
 		body{background:#ddd;color:#fff;font-family: Courier, "Courier New", monospace;}
 		p{margin:0;}
 		.module{width:95%;margin:0 auto;margin-top:10px;padding:10px;overflow:hidden}
-		#code{background:#272822;height:400px;}
+		.code{background:#272822;height:400px;}
+		.console{background:#aaa;height:140px;padding-top:5px;padding-bottom:5px;}
+		.console p{color:blue;line-height:1.2em;border-bottom:1px solid gray;margin-left:1em;}
 		#nextStep{background:#008287;color:#fff;padding:5px 20px;font-size:18px;}
 		#nextStep:hover{cursor:pointer;color:#000;box-shadow:1px 1px 1px #000;}
-		#console{background:#aaa;height:140px;padding-top:5px;padding-bottom:5px;}
-		#console p{color:blue;line-height:1.2em;border-bottom:1px solid gray;margin-left:1em;}
 		#codeTip>span{display:block;width:2px;height:1em;background:#fff;}
 		#consoleTip{color:#333;font-size:22px;}
 		</style>
 	</head>
 	<body>
-		<div id="code" class="module">
+		<div class="module code">
 			<div id="codePrint"></div>
 			<div id="codeTip"><span></span></div>
 		</div>
 		<div class="module">
 			<span id="nextStep">start</span>
 		</div>
-		<div id="console" class="module">
-			<div id="consolePrint">
-				
-			</div>
+		<div class="module console">
+			<div id="consolePrint"></div>
 			<div>
 				<span style="color:gray">></span><span id="consoleTip">|</span>
 			</div>
 		</div>
 		<script src="collections.js"></script>
+		<script src="demo.js"></script>
 		<script>
-
-			var hightLightColor = {
-				'$declare':'#66D9D0',
-				'$operator':'#B92722',
-				'$keyword':'#B92722',
-				'$class':'#A6E22E',
-				'$comment':'#75715E',
-				'$method':'#66BE91',
-				'$number':'#AE81FF',
-				'$string':'#C8DB5A'
-			};
-
 			var codes = [
-				['$declare{var} list $operator{=} $keyword{new} $class{Collections}.$class{ArrayList}();$comment{//create a new List object}'],
+				[
+					'$comment{//begin}',
+					'$declare{var} list $operator{=} $keyword{new} $class{Collections}.$class{ArrayList}();$comment{//create a new List object}'
+				],
 				[
 					'list.$method{add}($string{"hello"});$comment{//add first element}',
 					'list.$method{add}($string{"world"});$comment{//add second element}',
@@ -59,119 +49,41 @@
 					'$keyword{while} (iter.$method{hasNext}()) {',
 					'&emsp;$declare{var} elem $operator{=} iter.$method{next}();',
 					'&emsp;console.$method{log}(elem);',
-					'}'
+					'}',
+					'$comment{//end}'
 				]
 			];
 
-			var codePrint = document.getElementById('codePrint'),
-				consolePrint = document.getElementById('consolePrint');
-
-			var codeTip = document.getElementById('codeTip'),
-				consoleTip = document.getElementById('consoleTip');
-
-			var Funcs = function() {
-				this.func0 = function() {
-					//this.list = new Collections.ArrayList();
+			var Tasks = function() {
+				this.task0 = function() {
 					Collections.expose('*');
 					this.list = new ArrayList();
 				};
-				this.func1 = function() {
+				this.task1 = function() {
 					var list = this.list;
 					list.add('hello');
 					list.add('world');
 					list.add(1, 'scott');
 					this.log(list);
 				};
-				this.func2 = function() {
+				this.task2 = function() {
 					var iter = this.list.iterator();
 					while (iter.hasNext()) {
 						this.log(iter.next());
 					}
 				};
-				this.func3 = function() {
+				this.task3 = function() {
+					
+				};
+				this.task4 = function() {
 
 				};
-				this.func4 = function() {
-
-				};
-				this.log = function(o) {
-					var p = document.createElement('p');
-					p.innerHTML = o.toString();
-					consolePrint.appendChild(p);
+				this.log = function(obj) {
+					Simulator.log(obj);
 				};
 			}
 
-			var index = 0, funcs = new Funcs();
-
-			var printCode = function() {
-				if (index >= codes.length) {
-					return;
-				}
-
-				function highLightCode(code) {
-					var regex = /\$\w*?\{.*?\}/g;//lazy pattern(*?)
-					return code.replace(regex, function(s) {
-						var i = s.indexOf('{');
-						var type = s.substring(0, i);
-						var wrap = s.substring(i);
-						var color = hightLightColor[type];
-						var code = wrap.replace(/\{|\}/g, '');
-						return '<span style="color:'+color+'">'+code+'</span>';
-					});
-				}
-
-				var step = codes[index], stepIndex = 0;
-
-				function printStep() {
-					if (index > 0 && stepIndex == 0) {
-						var p = document.createElement('p');
-						p.innerHTML = '&nbsp;';
-						codePrint.appendChild(p);
-					}
-					if (stepIndex >= step.length) {//over one step.
-						funcs['func' + index] && funcs['func' + index]();
-						index++;
-						if (index == codes.length) {
-							nextStep.innerHTML = 'restart';
-						}
-						return;
-					}
-
-					var p = document.createElement('p');
-					p.innerHTML = highLightCode(step[stepIndex++]);
-					codePrint.appendChild(p);
-
-					setTimeout(printStep, 500);
-				}
-
-				printStep();
-			}
-
-			var nextStep = document.getElementById('nextStep');
-			nextStep.onclick = function() {
-				if (index == codes.length) {
-					codePrint.innerHTML = '';
-					consolePrint.innerHTML = '';
-					index = 0;
-				}
-				this.innerHTML = 'next step';
-				printCode();
-			};
-
-			setInterval(function() {
-				codeTip.scrollIntoView();
-				consoleTip.scrollIntoView();
-				if (codeTip.style.visibility != 'hidden') {
-					codeTip.style.visibility = 'hidden';
-				} else {
-					codeTip.style.visibility = 'visible';
-				}
-				if (consoleTip.style.visibility != 'hidden') {
-					consoleTip.style.visibility = 'hidden';
-				} else {
-					consoleTip.style.visibility = 'visible';
-				}
-			}, 500);
+			Simulator.init(codes, new Tasks());
 			
 		</script>
 	</body>
