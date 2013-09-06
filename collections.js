@@ -27,7 +27,7 @@
 			this._data.push(arg0);
 		} else {
 			(arg0.constructor === Number && this.insert.call(this, arg0, arg1))
-			|| (this._data.concat(Array.prototype.slice.call(args)));
+			|| (this._data = this._data.concat(Array.prototype.slice.call(args)));
 		}
 	};
 
@@ -136,25 +136,25 @@
 	};
 
 	/**
-	*remove(fromIndex, toIndex);
-	*fromIndex inclusive, toIndex exclusive.
-	*/
-	ArrayList.prototype.removeRange = function(fromIndex, toIndex) {
-		this_data.splice(fromIndex, toIndex - fromIndex);
-	};
-
-	/**
 	*remove(elem);
 	*/
 	ArrayList.prototype.removeElement = function(elem) {
 		var data = this._data;
 		for (var i = 0; i < data.length; i++) {
 			if (data[i] === elem) {
-				data.slice(splice, 1);
+				data.splice(i, 1);
 				break;
 			}
 		}
-	};	
+	};
+
+	/**
+	*remove(fromIndex, toIndex);
+	*fromIndex inclusive, toIndex exclusive.
+	*/
+	ArrayList.prototype.removeRange = function(fromIndex, toIndex) {
+		this._data.splice(fromIndex, toIndex - fromIndex);
+	};
 
 	/**
 	*indexOf(elem);
@@ -212,8 +212,20 @@
 		if (!(this instanceof LinkedList)) {
 			return new LinkedList();
 		}
-		this._data  = {};
+		this._header = {};
+		this._header.next = this._header.previous = this._header;
 	}
+
+	LinkedList.prototype.add = function(elem) {
+
+		return true;
+	};
+
+	LinkedList.prototype.addFirst = function(elem) {
+
+	};
+
+
 
 	//@HashSet
 
@@ -274,12 +286,11 @@
 	collections.HashSet = HashSet;
 	collections.HashMap = HashMap;
 
-	/*
-	*expose('*');
-	*expose('ArrayList');
-	*expose('HashMap');
-	*/
-	collections.expose = function(module) {
+	global.imports = function(module) {
+		if (!module || !/^collections\.(\*|[a-zA-Z]+)$/g.test(module)) {
+			throw new Error('imports function arguments error');
+		}
+		module = module.replace('collections.', '');
 		if (module === '*') {
 			for (var elem in collections) {
 				if (elem !== 'expose') {
@@ -290,7 +301,5 @@
 			collections[module] && (global[module] = collections[module]);
 		}
 	};
-
-	global.Collections = collections;
 
 })(window);
