@@ -35,29 +35,30 @@
 		<script>
 			var codes = [
 				[
-					'$comment{//begin}',
-					'$declare{var} list $operator{=} $keyword{new} $class{Collections}.$class{ArrayList}();',
-					'console.$method{log}(list);$comment{//[]}'
+					'$c{//begin}',
+					'imports($s{"collections.*"});',
+					'$d{var} list $o{=} $k{new} $C{ArrayList}();',
+					'console.$m{log}(list);$c{//[]}'
 				],
 				[
-					'list.$method{add}($string{"hello"});$comment{//["hello"]}',
-					'list.$method{add}($string{"world"});$comment{//["hello", world"]}',
-					'list.$method{add}($number{1}, $string{"scott"});$comment{//insert an element}',
-					'console.$method{log}(list);'
+					'list.$m{add}($s{"hello"});$c{//["hello"]}',
+					'list.$m{add}($s{"world"});$c{//["hello", "world"]}',
+					'list.$m{insert}($n{1}, $s{"scott"});$c{//["hello", "scott", "world"]}',
+					'console.$m{log}(list);'
 				],
 				[
-					'$declare{var} iter $operator{=} list.$method{iterator}();',
-					'$keyword{while} (iter.$method{hasNext}()) {',
-					'&emsp;$declare{var} elem $operator{=} iter.$method{next}();',
-					'&emsp;console.$method{log}(elem);',
+					'$d{var} iter $o{=} list.$m{iterator}();',
+					'$k{while} (iter.$m{hasNext}()) {',
+					'&emsp;$d{var} elem $o{=} iter.$m{next}();',
+					'&emsp;console.$m{log}(elem);',
 					'}',
-					'$comment{//end}'
+					'$c{//end}'
 				]
 			],
 
 			Tasks = function() {
 				this.task0 = function() {
-					Collections.expose('*');
+					imports('collections.*');
 					this.list = new ArrayList();
 					this.log(this.list);
 				};
@@ -65,8 +66,7 @@
 					var list = this.list;
 					list.add('hello');
 					list.add('world');
-					list.add(1, 'scott');
-					list.add({});
+					list.insert(1, 'scott');
 					this.log(list);
 				};
 				this.task2 = function() {

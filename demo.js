@@ -11,14 +11,14 @@
 		nextStep = $('nextStep');
 
 	var hightLightColor = {
-		'$declare':'#66D9D0',
-		'$operator':'#B92722',
-		'$keyword':'#B92722',
-		'$class':'#A6E22E',
-		'$comment':'#75715E',
-		'$method':'#66BE91',
-		'$number':'#AE81FF',
-		'$string':'#C8DB5A'
+		'$d':'#66D9D0',//declare
+		'$o':'#B92722',//operator
+		'$k':'#B92722',//keyword
+		'$C':'#A6E22E',//class
+		'$c':'#75715E',//comment
+		'$m':'#66BE91',//method
+		'$n':'#AE81FF',//number
+		'$s':'#C8DB5A'//string
 	};
 
 	var currStep = 0;

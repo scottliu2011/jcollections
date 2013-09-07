@@ -2,6 +2,11 @@
 
 	var collections = {};
 
+	function Collection() {
+		//...
+	};
+
+
 	//@ArrayList
 
 	function ArrayList() {
@@ -12,54 +17,51 @@
 	}
 
 	/**
-	 *add(elem);
-	 *add(index, elem);
-	 *add(elem0, elem1, elem2,...);
-	 */
-	ArrayList.prototype.add = function() {
-		var args = arguments,
-			argsNum = args.length,
-			arg0 = args[0],
-			arg1 = args[1];
-		if (argsNum === 0) {
-			throw new Error('arguments required.');
-		} else if (argsNum === 1) {
-			this._data.push(arg0);
-		} else {
-			(arg0.constructor === Number && this.insert.call(this, arg0, arg1))
-			|| (this._data = this._data.concat(Array.prototype.slice.call(args)));
-		}
+	*default equals
+	*/
+	ArrayList.prototype.equals = function(elem0, elem1) {
+		return elem0 === elem1;
 	};
 
 	/**
-	 *insert(index, elem);
+	*custome equals
+	*/
+	ArrayList.prototype.defineEquals = function(func) {
+		this.equals = func;
+	};
+
+	/**
+	 *add(elem0[, elem1, elem2,...]);
 	 */
-	ArrayList.prototype.insert = function(index, elem) {
-		if (!index || !elem) {
+	ArrayList.prototype.add = function() {
+		this._data = this._data.concat(Array.prototype.slice.call(arguments));
+	};
+
+	/**
+	 *insert(index, elem0[, elem1, elem2,...]);
+	 */
+	ArrayList.prototype.insert = function() {
+		var args = arguments,
+			index = args[0];
+
+		if (!index || index.constructor !== Number) {
 			throw new Error('arguments error.');
 		}
-		index = parseInt(index);	//only int is supported.
+		if (index < 0 || index > this._data.length) {
+			throw new Error('index range error');
+		}//when index === length, append to the end.
 
-		var data = this._data,
-			temp = [];
-		if (index < 0 || index > data.length) {
-			throw new Error('index error');
-		}
-		for (var i = 0; i < index; i++) {
-			temp.push(data[i]);
-		}
-		temp.push(elem);
-		for (var i = index; i < data.length; i++) {
-			temp.push(data[i]);
-		}
-		this._data = temp;
+		var elems = Array.prototype.slice.call(arguments);
+		elems.splice(0, 1);
+
+		Array.prototype.splice.apply(this._data, [parseInt(index), 0].concat(elems));
 	};
 
 	/**
 	*set(index, elem);
 	*/
 	ArrayList.prototype.set = function(index, elem) {
-		if (index < 0 || index >= this._data.length) {
+		if (index < 0 || index > this._data.length) {
 			throw new Error('index error');
 		}
 		this._data[index] = elem;
@@ -98,7 +100,7 @@
 	ArrayList.prototype.contains = function(elem) {
 		var data = this._data;
 		for (var i = 0; i < data.length; i++) {
-			if (data[i] === elem) {
+			if (this.equals(data[i], elem)) {
 				return true;
 			}
 		}
@@ -141,7 +143,7 @@
 	ArrayList.prototype.removeElement = function(elem) {
 		var data = this._data;
 		for (var i = 0; i < data.length; i++) {
-			if (data[i] === elem) {
+			if (this.equals(data[i], elem)) {
 				data.splice(i, 1);
 				break;
 			}
@@ -162,7 +164,7 @@
 	ArrayList.prototype.indexOf = function(elem) {
 		var data = this._data;
 		for (var i = 0; i < data.length; i++) {
-			if (data[i] === elem) {
+			if (this.equals(data[i], elem)) {
 				return i;
 			}
 		}
@@ -175,7 +177,7 @@
 	ArrayList.prototype.lastIndexOf = function(elem) {
 		var data = this._data;
 		for (var i = data.length - 1; i >= 0; i--) {
-			if (data[i] === elem) {
+			if (this.equals(data[i], elem)) {
 				return i;
 			}
 		}
