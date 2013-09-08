@@ -4,44 +4,18 @@
 		<meta charset="utf-8"/>
 		<title>demo</title>
 		<style>
-		body{
-			margin:0;
-			background:#000;
-			color:#fff;
-			font-family: Courier, "Courier New", monospace;
-			overflow: hidden;
-		}
-		#box {
-			background-color: #aaa;
-			height: 300px;
-			width: 400px;
-			margin-top: -150px;
-			margin-left: -200px;
-			position: absolute;
-			left: 50%;
-			top: 50%;
-		}
-		.bg{
-			position: absolute;
-			top: -50px;
-			left: 0;
-		}
+		body{margin:0;background:#aaa;font-family: Courier, "Courier New", monospace;text-align:center;}
+		#btns{height:180px;width:400px;margin-top:-90px;margin-left:-200px;position:absolute;left:50%;top:50%;}
+		#btns>a{display:block;background:#008287;color:#fff;text-decoration:none;padding:10px 30px;font-size:18px;width:150px;margin:10px auto 0;}
+		#btns>a:hover{cursor:pointer;color:#000;box-shadow:1px 1px 1px #000;text-decoration:underline;}
 		</style>
 	</head>
 	<body>
-		<p id='p' class="bg">imports('collections.*');</p>
-		<div id="box">
-
+		<div id="btns">
+			<a href="d_arraylist.html">ArrayList</a>
+			<a href="d_linkedlist.html">LinkedList</a>
+			<a href="d_hashset.html">HashSet</a>
+			<a href="d_hashmap.html">HashMap</a>
 		</div>
-		<script src="demo.js"></script>
-		<script>
-			var i = 100, j = 20;
-			setInterval(function() {
-				document.getElementById('p').style['-webkit-transform'] = 
-					'translate('+i+'px,'+j+'px)  rotate(-30deg)';
-				i = i + 10;
-				j = j + 10;
-			}, 200);
-		</script>
 	</body>
 </html>

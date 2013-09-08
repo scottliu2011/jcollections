@@ -1,13 +1,14 @@
 <html>
-	<script type="text/javascript" src="collections.js"></script>
+	<script type="text/javascript" src="../collections.js"></script>
 <script type="text/javascript">
 	imports('collections.ArrayList');
 	
 	var list = new ArrayList();
-/*
+
 	list.defineEquals(function(elem0, elem1) {
-		return elem0.name === elem1.name;
-	});*/
+		//return elem0.name === elem1.name;
+		return elem0 === elem1;
+	});
 
 	list.add('hello');
 	list.add('world');

@@ -16,22 +16,25 @@
 		this.__data__ = [];
 	}
 
-	/**
-	*default equals
-	*/
-	ArrayList.prototype.equals = function(elem0, elem1) {
+	//默认的equals函数
+	ArrayList.prototype.__equals__ = function(elem0, elem1) {
 		return elem0 === elem1;
 	};
 
 	/**
-	*custome equals
-	*/
+	 *用于自定义equals函数，例如：
+	 *defineEquals(function(elem0, elem1) {
+	 *	return elem0.name === elem1.name;
+	 *});
+	 *两个元素的name属性相同则认为是同一个对象
+	 */
 	ArrayList.prototype.defineEquals = function(func) {
-		this.equals = func;
+		this.__equals__ = func;
 	};
 
 	/**
 	 *add(elem0[, elem1, elem2,...]);
+	 *添加一到多个元素到list尾部
 	 */
 	ArrayList.prototype.add = function() {
 		this.__data__ = this.__data__.concat(Array.prototype.slice.call(arguments));
@@ -39,6 +42,7 @@
 
 	/**
 	 *insert(index, elem0[, elem1, elem2,...]);
+	 *在指定位置插入一到多个元素
 	 */
 	ArrayList.prototype.insert = function() {
 		var args = arguments,
@@ -49,7 +53,7 @@
 		}
 		if (index < 0 || index > this.__data__.length) {
 			throw new Error('index range error');
-		}//when index === length, append to the end.
+		}//当index等于数组长度时，追加到数组尾部
 
 		var elems = Array.prototype.slice.call(arguments);
 		elems.splice(0, 1);
@@ -58,8 +62,9 @@
 	};
 
 	/**
-	*set(index, elem);
-	*/
+	 *set(index, elem);
+	 *将指定位置的元素替换成新元素
+	 */
 	ArrayList.prototype.set = function(index, elem) {
 		if (index < 0 || index > this.__data__.length) {
 			throw new Error('index error');
@@ -68,27 +73,43 @@
 	}
 
 	/**
-	*toArray()
-	*/
+	 *toArray()
+	 *返回一个含有所有元素的数组对象
+	 */
 	ArrayList.prototype.toArray = function() {
-		return this.__data__.slice(0);
+		return this.__data__;
 	};
 
 	/**
-	*get(index);
-	*/
+	 *get(index);
+	 *返回指定位置所对应的元素
+	 */
 	ArrayList.prototype.get = function(index) {
 		return this.__data__[index];
 	};
 
 	/**
-	*addAll([]);
-	*addAll(arrayList);
-	*addAll(index, []|arrayList);
-	*/
+	 *addAll([]);
+	 *addAll(arrayList);
+	 *添加一个数组或ArrayList对象到list尾部
+	 */
 	ArrayList.prototype.addAll = function(collection) {
 		if (collection instanceof ArrayList) {
-			this.__data__.concat(collection.__data__);
+			this.__data__.concat(collection.toArray());
+		} else if (collection instanceof Array) {
+			this.__data__.concat(collection);
+		}
+	};
+
+	/**
+	 *insertAll(index, []);
+	 *insertAll(index, arrayList);
+	 *插入一个数组或ArrayList对象到指定位置
+	 */
+	ArrayList.prototype.insertAll = function(index, collection) {
+
+		if (collection instanceof ArrayList) {
+			this.__data__.concat(collection.toArray());
 		} else if (collection instanceof Array) {
 			this.__data__.concat(collection);
 		}
@@ -100,7 +121,7 @@
 	ArrayList.prototype.contains = function(elem) {
 		var data = this.__data__;
 		for (var i = 0; i < data.length; i++) {
-			if (this.equals(data[i], elem)) {
+			if (this.__equals__(data[i], elem)) {
 				return true;
 			}
 		}
@@ -143,7 +164,7 @@
 	ArrayList.prototype.removeElement = function(elem) {
 		var data = this.__data__;
 		for (var i = 0; i < data.length; i++) {
-			if (this.equals(data[i], elem)) {
+			if (this.__equals__(data[i], elem)) {
 				data.splice(i, 1);
 				break;
 			}
@@ -164,7 +185,7 @@
 	ArrayList.prototype.indexOf = function(elem) {
 		var data = this.__data__;
 		for (var i = 0; i < data.length; i++) {
-			if (this.equals(data[i], elem)) {
+			if (this.__equals__(data[i], elem)) {
 				return i;
 			}
 		}
@@ -177,7 +198,7 @@
 	ArrayList.prototype.lastIndexOf = function(elem) {
 		var data = this.__data__;
 		for (var i = data.length - 1; i >= 0; i--) {
-			if (this.equals(data[i], elem)) {
+			if (this.__equals__(data[i], elem)) {
 				return i;
 			}
 		}
@@ -227,20 +248,35 @@
 	};
 
 	/**
-	*Appends the specified element to the end of this list.
-	*/
+	 *add(elem);
+	 *appends the specified element to the end of this list.
+	 */
 	LinkedList.prototype.add = function(elem) {
 		this.__addBefore__(this.__header__);
 	};
 
 	/**
-	*Inserts the specified element at the beginning of this list.
-	*/
+	 *insert(index, elem);
+	 *inserts the specified element at the specified position in this list.
+	 */
+	LinkedList.prototype.insert = function(index, elem) {
+		this.__addBefore__(this.__header__.next);
+	};
+
+	/**
+	 *addFirst(elem);
+	 *inserts the specified element at the beginning of this list.
+	 */
 	LinkedList.prototype.addFirst = function(elem) {
 		this.__addBefore__(this.__header__.next);
 	};
 
-
+	/**
+	*appends the specified element to the end of this list.
+	*/
+	LinkedList.prototype.addLast = function(elem) {
+		this.__addBefore__(this.__header__);
+	};
 
 	//@HashSet
 
@@ -248,7 +284,7 @@
 		if (!(this instanceof HashSet)) {
 			return new HashSet();
 		}
-		this.__data___  = {};	
+		this.__data__  = {};	
 	}
 
 	//@HashMap
