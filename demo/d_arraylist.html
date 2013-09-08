@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>arraylist demo</title>
+		<style>
+		body{background:#ddd;color:#fff;font-family: Courier, "Courier New", monospace;}
+		p{margin:0;}
+		.module{width:95%;margin:0 auto;margin-top:10px;padding:10px;overflow:hidden}
+		.code{background:#272822;height:400px;}
+		.console{background:#aaa;height:140px;padding-top:5px;padding-bottom:5px;}
+		.console p{color:blue;line-height:1.2em;border-bottom:1px solid gray;margin-left:1em;}
+		#nextStep{background:#008287;color:#fff;padding:5px 20px;font-size:18px;}
+		#nextStep:hover{cursor:pointer;color:#000;box-shadow:1px 1px 1px #000;}
+		#codeTip>span{display:block;width:2px;height:1em;background:#fff;}
+		#consoleTip{color:#333;font-size:22px;}
+		</style>
+	</head>
+	<body>
+		<div class="module code">
+			<div id="codePrint"></div>
+			<div id="codeTip"><span></span></div>
+		</div>
+		<div class="module">
+			<span id="nextStep">start</span>
+		</div>
+		<div class="module console">
+			<div id="consolePrint"></div>
+			<div>
+				<span style="color:gray">></span><span id="consoleTip">|</span>
+			</div>
+		</div>
+		<script src="../collections.js"></script>
+		<script src="demo.js"></script>
+		<script>
+			var codes = [
+				[
+					'$c{//begin}',
+					'imports($s{"collections.*"});',
+					'$d{var} list $o{=} $k{new} $C{ArrayList}();',
+					'console.$m{log}(list);$c{//[]}'
+				],
+				[
+					'list.$m{add}($s{"hello"});$c{//["hello"]}',
+					'list.$m{add}($s{"world"});$c{//["hello", "world"]}',
+					'list.$m{insert}($n{1}, $s{"scott"});$c{//["hello", "scott", "world"]}',
+					'console.$m{log}(list);'
+				],
+				[
+					'$d{var} iter $o{=} list.$m{iterator}();',
+					'$k{while} (iter.$m{hasNext}()) {',
+					'&emsp;$d{var} elem $o{=} iter.$m{next}();',
+					'&emsp;console.$m{log}(elem);',
+					'}',
+					'$c{//end}'
+				]
+			],
+
+			Tasks = function() {
+				this.task0 = function() {
+					imports('collections.*');
+					this.list = new ArrayList();
+					this.log(this.list);
+				};
+				this.task1 = function() {
+					var list = this.list;
+					list.add('hello');
+					list.add('world');
+					list.insert(1, 'scott');
+					this.log(list);
+				};
+				this.task2 = function() {
+					var iter = this.list.iterator();
+					while (iter.hasNext()) {
+						this.log(iter.next());
+					}
+				};
+				this.task3 = function() {
+					
+				};
+				this.task4 = function() {
+
+				};
+				this.log = function(obj) {
+					Demo.log(obj);
+				};
+			}
+
+			Demo.run(codes, new Tasks());
+			
+		</script>
+	</body>
+</html>
