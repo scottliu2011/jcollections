@@ -16,6 +16,8 @@
 	list.add('scott');
 	console.log('before remove: ' + list.toArray());//['hello', 'world', 'test iterator remove', 'scott']
 
+	console.log('contains soctt? ' + list.contains('scott'));
+
 	var iter = list.iterator();
 	while (iter.hasNext()) {
 		//console.log(iter.next());

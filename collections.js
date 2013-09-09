@@ -134,7 +134,7 @@
 	*/
 	ArrayList.prototype.contains = function(elem) {
 		var data = this.__data__;
-		for (var i = 0; i < data.length; i++) {
+		for (var i = 0, len = data.length; i < len; i++) {
 			if (this.__equals__(data[i], elem)) {
 				return true;
 			}
@@ -177,7 +177,7 @@
 	*/
 	ArrayList.prototype.removeElement = function(elem) {
 		var data = this.__data__;
-		for (var i = 0; i < data.length; i++) {
+		for (var i = 0, len = data.length; i < len; i++) {
 			if (this.__equals__(data[i], elem)) {
 				data.splice(i, 1);
 				break;
@@ -198,7 +198,7 @@
 	*/
 	ArrayList.prototype.indexOf = function(elem) {
 		var data = this.__data__;
-		for (var i = 0; i < data.length; i++) {
+		for (var i = 0, len = data.length; i < len; i++) {
 			if (this.__equals__(data[i], elem)) {
 				return i;
 			}
@@ -364,9 +364,7 @@
 		module = module.replace('collections.', '');
 		if (module === '*') {
 			for (var elem in collections) {
-				if (elem !== 'expose') {
-					global[elem] = collections[elem];
-				}
+				global[elem] = collections[elem];
 			}
 		} else {
 			collections[module] && (global[module] = collections[module]);
