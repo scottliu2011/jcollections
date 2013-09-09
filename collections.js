@@ -1,25 +1,37 @@
 (function(global, undefined) {
 
-	var collections = {};
+	/**
+	 *继承
+	 */
+	Function.prototype.inherits = function(Parent) {
+		if (Parent.constructor !== Function) {
+			throw new Error("not a function");
+		}
+		this.prototype = new Parent();
+		this.prototype.constructor = this;
+		return this;
+	};
 
-	function Collection() {
+	/*
+	 *列表接口
+	 */
+	function List() {
 		//...
 	};
 
+	//默认的equals函数
+	List.prototype.__equals__ = function(elem0, elem1) {
+		return elem0 === elem1;
+	};
 
 	//@ArrayList
 
-	function ArrayList() {
+	var ArrayList = function() {
 		if (!(this instanceof ArrayList)) {
 			return new ArrayList();
 		}
 		this.__data__ = [];
-	}
-
-	//默认的equals函数
-	ArrayList.prototype.__equals__ = function(elem0, elem1) {
-		return elem0 === elem1;
-	};
+	}.inherits(List);//ArrayList继承了List
 
 	/**
 	 *用于自定义equals函数，例如：
@@ -107,7 +119,9 @@
 	 *插入一个数组或ArrayList对象到指定位置
 	 */
 	ArrayList.prototype.insertAll = function(index, collection) {
-
+		if (index.constructor !== Number) {
+			throw new Error('the position must be specified.');
+		}
 		if (collection instanceof ArrayList) {
 			this.__data__.concat(collection.toArray());
 		} else if (collection instanceof Array) {
@@ -212,18 +226,23 @@
 	ArrayList.prototype.iterator = function() {
 		var ArrayListIterator = function(arrayList) {
 			var cursor = 0,
-				modCount = arrayList.size(),
-				data = arrayList.__data__,
-				curr;
+				lastCursor = -1,
+				data = arrayList.__data__;
 			this.hasNext = function() {
-				return cursor !== arrayList.size();
+				return cursor < arrayList.size();
 			};
 			this.next = function() {
-				curr = data[cursor++];
-				return curr;
+				var next = data[cursor];
+				lastCursor = cursor++;
+				return next;
 			};
 			this.remove = function() {
-				arrayList.remove(cursor);
+				if (lastCursor === -1) {
+					throw new Error('illegal state');
+				}
+				arrayList.remove(lastCursor);
+				cursor--;
+				lastCursor = -1;
 			};
 		};
 		return new ArrayListIterator(this);
@@ -231,14 +250,14 @@
 
 	//@LinkedList
 
-	function LinkedList() {
+	var LinkedList = function() {
 		if (!(this instanceof LinkedList)) {
 			return new LinkedList();
 		}
 		this.__size__ = 0;
 		this.__header__ = {};
 		this.__header__.next = this.__header__.previous = this.__header__;
-	}
+	}.inherits(List);//LinkedList继承了List
 
 	LinkedList.prototype.__addBefore__ = function(entry) {
 		var newEntry = {elem:elem, next:entry, previous:next.previous};
@@ -332,6 +351,7 @@
 		
 	};
 
+	var collections = {};
 	collections.ArrayList = ArrayList;
 	collections.LinkedList = LinkedList;
 	collections.HashSet = HashSet;

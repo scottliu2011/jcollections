@@ -12,13 +12,20 @@
 
 	list.add('hello');
 	list.add('world');
+	list.add('test iterator remove');
 	list.add('scott');
-	console.log(list.toArray());//['hello', 'world', 'scott']
+	console.log('before remove: ' + list.toArray());//['hello', 'world', 'test iterator remove', 'scott']
 
 	var iter = list.iterator();
 	while (iter.hasNext()) {
-		console.log(iter.next());
+		//console.log(iter.next());
+		var elem = iter.next();
+		if (elem === 'test remove') {
+			iter.remove();
+		}
 	}
+
+	console.log('after remove: ' + list.toArray());//['hello', 'world', 'scott']
 
 	list.remove(0);
 	console.log(list.toArray());//['world', 'scott']
