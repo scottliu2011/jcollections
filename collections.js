@@ -1,37 +1,33 @@
 (function(global, undefined) {
 
+	"use strict";
+
 	/**
 	 *继承
 	 */
 	Function.prototype.inherits = function(Parent) {
 		if (Parent.constructor !== Function) {
-			throw new Error("not a function");
+			throw new Error("parent is not a function");
 		}
 		this.prototype = new Parent();
 		this.prototype.constructor = this;
 		return this;
 	};
 
-	/*
-	 *列表接口
+	/**
+	 *集合类型顶级接口
 	 */
-	function List() {
-		//...
-	};
+	function Collection() {};
 
 	//默认的equals函数
-	List.prototype.__equals__ = function(elem0, elem1) {
+	Collection.prototype.__equals__ = function(elem0, elem1) {
 		return elem0 === elem1;
 	};
 
-	//@ArrayList
-
-	var ArrayList = function() {
-		if (!(this instanceof ArrayList)) {
-			return new ArrayList();
-		}
-		this.__data__ = [];
-	}.inherits(List);//ArrayList继承了List
+	/*
+	 *有序集合类型接口
+	 */
+	var List = function() {}.inherits(Collection);//继承了Collection接口
 
 	/**
 	 *用于自定义equals函数，例如：
@@ -40,9 +36,17 @@
 	 *});
 	 *两个元素的name属性相同则认为是同一个对象
 	 */
-	ArrayList.prototype.defineEquals = function(func) {
+	List.prototype.defineEquals = function(func) {
 		this.__equals__ = func;
 	};
+
+	//@ArrayList
+	var ArrayList = function() {
+		if (!(this instanceof ArrayList)) {
+			return new ArrayList();
+		}
+		this.__data__ = [];
+	}.inherits(List);//ArrayList继承了List
 
 	/**
 	 *add(elem0[, elem1, elem2,...]);
@@ -101,37 +105,37 @@
 	};
 
 	/**
-	 *addAll([]);
-	 *addAll(arrayList);
-	 *添加一个数组或ArrayList对象到list尾部
+	 *addAll(collection);
+	 *添加一个集合对象到list尾部
 	 */
 	ArrayList.prototype.addAll = function(collection) {
-		if (collection instanceof ArrayList) {
-			this.__data__.concat(collection.toArray());
-		} else if (collection instanceof Array) {
-			this.__data__.concat(collection);
+		if (!(collection instanceof Collection)) {
+			throw new Error('not a Collection instance.');
 		}
+		this.__data__.concat(collection.toArray());
 	};
 
 	/**
-	 *insertAll(index, []);
-	 *insertAll(index, arrayList);
-	 *插入一个数组或ArrayList对象到指定位置
+	 *insertAll(index, collection);
+	 *在指定位置插入一个集合对象
 	 */
 	ArrayList.prototype.insertAll = function(index, collection) {
-		if (index.constructor !== Number) {
-			throw new Error('the position must be specified.');
+		if (!index || index.constructor !== Number) {
+			throw new Error('index must be specified.');
 		}
-		if (collection instanceof ArrayList) {
-			this.__data__.concat(collection.toArray());
-		} else if (collection instanceof Array) {
-			this.__data__.concat(collection);
+		if (index < 0 || index > this.__size__) {
+			throw new Error('index out of bounds.');
 		}
+		if (!(collection instanceof Collection)) {
+			throw new Error('not a Collection instance.');
+		}
+		Array.prototype.splice.apply(this.__data__, [parseInt(index), 0].concat(collection.toArray()));
 	};
 
 	/**
-	*contains(elem);
-	*/
+	 *contains(elem);
+	 *集合是否含有指定元素
+	 */
 	ArrayList.prototype.contains = function(elem) {
 		var data = this.__data__;
 		for (var i = 0, len = data.length; i < len; i++) {
@@ -143,29 +147,33 @@
 	};
 
 	/**
-	*size();
-	*/
+	 *size();
+	 *返回集合元素个数
+	 */
 	ArrayList.prototype.size = function() {
 		return this.__data__.length;
 	};
 
 	/**
-	*isEmpty();
-	*/
+	 *isEmpty();
+	 *集合是否为空
+	 */
 	ArrayList.prototype.isEmpty = function() {
 		return this.__data__.length === 0;
 	};
 
 	/**
-	*clear();
-	*/
+	 *clear();
+	 *清空集合中的元素
+	 */
 	ArrayList.prototype.clear = function() {
 		this.__data__.length = 0;
 	};
 
 	/**
-	*remove(index);
-	*/
+	 *remove(index);
+	 *移除指定位置的元素
+	 */
 	ArrayList.prototype.remove = function(index) {
 		if (typeof index === 'number') {
 			this.__data__.splice(index, 1);
@@ -173,8 +181,9 @@
 	};
 
 	/**
-	*remove(elem);
-	*/
+	 *remove(elem);
+	 *移除指定元素
+	 */
 	ArrayList.prototype.removeElement = function(elem) {
 		var data = this.__data__;
 		for (var i = 0, len = data.length; i < len; i++) {
@@ -186,16 +195,17 @@
 	};
 
 	/**
-	*remove(fromIndex, toIndex);
-	*fromIndex inclusive, toIndex exclusive.
-	*/
+	 *removeRange(fromIndex, toIndex);
+	 *移除指定开始位置到结束位置的所有元素--包括开始位置，但不包括结束位置
+	 */
 	ArrayList.prototype.removeRange = function(fromIndex, toIndex) {
 		this.__data__.splice(fromIndex, toIndex - fromIndex);
 	};
 
 	/**
-	*indexOf(elem);
-	*/
+	 *indexOf(elem);
+	 *返回指定元素第一次出现的位置
+	 */
 	ArrayList.prototype.indexOf = function(elem) {
 		var data = this.__data__;
 		for (var i = 0, len = data.length; i < len; i++) {
@@ -207,8 +217,9 @@
 	};
 
 	/**
-	*lastIndexOf(elem);
-	*/
+	 *lastIndexOf(elem);
+	 *返回指定元素最后一次出现的位置
+	 */
 	ArrayList.prototype.lastIndexOf = function(elem) {
 		var data = this.__data__;
 		for (var i = data.length - 1; i >= 0; i--) {
@@ -219,10 +230,18 @@
 		return -1;
 	};
 	
+	/**
+	 *toString();
+	 *将集合转换成字符串
+	 */	
 	ArrayList.prototype.toString = function() {
 		return '['+ this.__data__.join(',') + ']';
 	};
 
+	/**
+	 *iterator();
+	 *获取一个迭代器
+	 */
 	ArrayList.prototype.iterator = function() {
 		var ArrayListIterator = function(arrayList) {
 			var cursor = 0,
@@ -249,7 +268,6 @@
 	};
 
 	//@LinkedList
-
 	var LinkedList = function() {
 		if (!(this instanceof LinkedList)) {
 			return new LinkedList();
@@ -259,55 +277,147 @@
 		this.__header__.next = this.__header__.previous = this.__header__;
 	}.inherits(List);//LinkedList继承了List
 
-	LinkedList.prototype.__addBefore__ = function(entry) {
-		var newEntry = {elem:elem, next:entry, previous:next.previous};
+	//在指定节点前添加一个新的节点元素
+	LinkedList.prototype.__addBefore__ = function(elem, entry) {
+		var newEntry = {elem:elem, next:entry, previous:entry.previous};
 		newEntry.previous.next = newEntry;
 		newEntry.next.previous = newEntry;
 		this.__size__++;
 	};
 
+	//获取指定位置的节点
+	LinkedList.prototype.__getEntry__ = function(index) {
+		if (index < 0 || index >= this.__size__) {
+			throw new Error('index out of bounds.');
+		}
+		var size = this.__size__,
+			entry = this.__header__;
+		if (index < (size >> 1)) {//二分法
+			for (var i = 0; i <= index; i++) {//从前往后
+				entry = entry.next;
+			}
+		} else {
+			for (var i = size; i > index; i--) {//从后往前
+                entry = entry.previous;
+			}
+		}
+		return entry;
+	};
+
 	/**
 	 *add(elem);
-	 *appends the specified element to the end of this list.
+	 *添加一个指定的元素节点到链表尾部
 	 */
 	LinkedList.prototype.add = function(elem) {
-		this.__addBefore__(this.__header__);
+		this.__addBefore__(elem, this.__header__);
 	};
 
 	/**
 	 *insert(index, elem);
-	 *inserts the specified element at the specified position in this list.
+	 *在指定位置插入一个新的节点元素
 	 */
 	LinkedList.prototype.insert = function(index, elem) {
-		this.__addBefore__(this.__header__.next);
+		this.__addBefore__(elem, (index == this.__size__ ? this.__header__ : this.__getEntry__(index)));
 	};
 
 	/**
 	 *addFirst(elem);
-	 *inserts the specified element at the beginning of this list.
+	 *在链表头部添加一个新的节点元素
 	 */
 	LinkedList.prototype.addFirst = function(elem) {
-		this.__addBefore__(this.__header__.next);
+		this.__addBefore__(elem, this.__header__.next);
 	};
 
 	/**
-	*appends the specified element to the end of this list.
-	*/
+	 *addLast(elem);
+	 *在链表尾部追加一个新的节点元素
+	 */
 	LinkedList.prototype.addLast = function(elem) {
-		this.__addBefore__(this.__header__);
+		this.__addBefore__(elem, this.__header__);
+	};
+
+	/**
+	 *toArray();
+	 *将链表数据转换成数组
+	 */
+	LinkedList.prototype.toArray = function() {
+		var i = 0,
+			result = [],
+			header = this.__header__;
+		for (var entry = header.next; entry !== header; entry = entry.next) {
+			result[i++] = entry.elem;
+		}
+		return result;
+	};
+
+	/**
+	 *addAll(collection);
+	 *添加一个集合对象到链表尾部
+	 */
+	LinkedList.prototype.addAll = function (collection) {
+		if (!(collection instanceof Collection)) {
+			throw new Error('not a Collection instance.');
+		}
+		this.insertAll(this.__size__, collection);
+	};
+
+	/**
+	 *insertAll(index, collection);
+	 *在指定位置插入一个集合对象
+	 */
+	LinkedList.prototype.insertAll = function (index, collection) {
+		if (!index || index.constructor !== Number) {
+			throw new Error('index must be specified.');
+		}
+		if (index < 0 || index > this.__size__) {
+			throw new Error('index out of bounds.');
+		}
+		if (!(collection instanceof Collection)) {
+			throw new Error('not a Collection instance.');
+		}
+		if (collection.size() === 0) return;
+
+		var successor = (index == this.__size__ ? this.__header__ : this.__getEntry__(index)),
+			predecessor = successor.previous,
+			data = collection.toArray();
+
+		for (var i = 0, len = data.length; i < len; i++) {
+			var newEntry = {elem:data[i], next:successor, previous:predecessor};
+			predecessor.next = newEntry;
+			predecessor = newEntry;
+		}
+		successor.previous = predecessor;
+
+		this.__size__ += data.length;
+	};
+
+	/**
+	 *indexOf(elem);
+	 *返回指定节点元素第一次出现的位置
+	 */
+	LinkedList.prototype.indexOf = function(elem) {
+		var index = 0,
+			header = this.__header__;
+		for (var entry = header.next; entry !== header; entry = entry.next) {
+            if (this.__equals__(entry.elem, elem)) {
+                return index;
+            }
+            index++;
+        }
+		return -1;
 	};
 
 	//@HashSet
-
-	function HashSet() {
+	var HashSet = function() {
 		if (!(this instanceof HashSet)) {
 			return new HashSet();
 		}
-		this.__data__  = {};	
-	}
+		this.__data__  = {};
+	}.inherits(Collection);//继承了Collection接口
+
+
 
 	//@HashMap
-
 	function HashMap() {
 		if (!(this instanceof HashMap)) {
 			return new HashMap();
