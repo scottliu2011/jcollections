@@ -298,7 +298,7 @@
 			}
 		} else {
 			for (var i = size; i > index; i--) {//从后往前
-                entry = entry.previous;
+				entry = entry.previous;
 			}
 		}
 		return entry;
@@ -443,11 +443,11 @@
 		var index = 0,
 			header = this.__header__;
 		for (var entry = header.next; entry !== header; entry = entry.next) {
-            if (this.__equals__(entry.elem, elem)) {
-                return index;
-            }
-            index++;
-        }
+			if (this.__equals__(entry.elem, elem)) {
+				return index;
+			}
+			index++;
+		}
 		return -1;
 	};
 
@@ -459,11 +459,11 @@
 		var index = this.__size__,
 			header = this.__header__;
 		for (var entry = header.previous; entry !== header; entry = entry.previous) {
-            if (this.__equals__(entry.elem, elem)) {
-                return index;
-            }
-            index--;
-        }
+			if (this.__equals__(entry.elem, elem)) {
+				return index;
+			}
+			index--;
+		}
 		return -1;
 	};
 
@@ -513,44 +513,72 @@
 		this.__getEntry__(index).elem = elem;
 	};
 
+	/**
+	 *removeFirst();
+	 *移除链表第一个元素结点
+	 */
 	LinkedList.prototype.removeFirst = function() {
 		return this.__removeEntry__(this.__header__.next);
 	};
 
+	/**
+	 *removeLast();
+	 *移除链表最后一个元素结点
+	 */
 	LinkedList.prototype.removeLast = function() {
 		return this.__removeEntry__(this.__header__.previous);
 	};
 
+	/**
+	 *remove(index);
+	 *移除指定位置的元素结点
+	 */
 	LinkedList.prototype.remove = function(index) {
 		return this.__removeEntry__(this.__getEntry__(index));
 	};
 
+	/**
+	 *removeElement(elem);
+	 *从链表中移除指定元素结点
+	 */
 	LinkedList.prototype.removeElement = function(elem) {
 		var header = this.__header__;
 		for (var entry = header.next; entry !== header; entry = entry.next) {
-            if (this.__equals__(entry.elem, elem)) {
-                this.__removeEntry__(entry);
-                return true;
-            }
-        }
+			if (this.__equals__(entry.elem, elem)) {
+				this.__removeEntry__(entry);
+				return true;
+			}
+		}
         return false;
 	};
 
+	/**
+	 *removeFirstOccurrence(elem);
+	 *移除指定元素第一次出现的结点
+	 */
 	LinkedList.prototype.removeFirstOccurrence = function(elem) {
 		this.removeElement(elem);
 	};
 
+	/**
+	 *removeLastOccurrence(elem);
+	 *移除指定元素最后一次出现的结点
+	 */
 	LinkedList.prototype.removeLastOccurrence = function(elem) {
 		var header = this.__header__;
 		for (var entry = header.previous; entry !== header; entry = entry.previous) {
-            if (this.__equals__(entry.elem, elem)) {
-                this.__removeEntry__(entry);
-                return true;
-            }
-        }
+			if (this.__equals__(entry.elem, elem)) {
+				this.__removeEntry__(entry);
+				return true;
+			}
+		}
         return false;
 	};
 
+	/**
+	 *iterator();
+	 *获取链表迭代器
+	 */
 	LinkedList.prototype.iterator = function() {
 		var LinkedListIterator = function(linkedList) {
 			this.hasNext = function() {
