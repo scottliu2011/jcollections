@@ -240,12 +240,19 @@
 
 	/**
 	 *iterator();
+	 *iterator(index);从指定位置开始迭代
 	 *获取一个迭代器
 	 */
-	ArrayList.prototype.iterator = function() {
+	ArrayList.prototype.iterator = function(index) {
+		var index = index || 0;
+
+		if (index < 0 || index > this.__size__) {
+			throw new Error('index out of bounds.');
+		}
+		
 		var ArrayListIterator = function(arrayList) {
-			var cursor = 0,
-				lastCursor = -1,
+			var cursor = index,
+				lastCursor = index - 1,
 				data = arrayList.__data__;
 			this.hasNext = function() {
 				return cursor < arrayList.size();
@@ -549,7 +556,7 @@
 				return true;
 			}
 		}
-        return false;
+		return false;
 	};
 
 	/**
@@ -572,23 +579,61 @@
 				return true;
 			}
 		}
-        return false;
+		return false;
 	};
 
 	/**
 	 *iterator();
+	 *iterator(index);从指定位置开始迭代
 	 *获取链表迭代器
 	 */
-	LinkedList.prototype.iterator = function() {
+	LinkedList.prototype.iterator = function(index) {
+		var index = index || 0,
+			size = this.__size__,
+			header = this.__header__;
+
+		if (index < 0 || index > size) {
+			throw new Error('index out of bounds.');
+		}
+
 		var LinkedListIterator = function(linkedList) {
+			var last = header,
+				next,
+				nextIndex;
+
+			if (index < (size >> 1)) {
+				next = header.next;
+				for (nextIndex = 0; nextIndex < index; nextIndex++) {
+					next = next.next;
+				}
+			} else {
+				next = header;
+				for (nextIndex = size; nextIndex > index; nextIndex--) {
+					next = next.previous;
+				}
+			}
+
 			this.hasNext = function() {
-				
+				return nextIndex < size;
 			};
 			this.next = function() {
+				if (nextIndex === size) {
+					throw new Error('no such element in this list.');
+				}
+				last = next;
 				
+				next = next.next;
+				nextIndex++;
+
+				return last.elem;
 			};
 			this.remove = function() {
+				linkedList.__removeEntry__(last);
 				
+				nextIndex--;
+				size--;
+
+				last = header;
 			};
 		};
 		return new LinkedListIterator(this);

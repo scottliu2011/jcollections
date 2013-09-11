@@ -40,3 +40,18 @@ console.log(list.toArray());//['soctt', 'three']
 
 list.clear();
 console.log(list.toArray());//[]
+
+list.add('123');
+list.add('456');
+list.add('789');
+list.add('abc');
+list.add('def');
+var iter = list.iterator(2);
+while (iter.hasNext()) {
+	var elem = iter.next();
+	console.log('iter:' + elem);
+	if (elem === 'abc') {
+		iter.remove();
+	}
+}
+console.log(list.toArray());

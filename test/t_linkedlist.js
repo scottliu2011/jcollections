@@ -29,3 +29,21 @@ console.log(list.size());
 list.clear();
 
 console.log(list.toArray());
+
+list.add('123');
+list.add('456');
+list.add('789');
+list.add('abc');
+list.add('def');
+list.add('xyz');
+list.add('asd');
+var iter = list.iterator();
+while (iter.hasNext()) {
+	var elem = iter.next();
+	console.log('iter:' + elem);
+	if (elem === '789') {
+		iter.remove();
+	}
+}
+
+console.log(list.toArray());
