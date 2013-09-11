@@ -23,3 +23,9 @@ list.insertAll(2, list2);
 console.log(list.toArray());
 
 console.log(list.indexOf('456'));
+
+console.log(list.size());
+
+list.clear();
+
+console.log(list.toArray());

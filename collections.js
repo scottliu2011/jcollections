@@ -304,6 +304,25 @@
 		return entry;
 	};
 
+	//移除指定的结点
+	LinkedList.prototype.__removeEntry__ = function(entry) {
+		if (entry === this.__header__) {
+			throw new Error('no such element in this list.');
+		}
+
+		var retVal = entry.elem;
+
+		entry.next.previous = entry.previous;
+		entry.previous.next = entry.next;
+
+		entry.next = entry.previous = null
+		entry.elem = null;
+
+		this.__size__--;
+
+		return retVal;
+	};
+
 	/**
 	 *add(elem);
 	 *添加一个指定的元素节点到链表尾部
@@ -392,6 +411,31 @@
 	};
 
 	/**
+	 *size();
+	 *返回链表元素个数
+	 */
+	LinkedList.prototype.size = function() {
+		return this.__size__;
+	};
+
+	/**
+	 *clear();
+	 *清空链表
+	 */
+	LinkedList.prototype.clear = function() {
+		var header = this.__header__,
+			entry = header.next;
+		while (entry !== header) {
+			var next = entry.next;
+			entry.next = entry.previous = null;
+			entry.elem = null;
+			entry = next;
+		}
+		header.next = header.previous = header;
+		this.__size__ = 0;
+	};
+
+	/**
 	 *indexOf(elem);
 	 *返回指定节点元素第一次出现的位置
 	 */
@@ -406,6 +450,122 @@
         }
 		return -1;
 	};
+
+	/**
+	 *lastIndexOf(elem);
+	 *返回指定节点元素最后一次出现的位置
+	 */
+	LinkedList.prototype.lastIndexOf = function(elem) {
+		var index = this.__size__,
+			header = this.__header__;
+		for (var entry = header.previous; entry !== header; entry = entry.previous) {
+            if (this.__equals__(entry.elem, elem)) {
+                return index;
+            }
+            index--;
+        }
+		return -1;
+	};
+
+	/**
+	 *contains(elem);
+	 *链表中是否含有指定结点元素
+	 */
+	LinkedList.prototype.contains = function(elem) {
+		return this.indexOf(elem) !== -1;
+	};	
+
+	/**
+	 *getFirst();
+	 *获取链表中第一个结点元素
+	 */
+	LinkedList.prototype.getFirst = function() {
+		if (this.__size__ === 0) {
+			throw new Error('no element in this list.');
+		}
+		return this.__header__.next.elem;
+	};
+	
+	/**
+	 *getLast();
+	 *获取链表中最后一个结点元素
+	 */
+	LinkedList.prototype.getLast = function() {
+		if (this.__size__ === 0) {
+			throw new Error('no element in this list.');
+		}
+		return this.__header__.previous.elem;
+	};
+
+	/**
+	 *get(index);
+	 *获取指定位置的结点元素
+	 */
+	LinkedList.prototype.get = function(index) {
+		return this.__getEntry__(index).elem;
+	};
+
+	/**
+	 *set(index);
+	 *将指定位置的结点替换成新的结点元素
+	 */
+	LinkedList.prototype.set = function(index, elem) {
+		this.__getEntry__(index).elem = elem;
+	};
+
+	LinkedList.prototype.removeFirst = function() {
+		return this.__removeEntry__(this.__header__.next);
+	};
+
+	LinkedList.prototype.removeLast = function() {
+		return this.__removeEntry__(this.__header__.previous);
+	};
+
+	LinkedList.prototype.remove = function(index) {
+		return this.__removeEntry__(this.__getEntry__(index));
+	};
+
+	LinkedList.prototype.removeElement = function(elem) {
+		var header = this.__header__;
+		for (var entry = header.next; entry !== header; entry = entry.next) {
+            if (this.__equals__(entry.elem, elem)) {
+                this.__removeEntry__(entry);
+                return true;
+            }
+        }
+        return false;
+	};
+
+	LinkedList.prototype.removeFirstOccurrence = function(elem) {
+		this.removeElement(elem);
+	};
+
+	LinkedList.prototype.removeLastOccurrence = function(elem) {
+		var header = this.__header__;
+		for (var entry = header.previous; entry !== header; entry = entry.previous) {
+            if (this.__equals__(entry.elem, elem)) {
+                this.__removeEntry__(entry);
+                return true;
+            }
+        }
+        return false;
+	};
+
+	LinkedList.prototype.iterator = function() {
+		var LinkedListIterator = function(linkedList) {
+			this.hasNext = function() {
+				
+			};
+			this.next = function() {
+				
+			};
+			this.remove = function() {
+				
+			};
+		};
+		return new LinkedListIterator(this);
+	};	
+
 
 	//@HashSet
 	var HashSet = function() {
