@@ -15,9 +15,9 @@
 	};
 
 	/**
-	 *集合类型顶级接口
+	 *集合标识类型
 	 */
-	function Collection() {};
+	function Collection(){};
 
 	//默认的equals函数
 	Collection.prototype.__equals__ = function(elem0, elem1) {
@@ -25,9 +25,9 @@
 	};
 
 	/*
-	 *有序集合类型接口
+	 *有序集合标识类型
 	 */
-	var List = function() {}.inherits(Collection);//继承了Collection接口
+	var List = function(){}.inherits(Collection);//继承了Collection
 
 	/**
 	 *用于自定义equals函数，例如：
@@ -232,7 +232,7 @@
 	
 	/**
 	 *toString();
-	 *将集合转换成字符串
+	 *返回一个含有所有元素的字符串
 	 */	
 	ArrayList.prototype.toString = function() {
 		return '['+ this.__data__.join(',') + ']';
@@ -363,8 +363,16 @@
 	};
 
 	/**
+	 *toString();
+	 *返回一个含有所有元素的字符串
+	 */
+	LinkedList.prototype.toString = function() {
+		return '[' + this.toArray().join(',') + ']';
+	};
+
+	/**
 	 *toArray();
-	 *将链表数据转换成数组
+	 *返回一个含有所有元素的数组
 	 */
 	LinkedList.prototype.toArray = function() {
 		var i = 0,
@@ -646,9 +654,45 @@
 			return new HashSet();
 		}
 		this.__data__  = {};
-	}.inherits(Collection);//继承了Collection接口
+		this.__size__ = 0;
+	}.inherits(Collection);//HashSet直接继承了Collection
 
+	HashSet.prototype.add = function(elem) {
+		this.__data__[elem] = 1;//elem为复杂对象类型时自动转换为'Object@123'形式的hash值
+	};
 
+	HashSet.prototype.remove = function(elem) {
+		if (this.contains(elem)) {
+			delete this.__data__[elem];
+			this.__size__--;
+		}
+	};
+
+	HashSet.prototype.size = function(elem) {
+		return this.__size__;
+	};
+
+	HashSet.prototype.isEmpty = function(elem) {
+		return this.__size__ === 0;
+	};
+
+	HashSet.prototype.contains = function(elem) {
+		return !!this.__data__[elem];
+	};
+
+	HashSet.prototype.clear = function(elem) {
+		this.__data__ = {};
+	};
+
+	HashSet.prototype.iterator = function(elem) {
+		//...
+	};	
+	
+
+	/**
+	 *Map标识类型
+	 */
+	function Map(){};
 
 	//@HashMap
 	function HashMap() {
@@ -656,42 +700,107 @@
 			return new HashMap();
 		}
 		this.__data__ = {};
-	}
+		this.__size__ = 0;
+	}.inherits(Map);//HashMap继承了Map
 
+	/**
+	 *put(key, value);
+	 *添加新的键值对
+	 */
 	HashMap.prototype.put = function(key, value) {
-
+		var isNew = !this.containsKey(key);
+		this.__data__[key] = value;//key为复杂对象类型时自动转换为'Object@123'形式的hash值
+		if (isNew) this.__size__++;
 	};
 
-	HashMap.prototype.get = function(key) {
+	/**
+	 *putAll(map);
+	 *
+	 */
+	HashMap.prototype.putAll = function(map) {
+		if (!(map instanceof Map)) {
+			throw new Error('not a Map instance.');
+		}
+		var keySet = map.keySet(),
+			iter = keySet.iterator();
+		while (iter.hasNext()) {
+			var key = iter.next(),
+				isNew = !this.containsKey(key);
 
+			this.put(key, map.get(key));
+
+			if (isNew) this.__size__++;
+		}
+	};	
+
+	HashMap.prototype.get = function(key) {
+		return this.__data__[key];
 	};
 
 	HashMap.prototype.remove = function(key) {
-
+		if (this.containsKey(key)) {
+			delete this.__data__[key];
+			this.__size__--;
+		}
 	};
 
-	HashMap.prototype.size = function() {
+	HashMap.prototype.clear = function(key) {
+		this.__data__ = {};
+	};	
 
+	HashMap.prototype.size = function() {
+		return this.__size__;
 	};
 
 	HashMap.prototype.isEmpty = function() {
-
+		return this.__size__ === 0;
 	};
 
 	HashMap.prototype.containsKey = function(key) {
-
+		return !!this.__data__[key];
 	};
 
 	HashMap.prototype.containsValue = function(value) {
-		
+		var data = this.__data__;
+		for (var key in data) {
+			if (data[key] === value) {
+				return true;
+			}
+		}
+		return false;
 	};
 
 	HashMap.prototype.keySet = function() {
-		
+		var set = new HashSet();
+		for (var key in Object) {
+			set.put(key);
+		}
+		return set;
 	};
 
 	HashMap.prototype.entrySet = function() {
-		
+		//Map.Entry...
+	};
+	
+	HashMap.prototype.toString = function() {
+		var result = [],
+			data = this.__data__;
+		for (var key in data) {
+			result.push(key + '=' + data[key]);
+		}
+		return '{' + result.join(',') + '}';
+	};
+
+	HashMap.prototype.values = function() {
+		var result = [];
+		for (var key in data) {
+			result.push(data[key]);
+		}
+		return '[' + result.join(',') + ']';
+	};
+
+	var Collections = {
+		//...
 	};
 
 	var collections = {};
@@ -699,6 +808,17 @@
 	collections.LinkedList = LinkedList;
 	collections.HashSet = HashSet;
 	collections.HashMap = HashMap;
+	collections.Collections = Collections;
+
+	collections.__hash__ = 0;
+	
+	//重写Object的toString函数 在复杂类型作为map的key时自动转为'Object@123'这样的hash值
+	Object.prototype.toString = function() {
+		if (!this.__hashcode__) {
+			this.__hashcode__ = collections.__hash__++;
+		}
+		return 'Object@' + this.__hashcode__;
+	}
 
 	global.imports = function(module) {
 		if (!module || !/^collections\.(\*|[a-zA-Z]+)$/g.test(module)) {
