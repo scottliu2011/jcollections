@@ -40,7 +40,7 @@
 		this.__equals__ = func;
 	};
 
-	//@ArrayList
+	//#ArrayList
 	var ArrayList = function() {
 		if (!(this instanceof ArrayList)) {
 			return new ArrayList();
@@ -65,7 +65,7 @@
 			index = args[0];
 
 		if (!index || index.constructor !== Number) {
-			throw new Error('arguments error.');
+			throw new Error('arguments error');
 		}
 		if (index < 0 || index > this.__data__.length) {
 			throw new Error('index range error');
@@ -110,7 +110,7 @@
 	 */
 	ArrayList.prototype.addAll = function(collection) {
 		if (!(collection instanceof Collection)) {
-			throw new Error('not a Collection instance.');
+			throw new Error('not a Collection instance');
 		}
 		this.__data__.concat(collection.toArray());
 	};
@@ -121,13 +121,13 @@
 	 */
 	ArrayList.prototype.insertAll = function(index, collection) {
 		if (!index || index.constructor !== Number) {
-			throw new Error('index must be specified.');
+			throw new Error('index must be specified');
 		}
 		if (index < 0 || index > this.__size__) {
-			throw new Error('index out of bounds.');
+			throw new Error('index out of bounds');
 		}
 		if (!(collection instanceof Collection)) {
-			throw new Error('not a Collection instance.');
+			throw new Error('not a Collection instance');
 		}
 		Array.prototype.splice.apply(this.__data__, [parseInt(index), 0].concat(collection.toArray()));
 	};
@@ -247,7 +247,7 @@
 		var index = index || 0;
 
 		if (index < 0 || index > this.__size__) {
-			throw new Error('index out of bounds.');
+			throw new Error('index out of bounds');
 		}
 		
 		var ArrayListIterator = function(arrayList) {
@@ -274,7 +274,7 @@
 		return new ArrayListIterator(this);
 	};
 
-	//@LinkedList
+	//#LinkedList
 	var LinkedList = function() {
 		if (!(this instanceof LinkedList)) {
 			return new LinkedList();
@@ -295,7 +295,7 @@
 	//获取指定位置的节点
 	LinkedList.prototype.__getEntry__ = function(index) {
 		if (index < 0 || index >= this.__size__) {
-			throw new Error('index out of bounds.');
+			throw new Error('index out of bounds');
 		}
 		var size = this.__size__,
 			entry = this.__header__;
@@ -314,7 +314,7 @@
 	//移除指定的结点
 	LinkedList.prototype.__removeEntry__ = function(entry) {
 		if (entry === this.__header__) {
-			throw new Error('no such element in this list.');
+			throw new Error('no such element in this list');
 		}
 
 		var retVal = entry.elem;
@@ -390,7 +390,7 @@
 	 */
 	LinkedList.prototype.addAll = function (collection) {
 		if (!(collection instanceof Collection)) {
-			throw new Error('not a Collection instance.');
+			throw new Error('not a Collection instance');
 		}
 		this.insertAll(this.__size__, collection);
 	};
@@ -401,13 +401,13 @@
 	 */
 	LinkedList.prototype.insertAll = function (index, collection) {
 		if (!index || index.constructor !== Number) {
-			throw new Error('index must be specified.');
+			throw new Error('index must be specified');
 		}
 		if (index < 0 || index > this.__size__) {
-			throw new Error('index out of bounds.');
+			throw new Error('index out of bounds');
 		}
 		if (!(collection instanceof Collection)) {
-			throw new Error('not a Collection instance.');
+			throw new Error('not a Collection instance');
 		}
 		if (collection.size() === 0) return;
 
@@ -496,7 +496,7 @@
 	 */
 	LinkedList.prototype.getFirst = function() {
 		if (this.__size__ === 0) {
-			throw new Error('no element in this list.');
+			throw new Error('no element in this list');
 		}
 		return this.__header__.next.elem;
 	};
@@ -507,7 +507,7 @@
 	 */
 	LinkedList.prototype.getLast = function() {
 		if (this.__size__ === 0) {
-			throw new Error('no element in this list.');
+			throw new Error('no element in this list');
 		}
 		return this.__header__.previous.elem;
 	};
@@ -601,7 +601,7 @@
 			header = this.__header__;
 
 		if (index < 0 || index > size) {
-			throw new Error('index out of bounds.');
+			throw new Error('index out of bounds');
 		}
 
 		var LinkedListIterator = function(linkedList) {
@@ -626,7 +626,7 @@
 			};
 			this.next = function() {
 				if (nextIndex === size) {
-					throw new Error('no such element in this list.');
+					throw new Error('no such element in this list');
 				}
 				last = next;
 				
@@ -648,44 +648,85 @@
 	};	
 
 
-	//@HashSet
+	//#HashSet
 	var HashSet = function() {
 		if (!(this instanceof HashSet)) {
 			return new HashSet();
 		}
-		this.__data__  = {};
+		this.__store__  = {};
 		this.__size__ = 0;
 	}.inherits(Collection);//HashSet直接继承了Collection
 
 	HashSet.prototype.add = function(elem) {
-		this.__data__[elem] = 1;//elem为复杂对象类型时自动转换为'Object@123'形式的hash值
+		var isNew = !this.contains(elem);
+		if (elem.toString().indexOf('Object@') === 0) {
+			this.__store__[elem] = elem;//复杂对象类型用{'Object@1024':object}形式存储
+		} else {
+			this.__store__[elem] = 1;
+		}
+		if (isNew) this.__size__++;
 	};
 
 	HashSet.prototype.remove = function(elem) {
 		if (this.contains(elem)) {
-			delete this.__data__[elem];
+			delete this.__store__[elem];
 			this.__size__--;
 		}
 	};
 
-	HashSet.prototype.size = function(elem) {
+	HashSet.prototype.toArray = function() {
+		return Object.keys(this.__store__);
+	};
+
+	HashSet.prototype.toString = function() {
+		return '[' + Object.keys(this.__store__).join(',') + ']';
+	};
+
+	HashSet.prototype.size = function() {
 		return this.__size__;
 	};
 
-	HashSet.prototype.isEmpty = function(elem) {
+	HashSet.prototype.isEmpty = function() {
 		return this.__size__ === 0;
 	};
 
 	HashSet.prototype.contains = function(elem) {
-		return !!this.__data__[elem];
+		return !!this.__store__[elem];
 	};
 
-	HashSet.prototype.clear = function(elem) {
-		this.__data__ = {};
+	HashSet.prototype.clear = function() {
+		this.__store__ = {};
+		this.__size__ = 0;
 	};
 
-	HashSet.prototype.iterator = function(elem) {
-		//...
+	HashSet.prototype.iterator = function() {
+		var set = this,
+			store = this.__store__,
+			keys = Object.keys(store),
+			cursor = 0,
+			lastCursor = - 1,
+			iteratorCount = 0;
+		var HashSetIterator = function() {
+			this.hasNext = function() {
+				return iteratorCount < set.size();
+			};
+			this.next = function() {
+				var key = keys[cursor];
+				var isComplex = key.indexOf('Object@') === 0;
+				var elem = isComplex ? store[key] : key;
+				lastCursor = cursor++;
+				iteratorCount++;
+				return elem;
+			};
+			this.remove = function() {
+				if (lastCursor === -1) {
+					throw new Error('illegal state');
+				}
+				set.remove(keys[lastCursor]);
+				iteratorCount--;
+			};
+		};
+		return new HashSetIterator();
 	};	
 	
 
@@ -694,12 +735,12 @@
 	 */
 	function Map(){};
 
-	//@HashMap
-	function HashMap() {
+	//#HashMap
+	var HashMap = function() {
 		if (!(this instanceof HashMap)) {
 			return new HashMap();
 		}
-		this.__data__ = {};
+		this.__store__ = {};
 		this.__size__ = 0;
 	}.inherits(Map);//HashMap继承了Map
 
@@ -709,7 +750,7 @@
 	 */
 	HashMap.prototype.put = function(key, value) {
 		var isNew = !this.containsKey(key);
-		this.__data__[key] = value;//key为复杂对象类型时自动转换为'Object@123'形式的hash值
+		this.__store__[key] = value;//key为复杂对象类型时自动转换为'Object@1024'形式的hash值
 		if (isNew) this.__size__++;
 	};
 
@@ -719,7 +760,7 @@
 	 */
 	HashMap.prototype.putAll = function(map) {
 		if (!(map instanceof Map)) {
-			throw new Error('not a Map instance.');
+			throw new Error('not a Map instance');
 		}
 		var keySet = map.keySet(),
 			iter = keySet.iterator();
@@ -734,18 +775,18 @@
 	};	
 
 	HashMap.prototype.get = function(key) {
-		return this.__data__[key];
+		return this.__store__[key];
 	};
 
 	HashMap.prototype.remove = function(key) {
 		if (this.containsKey(key)) {
-			delete this.__data__[key];
+			delete this.__store__[key];
 			this.__size__--;
 		}
 	};
 
 	HashMap.prototype.clear = function(key) {
-		this.__data__ = {};
+		this.__store__ = {};
 	};	
 
 	HashMap.prototype.size = function() {
@@ -757,13 +798,13 @@
 	};
 
 	HashMap.prototype.containsKey = function(key) {
-		return !!this.__data__[key];
+		return !!this.__store__[key];
 	};
 
 	HashMap.prototype.containsValue = function(value) {
-		var data = this.__data__;
-		for (var key in data) {
-			if (data[key] === value) {
+		var store = this.__store__;
+		for (var key in store) {
+			if (store[key] === value) {
 				return true;
 			}
 		}
@@ -772,29 +813,53 @@
 
 	HashMap.prototype.keySet = function() {
 		var set = new HashSet();
-		for (var key in Object) {
-			set.put(key);
+		for (var key in this.__store__) {
+			set.add(key);
 		}
 		return set;
 	};
 
 	HashMap.prototype.entrySet = function() {
-		//Map.Entry...
+		var map = this,
+			set = new HashSet();
+
+		var MapEntry = function(key, value) {
+			this.__key__ = key;
+			this.__value__ = value;
+
+			this.getKey = function() {
+				return this.__key__;
+			};
+			this.getValue = function() {
+				return this.__value__;
+			};
+			this.set = function(value) {
+				this.__value__ = value;
+				map.put(this.__key__, value);
+			};
+		};
+
+		for (var key in this.__store__) {
+			var entry = new MapEntry(key, this.__store__[key]);
+			set.add(entry);
+		}
+		return set;
 	};
 	
 	HashMap.prototype.toString = function() {
 		var result = [],
-			data = this.__data__;
-		for (var key in data) {
-			result.push(key + '=' + data[key]);
+			store = this.__store__;
+		for (var key in store) {
+			result.push(key + '=' + store[key]);
 		}
 		return '{' + result.join(',') + '}';
 	};
 
 	HashMap.prototype.values = function() {
-		var result = [];
-		for (var key in data) {
-			result.push(data[key]);
+		var result = [],
+			store = this.__store__;;
+		for (var key in store) {
+			result.push(store[key]);
 		}
 		return '[' + result.join(',') + ']';
 	};
@@ -810,14 +875,46 @@
 	collections.HashMap = HashMap;
 	collections.Collections = Collections;
 
-	collections.__hash__ = 0;
+	collections.__hash__ = 1024;
 	
-	//重写Object的toString函数 在复杂类型作为map的key时自动转为'Object@123'这样的hash值
+	//重写Object的toString函数 在复杂类型作为map的key时自动转为'Object@1024'这样的hash值
 	Object.prototype.toString = function() {
-		if (!this.__hashcode__) {
-			this.__hashcode__ = collections.__hash__++;
+		if (!this.__hash__) {
+			this.__hash__ = collections.__hash__++;
 		}
-		return 'Object@' + this.__hashcode__;
+		return 'Object@' + this.__hash__;
+	}
+
+	if (!Object.keys) {
+		Object.keys = (function () {
+			var hasOwnProperty = Object.prototype.hasOwnProperty,
+				hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
+				dontEnums = ['toString', 'toLocaleString', 'valueOf', 'hasOwnProperty', 'isPrototypeOf', 'propertyIsEnumerable', 'constructor'],
+				dontEnumsLength = dontEnums.length;
+
+			return function (obj) {
+				if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
+					throw new TypeError('Object.keys called on non-object');
+				}
+
+				var result = [], prop, i;
+
+				for (prop in obj) {
+					if (hasOwnProperty.call(obj, prop)) {
+						result.push(prop);
+					}
+				}
+
+				if (hasDontEnumBug) {
+					for (i = 0; i < dontEnumsLength; i++) {
+						if (hasOwnProperty.call(obj, dontEnums[i])) {
+							result.push(dontEnums[i]);
+						}
+					}
+				}
+				return result;
+			};
+		}());
 	}
 
 	global.imports = function(module) {
