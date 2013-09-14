@@ -658,28 +658,55 @@
 	}.inherits(Collection);//HashSet直接继承了Collection
 
 	HashSet.prototype.add = function(elem) {
-		var isNew = !this.contains(elem);
-		if (elem.toString().indexOf('Object@') === 0) {
-			this.__store__[elem] = elem;//复杂对象类型用{'Object@1024':object}形式存储
+		var isNew = !this.contains(elem),
+			store = this.__store__,
+			key = this.__toKey__(elem);
+		if ((typeof elem) === 'object') {
+			store[key] = elem;
 		} else {
-			this.__store__[elem] = 1;
+			store[key] = 1;
 		}
 		if (isNew) this.__size__++;
 	};
 
 	HashSet.prototype.remove = function(elem) {
 		if (this.contains(elem)) {
-			delete this.__store__[elem];
+			delete this.__store__[this.__toKey__(elem)];
 			this.__size__--;
 		}
 	};
 
 	HashSet.prototype.toArray = function() {
-		return Object.keys(this.__store__);
+		var result = [];
+		for (var i in this.__store__) {
+			result.push(this.__fromKey__(i));
+		}
+		return result;
+	};
+
+	//将元素转换成内部键存储形式
+	HashSet.prototype.__toKey__ = function(elem) {
+		return (typeof elem) + '@' + elem;
+	};
+
+	//将内部键转换称真正的元素
+	HashSet.prototype.__fromKey__ = function(elem) {
+		var first = elem.indexOf('@'),
+			type = elem.substring(0, first),
+			value = elem.substring(first + 1);
+		if (type === 'string') {
+			return value;
+		} else if (type === 'number') {
+			return Number(value);
+		} else if (type === 'boolean') {
+			return Boolean(value);
+		} else {
+			return elem;
+		}
 	};
 
 	HashSet.prototype.toString = function() {
-		return '[' + Object.keys(this.__store__).join(',') + ']';
+		return '[' + this.toArray().join(',') + ']';
 	};
 
 	HashSet.prototype.size = function() {
@@ -691,7 +718,7 @@
 	};
 
 	HashSet.prototype.contains = function(elem) {
-		return !!this.__store__[elem];
+		return !!this.__store__[this.__toKey__(elem)];
 	};
 
 	HashSet.prototype.clear = function() {
@@ -704,26 +731,35 @@
 			store = this.__store__,
 			keys = Object.keys(store),
 			cursor = 0,
-			lastCursor = - 1,
-			iteratorCount = 0;
+			lastCursor = - 1;
 		var HashSetIterator = function() {
 			this.hasNext = function() {
-				return iteratorCount < set.size();
+				return cursor < set.size();
 			};
 			this.next = function() {
 				var key = keys[cursor];
-				var isComplex = key.indexOf('Object@') === 0;
-				var elem = isComplex ? store[key] : key;
+
+				var isObject = key.indexOf('object@') === 0;
+				var elem = isObject ? store[key] : set.__fromKey__(key);
+
 				lastCursor = cursor++;
-				iteratorCount++;
+				
 				return elem;
 			};
 			this.remove = function() {
 				if (lastCursor === -1) {
 					throw new Error('illegal state');
 				}
-				set.remove(keys[lastCursor]);
-				iteratorCount--;
+
+				var key = keys[lastCursor];
+				var isObject = key.indexOf('object@') === 0;
+				var elem = isObject ? store[key] : set.__fromKey__(key);
+
+				set.remove(elem);
+				keys.splice(lastCursor, 1);
+
+				cursor--;
+				lastCursor = -1;
 			};
 		};
 		return new HashSetIterator();
@@ -750,7 +786,7 @@
 	 */
 	HashMap.prototype.put = function(key, value) {
 		var isNew = !this.containsKey(key);
-		this.__store__[key] = value;//key为复杂对象类型时自动转换为'Object@1024'形式的hash值
+		this.__store__[key] = value;//key为复杂对象类型时自动转换为'object@1024'形式的hash值
 		if (isNew) this.__size__++;
 	};
 
@@ -877,12 +913,12 @@
 
 	collections.__hash__ = 1024;
 	
-	//重写Object的toString函数 在复杂类型作为map的key时自动转为'Object@1024'这样的hash值
+	//重写Object的toString函数 每个对象类型都有一个hash值
 	Object.prototype.toString = function() {
 		if (!this.__hash__) {
 			this.__hash__ = collections.__hash__++;
 		}
-		return 'Object@' + this.__hash__;
+		return this.__hash__;
 	}
 
 	if (!Object.keys) {
