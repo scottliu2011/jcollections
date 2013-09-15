@@ -49,7 +49,15 @@
 	}.inherits(List);//ArrayList继承了List
 
 	/**
-	 *add(elem0[, elem1, elem2,...]);
+	 *ArrayList.create();
+	 *静态方法 用于创建一个ArrayList对象实例
+	 */
+	ArrayList.create = function() {
+		return new ArrayList();
+	};
+
+	/**
+	 *add(elem0[, elem1[, elem2[,...]]]);
 	 *添加一到多个元素到list尾部
 	 */
 	ArrayList.prototype.add = function() {
@@ -57,7 +65,7 @@
 	};
 
 	/**
-	 *insert(index, elem0[, elem1, elem2,...]);
+	 *insert(index, elem0[, elem1[, elem2[,...]]]);
 	 *在指定位置插入一到多个元素
 	 */
 	ArrayList.prototype.insert = function() {
@@ -283,6 +291,10 @@
 		this.__header__ = {};
 		this.__header__.next = this.__header__.previous = this.__header__;
 	}.inherits(List);//LinkedList继承了List
+
+	LinkedList.create = function() {
+		return new LinkedList();
+	};
 
 	//在指定节点前添加一个新的节点元素
 	LinkedList.prototype.__addBefore__ = function(elem, entry) {
@@ -645,8 +657,28 @@
 			};
 		};
 		return new LinkedListIterator(this);
-	};	
+	};
 
+	//负责对象和内部键之间的相互转换
+	var KeyConvertor = {
+		toInnerKey: function(outerValue) {
+			return (typeof outerValue) + '@' + outerValue;
+		},
+		fromInnerKey: function(innerKey) {
+			var first = innerKey.indexOf('@'),
+				type = innerKey.substring(0, first),
+				value = innerKey.substring(first + 1);
+			if (type === 'string') {
+				return value;
+			} else if (type === 'number') {
+				return Number(value);
+			} else if (type === 'boolean') {
+				return Boolean(value);
+			} else {
+				return innerKey;
+			}
+		}
+	};
 
 	//#HashSet
 	var HashSet = function() {
@@ -657,10 +689,22 @@
 		this.__size__ = 0;
 	}.inherits(Collection);//HashSet直接继承了Collection
 
+	/**
+	 *HashSet.create();
+	 *静态方法 用于创建一个HashSet对象实例
+	 */
+	HashSet.create = function() {
+		return new HashSet();
+	};
+
+	/**
+	 *add(elem);
+	 *添加一个元素到set中
+	 */
 	HashSet.prototype.add = function(elem) {
 		var isNew = !this.contains(elem),
 			store = this.__store__,
-			key = this.__toKey__(elem);
+			key = KeyConvertor.toInnerKey(elem);
 		if ((typeof elem) === 'object') {
 			store[key] = elem;
 		} else {
@@ -669,63 +713,74 @@
 		if (isNew) this.__size__++;
 	};
 
+	/**
+	 *remove(elem);
+	 *从set集合中移除一个指定元素
+	 */
 	HashSet.prototype.remove = function(elem) {
 		if (this.contains(elem)) {
-			delete this.__store__[this.__toKey__(elem)];
+			delete this.__store__[KeyConvertor.toInnerKey(elem)];
 			this.__size__--;
 		}
 	};
 
+	/**
+	 *toArray();
+	 *返回含有set所有元素的数组
+	 */
 	HashSet.prototype.toArray = function() {
 		var result = [];
 		for (var i in this.__store__) {
-			result.push(this.__fromKey__(i));
+			result.push(KeyConvertor.fromInnerKey(i));
 		}
 		return result;
 	};
 
-	//将元素转换成内部键存储形式
-	HashSet.prototype.__toKey__ = function(elem) {
-		return (typeof elem) + '@' + elem;
-	};
-
-	//将内部键转换称真正的元素
-	HashSet.prototype.__fromKey__ = function(elem) {
-		var first = elem.indexOf('@'),
-			type = elem.substring(0, first),
-			value = elem.substring(first + 1);
-		if (type === 'string') {
-			return value;
-		} else if (type === 'number') {
-			return Number(value);
-		} else if (type === 'boolean') {
-			return Boolean(value);
-		} else {
-			return elem;
-		}
-	};
-
+	/**
+	 *toString();
+	 *返回含有set所有元素的字符串
+	 */
 	HashSet.prototype.toString = function() {
 		return '[' + this.toArray().join(',') + ']';
 	};
 
+	/**
+	 *size();
+	 *返回set元素个数
+	 */
 	HashSet.prototype.size = function() {
 		return this.__size__;
 	};
 
+	/**
+	 *isEmpty();
+	 *set是否为空
+	 */
 	HashSet.prototype.isEmpty = function() {
 		return this.__size__ === 0;
 	};
 
+	/**
+	 *contains(elem);
+	 *set是否含有指定元素
+	 */
 	HashSet.prototype.contains = function(elem) {
-		return !!this.__store__[this.__toKey__(elem)];
+		return !!this.__store__[KeyConvertor.toInnerKey(elem)];
 	};
 
+	/**
+	 *clear();
+	 *清空set
+	 */
 	HashSet.prototype.clear = function() {
 		this.__store__ = {};
 		this.__size__ = 0;
 	};
 
+	/**
+	 *iterator();
+	 *获取迭代器
+	 */
 	HashSet.prototype.iterator = function() {
 		var set = this,
 			store = this.__store__,
@@ -740,7 +795,7 @@
 				var key = keys[cursor];
 
 				var isObject = key.indexOf('object@') === 0;
-				var elem = isObject ? store[key] : set.__fromKey__(key);
+				var elem = isObject ? store[key] : KeyConvertor.fromInnerKey(key);
 
 				lastCursor = cursor++;
 				
@@ -753,7 +808,7 @@
 
 				var key = keys[lastCursor];
 				var isObject = key.indexOf('object@') === 0;
-				var elem = isObject ? store[key] : set.__fromKey__(key);
+				var elem = isObject ? store[key] : KeyConvertor.fromInnerKey(key);
 
 				set.remove(elem);
 				keys.splice(lastCursor, 1);
@@ -763,8 +818,7 @@
 			};
 		};
 		return new HashSetIterator();
-	};	
-	
+	};
 
 	/**
 	 *Map标识类型
@@ -777,22 +831,38 @@
 			return new HashMap();
 		}
 		this.__store__ = {};
+		this.__xkey__ = {};//object key mapping.
 		this.__size__ = 0;
 	}.inherits(Map);//HashMap继承了Map
+
+	/**
+	 *HashMap.create();
+	 *静态方法 用于创建一个HashMap对象实例
+	 */
+	HashMap.create = function() {
+		return new HashMap();
+	};
 
 	/**
 	 *put(key, value);
 	 *添加新的键值对
 	 */
 	HashMap.prototype.put = function(key, value) {
-		var isNew = !this.containsKey(key);
-		this.__store__[key] = value;//key为复杂对象类型时自动转换为'object@1024'形式的hash值
-		if (isNew) this.__size__++;
+		var isNew = !this.containsKey(key),
+			innerKey = KeyConvertor.toInnerKey(key);
+		this.__store__[innerKey] = value;
+		if (isNew) {
+			this.__size__++;
+
+			if ((typeof key) === 'object') {
+				this.__xkey__[innerKey] = key;//{hash:real_key}
+			}
+		}
 	};
 
 	/**
 	 *putAll(map);
-	 *
+	 *将指定map的数据合并到本实例中
 	 */
 	HashMap.prototype.putAll = function(map) {
 		if (!(map instanceof Map)) {
@@ -801,42 +871,73 @@
 		var keySet = map.keySet(),
 			iter = keySet.iterator();
 		while (iter.hasNext()) {
-			var key = iter.next(),
-				isNew = !this.containsKey(key);
-
+			var key = iter.next();
 			this.put(key, map.get(key));
-
-			if (isNew) this.__size__++;
 		}
-	};	
-
-	HashMap.prototype.get = function(key) {
-		return this.__store__[key];
 	};
 
+	/**
+	 *get(key);
+	 *根据指定的key获取对应的value
+	 */
+	HashMap.prototype.get = function(key) {
+		return this.__store__[KeyConvertor.toInnerKey(key)];
+	};
+
+	/**
+	 *remove(key);
+	 *移除指定key对应的键值对
+	 */
 	HashMap.prototype.remove = function(key) {
 		if (this.containsKey(key)) {
-			delete this.__store__[key];
+			var innerKey = KeyConvertor.toInnerKey(key);
+			delete this.__store__[innerKey];
 			this.__size__--;
+
+			if ((typeof key) === 'object') {
+				delete this.__xkey__[innerKey];
+			}
 		}
 	};
 
+	/**
+	 *clear();
+	 *清空map
+	 */
 	HashMap.prototype.clear = function(key) {
 		this.__store__ = {};
-	};	
+		this.__xkey__ = {};
+		this.__size__ = 0;
+	};
 
+	/**
+	 *size();
+	 *返回map键值对个数
+	 */
 	HashMap.prototype.size = function() {
 		return this.__size__;
 	};
 
+	/**
+	 *isEmpty();
+	 *map是否为空
+	 */
 	HashMap.prototype.isEmpty = function() {
 		return this.__size__ === 0;
 	};
 
+	/**
+	 *containsKey(key);
+	 *map中是否含有指定的key
+	 */
 	HashMap.prototype.containsKey = function(key) {
-		return !!this.__store__[key];
+		return !!this.__store__[KeyConvertor.toInnerKey(key)];
 	};
 
+	/**
+	 *containsValue(value);
+	 *map中是否含有指定的value
+	 */
 	HashMap.prototype.containsValue = function(value) {
 		var store = this.__store__;
 		for (var key in store) {
@@ -847,14 +948,26 @@
 		return false;
 	};
 
+	/**
+	 *keySet();
+	 *返回所有键组成的set集合
+	 */
 	HashMap.prototype.keySet = function() {
 		var set = new HashSet();
 		for (var key in this.__store__) {
-			set.add(key);
+			if (key.indexOf('object@') !== 0) {
+				set.add(KeyConvertor.fromInnerKey(key));
+			} else {
+				set.add(this.__xkey__[key]);
+			}
 		}
 		return set;
 	};
 
+	/**
+	 *entrySet();
+	 *返回所有键值对组成的set集合
+	 */
 	HashMap.prototype.entrySet = function() {
 		var map = this,
 			set = new HashSet();
@@ -876,21 +989,39 @@
 		};
 
 		for (var key in this.__store__) {
-			var entry = new MapEntry(key, this.__store__[key]);
+			var realKey;
+			if (key.indexOf('object@') !== 0) {
+				realKey = KeyConvertor.fromInnerKey(key);
+			} else {
+				realKey = this.__xkey__[key];
+			}
+			var entry = new MapEntry(realKey, this.__store__[key]);
 			set.add(entry);
 		}
 		return set;
 	};
 	
+	/**
+	 *toString();
+	 *返回含有map所有键值对的字符串
+	 */
 	HashMap.prototype.toString = function() {
 		var result = [],
 			store = this.__store__;
 		for (var key in store) {
-			result.push(key + '=' + store[key]);
+			if (key.indexOf('object@') !== 0) {
+				result.push(KeyConvertor.fromInnerKey(key) + '=' + store[key]);
+			} else {
+				result.push(key + '=' + store[key]);
+			}
 		}
 		return '{' + result.join(',') + '}';
 	};
 
+	/**
+	 *values();
+	 *返回含有map所有值的字符串
+	 */
 	HashMap.prototype.values = function() {
 		var result = [],
 			store = this.__store__;;
@@ -921,7 +1052,8 @@
 		return this.__hash__;
 	}
 
-	if (!Object.keys) {
+	//Object.keys是ECMAScript 5th Edition中新增函数
+	if (!Object.keys) {//如果不是现代浏览器则实现一个Object.keys函数
 		Object.keys = (function () {
 			var hasOwnProperty = Object.prototype.hasOwnProperty,
 				hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),

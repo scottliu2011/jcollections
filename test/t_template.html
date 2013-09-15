@@ -1,0 +1,18 @@
+<html>
+	<body>
+
+	</body>
+	<script type="text/javascript" src="../collections.tpl.js"></script>
+	<script type="text/html" id="tpl">
+		<ol title="<#=title#>">
+			<# for (var i = 0, l = list.length; i < l; i ++) { #>
+					<li><#=list[i] #></li>
+			<# } #>
+		</ol>
+	</script>
+	<script type="text/javascript">
+		var render = getRender('tpl');
+		//var html = render({title: 'my title', list: [202, 96, 133, 134]});
+		//document.body.innerHTML = html;
+	</script>
+</html>

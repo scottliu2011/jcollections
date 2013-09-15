@@ -1,6 +1,8 @@
 imports('collections.HashSet');
 
-var set = new HashSet();
+// var set = HashSet();
+// var set = new HashSet();
+var set = HashSet.create();
 
 console.log('0.---------------------------------');
 

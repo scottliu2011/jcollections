@@ -10,6 +10,30 @@ console.log('is empty? ' + map.isEmpty());
 
 console.log('size: ' + map.size());
 
+map.put('one', 'hello');
+
+var o = {name:'soctt'};
+map.put(o, 'world');
+
+console.log(map.get('one'));
+console.log(map.get(o));
+
+var set = map.keySet().iterator();
+while (set.hasNext()) {
+	console.log(set.next());
+}
+
+console.log(map.toString());
+
+console.log(map.values());
+
+var iter = map.entrySet().iterator();
+while (iter.hasNext()) {
+	console.log(iter.next());
+}
+
+/*
+
 console.log('1.---------------------------------');
 
 map.put('one', 'hello');
@@ -95,3 +119,5 @@ while (entryIter.hasNext()) {
 console.log('===== start to iterator =====');
 
 console.log('after entry::set: ' + map.toString());
+
+*/
