@@ -1,12 +1,10 @@
 var getRender = (function (cache, $) {
 		return function (str, data) {
-		console.log(str);
-		console.log(data);
 			var fn = !/\s/.test(str)
 				? cache[str] = cache[str] || getRender(document.getElementById(str).innerHTML)
 				: function (data) {
-					var i, variable = [$], value = [[]];
-					for (i in data) {
+					var variable = [$], value = [[]];
+					for (var i in data) {
 						variable.push(i);
 						value.push(data[i]);
 					};

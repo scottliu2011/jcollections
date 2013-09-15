@@ -292,6 +292,10 @@
 		this.__header__.next = this.__header__.previous = this.__header__;
 	}.inherits(List);//LinkedList继承了List
 
+	/**
+	 *LinkedList.create();
+	 *静态方法 用于创建一个LinkedList对象实例
+	 */
 	LinkedList.create = function() {
 		return new LinkedList();
 	};
@@ -1031,8 +1035,29 @@
 		return '[' + result.join(',') + ']';
 	};
 
+	/**
+	 *集合工具类
+	 */
 	var Collections = {
-		//...
+		max: function() {
+			//...
+		},
+		min: function() {
+			//...
+		},
+		sort: function(compareFunc) {
+			//number string boolean
+			//2>1 'hellb'>'hella' true>false
+		},
+		binarySearch: function() {
+			//...
+		},
+		replaceAll: function() {
+			//...
+		},
+		reverse: function() {
+			//...
+		}
 	};
 
 	var collections = {};
