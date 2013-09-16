@@ -5,90 +5,138 @@
 	var store = global.localStorage;
 
 	function Storage() {
-
+		if (!(this instanceof Storage)) {
+			return new Storage();
+		}
+		this.__toStore__ = function(value){return value;};
+		this.__fromStore__ = function(json){return json;};
 	}
+	
 	/**
 	 *是否支持本地存储
 	 */
-	Store.isSupported = store !== undefined;
-	Store.startSession = function() {
+	Storage.isSupported = store !== undefined;
+
+	/**
+	 *启动session storage操作
+	 */
+	Storage.turnSessionMode = function() {
 		store = global.sessionStorage;
 	};
-	Store.startLocal = function() {
+	
+	/**
+	 *启动local storage操作
+	 */
+	Storage.turnLocalMode = function() {
 		store = global.localStorage;
 	};
 
-	// var storage = {
-	// 	/**
-	// 	 *存储一个键值对 value为字符串类型
-	// 	 */
-	// 	saveItem: function(key, value) {
-	// 		store.setItem(key, value);
-	// 	},
-	// 	/**
-	// 	 *根据指定key获取对应的存储值
-	// 	 */
-	// 	getItem: function(key) {
-	// 		return store.getItem(key);
-	// 	},
-	// 	/**
-	// 	 *删除指定key所对应的存储项
-	// 	 */
-	// 	delItem: function(key) {
-	// 		store.removeItem(key);
-	// 	},
-	// 	/**
-	// 	 *存储以map的形式组成的多个键值对
-	// 	 */
-	// 	saveItems: function(map, convertor) {
-	// 		if (!(map instanceof HashMap)) {
-	// 			throw new TypeError('not a HashMap instance');
-	// 		}
-	// 		var iter = map.entrySet().iterator();
-	// 		while (iter.hasNext()) {
-	// 			var entry = iter.next();
-	// 			var key = entry.getKey();
-	// 			var value = entry.getValue();
+	/**
+	 *存储一个键值对 value为字符串类型
+	 */
+	Storage.saveItem = function(key, value) {
+		store.setItem(key, value);
+	};
 
-	// 			if (convertor && typeof convertor === 'function') {
-	// 				value = convertor(value);
-	// 			}
-	// 			store.setItem(key, value);
-	// 		}
-	// 	},
-	// 	/**
-	// 	 *获取多个存储项
-	// 	 */
-	// 	getItems: function(filter, valueConvertor) {
-	// 		var map = new HashMap();
-	// 		for (var key in store) {
-	// 			if (filter(key, value)) {
-	// 				map.put(key, valueConvertor ? valueConvertor(store[key]) : store[key]);
-	// 			}
-	// 		}
-	// 		return map;
-	// 	},
-	// 	/**
-	// 	 *删除多个存储项
-	// 	 */
-	// 	delItems: function(filter) {
-	// 		for (var key in store) {
-				
-	// 		}
-	// 	},
-	// 	/**
-	// 	 *将对象转换成JSON字符串
-	// 	 */
-	// 	toJSON: function(value) {
-	// 		global.stringify(value);
-	// 	},
-	// 	/**
-	// 	 *将JSON字符串转换成对象
-	// 	 */
-	// 	fromJSON: function(json) {
-	// 		return global.parseJSON(json);
-	// 	}
-	// };
+	/**
+	 *根据指定key获取对应的存储值
+	 */
+	Storage.getItem = function(key) {
+		return store.getItem(key);
+	};
+
+	/**
+	 *删除指定key所对应的存储项
+	 */
+	Storage.delItem = function(key) {
+		store.removeItem(key);
+	};
+
+	/**
+	 *将对象转换成JSON字符串
+	 */
+	Storage.toJSON = function(value) {
+		return global.JSON.stringify(value);
+	};
+
+	/**
+	 *将JSON字符串转换成对象
+	 */
+	Storage.fromJSON = function(json) {
+		return global.JSON.parse(json);
+	};
+
+	/**
+	 *静态方法 用于创建一个Storage实例
+	 */
+	Storage.create = function() {
+		return new Storage();
+	};
+
+	/**
+	 *定义外部结构到内部值的转换函数
+	 */
+	Storage.prototype.toStore = function(toStoreFn) {
+		this.__toStore__ = toStoreFn;
+	};
+
+	/**
+	 *定义内部值到外部结构的转换函数
+	 */
+	Storage.prototype.fromStore = function(fromStoreFn) {
+		this.__fromStore__ = fromStoreFn;
+	};
+
+	/**
+	 *存储以map的形式组成的多个键值对
+	 */
+	Storage.prototype.saveItems = function(map) {
+		if (!(map instanceof HashMap)) {
+			throw new TypeError('not a HashMap instance');
+		}
+		var iter = map.entrySet().iterator();
+		while (iter.hasNext()) {
+			var entry = iter.next();
+			var key = entry.getKey();
+			var value = this.__toStore__(entry.getValue());
+			
+			store.setItem(key, value);
+		}
+	};
+
+	/**
+	 *获取多个存储项
+	 */
+	Storage.prototype.getItems = function(filter) {
+		var map = new HashMap();
+		for (var key in store) {
+			var match = false;
+			try {
+				match = filter(key, store[key]);
+			} catch (e) {}
+			
+			if (match) {
+				map.put(key, this.__fromStore__(store[key]));
+			}
+		}
+		return map;
+	};
+
+	/**
+	 *删除多个存储项
+	 */
+	Storage.prototype.delItems = function(filter) {
+		for (var key in store) {
+			var match = false;
+			try {
+				match = filter(key, store[key]);
+			} catch (e) {}
+			
+			if (match) {
+				store.removeItem(key);
+			}
+		}
+	};
 
 	/**
 	 *获取模板对应的操作函数
@@ -175,6 +223,6 @@
 	};
 
 	global.Template = Template;
-	global.Storage = storage;
+	global.Storage = Storage;
 
 })(window);
