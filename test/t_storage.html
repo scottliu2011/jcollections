@@ -1,0 +1,18 @@
+<html>
+	<meta charset="utf-8"/>
+	<body>
+
+	</body>
+	<script type="text/javascript" src="../collections.js"></script>
+	<script type="text/javascript" src="../collections.util.js"></script>
+	<script type="text/javascript">
+		imports('collections.*');
+		
+		var data = new HashMap();
+
+		data.put('title', 'storage');
+		data.put('content', 'hello world');
+
+		Storage.saveItems(data);
+	</script>
+</html>

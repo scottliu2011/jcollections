@@ -1,19 +1,38 @@
 <html>
+	<meta charset="utf-8"/>
 	<body>
+		<div id="ol">
 
+		</div>
 	</body>
-	<script type="text/javascript" src="../collections.tpl.js"></script>
+	<script type="text/javascript" src="../collections.js"></script>
+	<script type="text/javascript" src="../collections.util.js"></script>
 	<script type="text/html" id="tpl">
-		<ol title="<#=title#>">
-			<# for (var i = 0, l = list.length; i < l; i ++) { #>
-					<li><#=list[i] #></li>
+		<#= title #>:
+		<ol>
+			<# for (var i = 0; i < list.size(); i++) { #>
+					<li><#= list.get(i).name.toUpperCase() #></li>
 			<# } #>
 		</ol>
 	</script>
 	<script type="text/javascript">
-		var render = getRender('tpl', {title: 'my title', list: [202, 96, 133, 134]});
-		//console.log(render);
-		//var html = render({title: 'my title', list: [202, 96, 133, 134]});
-		//document.body.innerHTML = html;
+		imports('collections.*');
+
+		/* the data-model */
+		var data = new HashMap();
+
+		data.put('title', 'students');
+
+		var list = new ArrayList();
+		list.add({id:0, name:'scott'});
+		list.add({id:1, name:'bill'});
+		list.add({id:2, name:'jobs'});
+
+		data.put('list', list);
+
+		var tpl = Template.create();
+		tpl.read('tpl')
+		   .compile(data)
+		   .render('ol');
 	</script>
 </html>
