@@ -19,8 +19,11 @@ var iter = list.iterator();
 while (iter.hasNext()) {
 	//console.log(iter.next());
 	var elem = iter.next();
-	if (elem === 'test remove') {
+	if (elem === 'test iterator remove') {
 		iter.remove();
+	}
+	if (elem === 'scott') {
+		iter.set('bill');
 	}
 }
 

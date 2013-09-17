@@ -131,3 +131,14 @@ console.log('after clear: ' + set.toString());
 console.log('isEmpty? ' + set.isEmpty());
 
 console.log('size: ' + set.size());
+
+console.log('10.---------------------------------');
+
+set.defineEquals(function(elem0, elem1) {
+	return elem0.id === elem1.id;
+});
+
+set.add({id:1, name:'hello'});
+set.add({id:1, name:'world'});
+
+console.log(set.toString());

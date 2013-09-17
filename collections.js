@@ -27,6 +27,16 @@
 		return elem0 === elem1;
 	};
 
+	/**
+	 *用于自定义equals函数，例如：
+	 *defineEquals(function(elem0, elem1) {
+	 *	return elem0.name === elem1.name;
+	 *});两个元素的name属性相同则认为是同一个对象
+	 */
+	Collection.prototype.defineEquals = function(equalsFn) {
+		this.__equals__ = equalsFn;
+	};
+
 	/*
 	 *有序集合标识类型
 	 */
@@ -41,16 +51,6 @@
 		if (index < 0 || canBeTail ? index > this.size() : index >= this.size()) {
 			throw new Error('index out of bounds');
 		}
-	};
-
-	/**
-	 *用于自定义equals函数，例如：
-	 *defineEquals(function(elem0, elem1) {
-	 *	return elem0.name === elem1.name;
-	 *});两个元素的name属性相同则认为是同一个对象
-	 */
-	List.prototype.defineEquals = function(equalsFn) {
-		this.__equals__ = equalsFn;
 	};
 
 	//#ArrayList
@@ -107,7 +107,7 @@
 	 *返回一个含有所有元素的数组对象
 	 */
 	ArrayList.prototype.toArray = function() {
-		return this.__data__;
+		return this.__data__.slice(0);
 	};
 
 	/**
@@ -267,6 +267,12 @@
 				var next = data[cursor];
 				lastCursor = cursor++;
 				return next;
+			};
+			this.set = function(elem) {
+				if (lastCursor === -1) {
+					throw new Error('illegal state');
+				}
+				arrayList.set(lastCursor, elem);
 			};
 			this.remove = function() {
 				if (lastCursor === -1) {
@@ -642,6 +648,12 @@
 				nextIndex++;
 
 				return last.elem;
+			};
+			this.set = function(elem) {
+				if (lastCursor === -1) {
+					throw new Error('illegal state');
+				}
+				linkedList.set(lastCursor, elem);
 			};
 			this.remove = function() {
 				linkedList.__removeEntry__(last);
@@ -1031,18 +1043,86 @@
 	 *集合工具类
 	 */
 	var Collections = {
-		max: function() {
-			//...
+		/**
+		 *取得集合中最大的元素
+		 */
+		max: function(collection, compareFn) {
+			var iter = collection.iterator(),
+				result = iter.next();
+			while (iter.hasNext()) {
+				var current = iter.next();
+				if (compareFn(current, result) > 0) {
+					result = current;
+				}
+			}
+			return result;
 		},
-		min: function() {
-			//...
+		/**
+		 *取得集合中最小的元素
+		 */
+		min: function(collection, compareFn) {
+			var iter = collection.iterator(),
+				result = iter.next();
+			while (iter.hasNext()) {
+				var current = iter.next();
+				if (compareFn(current, result) < 0) {
+					result = current;
+				}
+			}
+			return result;
 		},
-		sort: function(compareFunc) {
-			//number string boolean
-			//2>1 'hellb'>'hella' true>false
+		/**
+		 *对List进行排序
+		 */
+		sort: function(list, compareFn) {
+			if (list.size() <= 1) return;
+
+			var quickSort = function(ary) {
+				if (ary.length <= 1) return ary;
+				var pivotIndex = Math.floor(ary.length / 2),
+					pivot = ary.splice(pivotIndex, 1)[0],
+					left = [],
+					right = [];
+				for (var i = 0, len = ary.length; i < len; i++) {
+					if (compareFn(ary[i], pivot) < 0) {
+						left.push(ary[i]);
+					} else {
+						right.push(ary[i]);
+					}
+				}
+				return quickSort(left).concat([pivot], quickSort(right));
+			};
+
+			var ary = quickSort(list.toArray());
+
+			for (var i = 0, len = ary.length; i < len; i++) {
+				list.set(i, ary[i]);				
+			}
 		},
-		binarySearch: function() {
-			//...
+		/**
+		 *对List进行二分查找 返回索引值
+		 */
+		binarySearch: function(list, target, compareFn) {
+			/*var search = function(ary) {
+				var low = 0,
+					high = ary.length - 1,
+					index;
+				while (low <= high) {
+					index = Math.floor((low + high) / 2);
+					var result = compareFn(ary[index], target);
+					if (result < 0) {
+						low = index + 1;
+						continue;
+					}
+					if (result > 0) {
+						high = index - 1;
+						continue;
+					}
+					return index;
+				}
+				return -1;
+			};
+			return search(list.toArray());*/
 		},
 		replaceAll: function() {
 			//...
