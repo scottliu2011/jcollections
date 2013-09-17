@@ -48,7 +48,7 @@
 			throw new Error('index incorrect');
 		}
 		
-		if (index < 0 || canBeTail ? index > this.size() : index >= this.size()) {
+		if (index < 0 || (canBeTail ? index > this.size() : index >= this.size())) {
 			throw new Error('index out of bounds');
 		}
 	};
@@ -99,7 +99,13 @@
 	 */
 	ArrayList.prototype.set = function(index, elem) {
 		this.__rangeCheck__(index);
-		this.__data__[index] = elem;
+
+		var data = this.__data__,
+			oldElem = data[index];
+
+		data[index] = elem;
+
+		return oldElem;
 	};
 
 	/**
@@ -361,7 +367,7 @@
 	 */
 	LinkedList.prototype.insert = function(index, elem) {
 		this.__rangeCheck__(index, true);
-		this.__addBefore__(elem, (index == this.__size__ ? this.__header__ : this.__getEntry__(index)));
+		this.__addBefore__(elem, (index === this.__size__ ? this.__header__ : this.__getEntry__(index)));
 	};
 
 	/**
@@ -424,7 +430,7 @@
 		}
 		if (collection.size() === 0) return;
 
-		var successor = (index == this.__size__ ? this.__header__ : this.__getEntry__(index)),
+		var successor = (index === this.__size__ ? this.__header__ : this.__getEntry__(index)),
 			predecessor = successor.previous,
 			data = collection.toArray();
 
@@ -540,7 +546,13 @@
 	 */
 	LinkedList.prototype.set = function(index, elem) {
 		this.__rangeCheck__(index);
-		this.__getEntry__(index).elem = elem;
+
+		var entry = this.__getEntry__(index),
+			oldElem = entry.elem;
+		
+		entry.elem = elem;
+
+		return oldElem;
 	};
 
 	/**
@@ -616,7 +628,7 @@
 			size = this.__size__,
 			header = this.__header__;
 
-		this.__rangeCheck__(index);
+		this.__rangeCheck__(index, true);
 
 		var LinkedListIterator = function(linkedList) {
 			var last = header,
@@ -649,11 +661,24 @@
 
 				return last.elem;
 			};
+			this.hasPrevious = function() {
+				return nextIndex !== 0;
+			};
+			this.previous = function() {
+				if (nextIndex === 0) {
+					throw new Error('no such element in this list');
+				}
+				
+				last = next = next.previous;
+				nextIndex--;
+
+				return last.elem;
+			};
 			this.set = function(elem) {
-				if (lastCursor === -1) {
+				if (last === header) {
 					throw new Error('illegal state');
 				}
-				linkedList.set(lastCursor, elem);
+				last.elem = elem;
 			};
 			this.remove = function() {
 				linkedList.__removeEntry__(last);
@@ -1100,35 +1125,46 @@
 			}
 		},
 		/**
-		 *对List进行二分查找 返回索引值
+		 *对有序List进行二分查找 返回索引值
 		 */
 		binarySearch: function(list, target, compareFn) {
-			/*var search = function(ary) {
+			var search = function(ary) {
 				var low = 0,
 					high = ary.length - 1,
-					index;
+					mid;
 				while (low <= high) {
-					index = Math.floor((low + high) / 2);
-					var result = compareFn(ary[index], target);
+					mid = Math.floor((low + high) / 2);
+					var result = compareFn(ary[mid], target);
 					if (result < 0) {
-						low = index + 1;
-						continue;
+						low = mid + 1;
+					} else if (result > 0) {
+						high = mid - 1;
+					} else {
+						return mid;
 					}
-					if (result > 0) {
-						high = index - 1;
-						continue;
-					}
-					return index;
 				}
 				return -1;
 			};
-			return search(list.toArray());*/
+			return search(list.toArray());
 		},
 		replaceAll: function() {
 			//...
 		},
-		reverse: function() {
-			//...
+		reverse: function(list) {
+			if (list instanceof ArrayList) {
+				var size = list.size();
+				for (var i = 0, mid = size >> 1, j = size - 1; i < mid; i++, j--) {
+					list.set(i, list.set(j, list.get(i)));
+				}
+			} else if (list instanceof LinkedList) {
+				var forward = list.iterator(),
+					backward = list.iterator(list.size());
+				for (var i = 0, mid = list.size() >> 1; i < mid; i++) {
+					var temp = forward.next();
+					forward.set(backward.previous());
+					backward.set(temp);
+				}
+			}
 		}
 	};
 

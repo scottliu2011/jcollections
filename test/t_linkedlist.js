@@ -1,4 +1,4 @@
-imports('collections.LinkedList');
+imports('collections.*');
 	
 var list = new LinkedList();
 
@@ -45,5 +45,14 @@ while (iter.hasNext()) {
 		iter.remove();
 	}
 }
+
+console.log(list.toArray());
+
+var iter2 = list.iterator(list.size());
+while (iter2.hasPrevious()) {
+	console.log(iter2.previous());
+}
+
+Collections.reverse(list);
 
 console.log(list.toArray());
