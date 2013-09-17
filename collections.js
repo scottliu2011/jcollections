@@ -6,8 +6,11 @@
 	 *继承
 	 */
 	Function.prototype.inherits = function(Parent) {
+		if (!Parent) {
+			throw new Error('Parent must be specified');
+		}
 		if (Parent.constructor !== Function) {
-			throw new Error("parent is not a function");
+			throw new TypeError("Parent is not a Function");
 		}
 		this.prototype = new Parent();
 		this.prototype.constructor = this;
@@ -29,15 +32,25 @@
 	 */
 	var List = function(){}.inherits(Collection);//继承了Collection
 
+	//检查索引值的范围
+	List.prototype.__rangeCheck__ = function(index, canBeTail) {
+		if ((typeof index) !== 'number') {
+			throw new Error('index incorrect');
+		}
+		
+		if (index < 0 || canBeTail ? index > this.size() : index >= this.size()) {
+			throw new Error('index out of bounds');
+		}
+	};
+
 	/**
 	 *用于自定义equals函数，例如：
 	 *defineEquals(function(elem0, elem1) {
 	 *	return elem0.name === elem1.name;
-	 *});
-	 *两个元素的name属性相同则认为是同一个对象
+	 *});两个元素的name属性相同则认为是同一个对象
 	 */
-	List.prototype.defineEquals = function(func) {
-		this.__equals__ = func;
+	List.prototype.defineEquals = function(equalsFn) {
+		this.__equals__ = equalsFn;
 	};
 
 	//#ArrayList
@@ -72,12 +85,7 @@
 		var args = arguments,
 			index = args[0];
 
-		if (!index || index.constructor !== Number) {
-			throw new Error('arguments error');
-		}
-		if (index < 0 || index > this.__data__.length) {
-			throw new Error('index range error');
-		}//当index等于数组长度时，追加到数组尾部
+		this.__rangeCheck__(index, true);
 
 		var elems = Array.prototype.slice.call(arguments);
 		elems.splice(0, 1);
@@ -90,11 +98,9 @@
 	 *将指定位置的元素替换成新元素
 	 */
 	ArrayList.prototype.set = function(index, elem) {
-		if (index < 0 || index > this.__data__.length) {
-			throw new Error('index error');
-		}
+		this.__rangeCheck__(index);
 		this.__data__[index] = elem;
-	}
+	};
 
 	/**
 	 *toArray()
@@ -109,6 +115,7 @@
 	 *返回指定位置所对应的元素
 	 */
 	ArrayList.prototype.get = function(index) {
+		this.__rangeCheck__(index);
 		return this.__data__[index];
 	};
 
@@ -128,30 +135,11 @@
 	 *在指定位置插入一个集合对象
 	 */
 	ArrayList.prototype.insertAll = function(index, collection) {
-		if (!index || index.constructor !== Number) {
-			throw new Error('index must be specified');
-		}
-		if (index < 0 || index > this.__size__) {
-			throw new Error('index out of bounds');
-		}
+		this.__rangeCheck__(index, true);
 		if (!(collection instanceof Collection)) {
 			throw new Error('not a Collection instance');
 		}
 		Array.prototype.splice.apply(this.__data__, [parseInt(index), 0].concat(collection.toArray()));
-	};
-
-	/**
-	 *contains(elem);
-	 *集合是否含有指定元素
-	 */
-	ArrayList.prototype.contains = function(elem) {
-		var data = this.__data__;
-		for (var i = 0, len = data.length; i < len; i++) {
-			if (this.__equals__(data[i], elem)) {
-				return true;
-			}
-		}
-		return false;
 	};
 
 	/**
@@ -179,17 +167,16 @@
 	};
 
 	/**
-	 *remove(index);
+	 *removeAt(index);
 	 *移除指定位置的元素
 	 */
-	ArrayList.prototype.remove = function(index) {
-		if (typeof index === 'number') {
-			this.__data__.splice(index, 1);
-		}
+	ArrayList.prototype.removeAt = function(index) {
+		this.__rangeCheck__(index);
+		this.__data__.splice(index, 1);
 	};
 
 	/**
-	 *remove(elem);
+	 *removeElement(elem);
 	 *移除指定元素
 	 */
 	ArrayList.prototype.removeElement = function(elem) {
@@ -207,6 +194,11 @@
 	 *移除指定开始位置到结束位置的所有元素--包括开始位置，但不包括结束位置
 	 */
 	ArrayList.prototype.removeRange = function(fromIndex, toIndex) {
+		this.__rangeCheck__(fromIndex);
+		this.__rangeCheck__(toIndex);
+		if (fromIndex > toIndex) {
+			throw new Error('fromIndex is too large (fromIndex > toIndex)');
+		}
 		this.__data__.splice(fromIndex, toIndex - fromIndex);
 	};
 
@@ -237,6 +229,14 @@
 		}
 		return -1;
 	};
+
+	/**
+	 *contains(elem);
+	 *集合是否含有指定元素
+	 */
+	ArrayList.prototype.contains = function(elem) {
+		return this.indexOf(elem) !== -1;
+	};
 	
 	/**
 	 *toString();
@@ -254,9 +254,7 @@
 	ArrayList.prototype.iterator = function(index) {
 		var index = index || 0;
 
-		if (index < 0 || index > this.__size__) {
-			throw new Error('index out of bounds');
-		}
+		this.__rangeCheck__(index);
 		
 		var ArrayListIterator = function(arrayList) {
 			var cursor = index,
@@ -274,7 +272,7 @@
 				if (lastCursor === -1) {
 					throw new Error('illegal state');
 				}
-				arrayList.remove(lastCursor);
+				arrayList.removeAt(lastCursor);
 				cursor--;
 				lastCursor = -1;
 			};
@@ -310,9 +308,6 @@
 
 	//获取指定位置的节点
 	LinkedList.prototype.__getEntry__ = function(index) {
-		if (index < 0 || index >= this.__size__) {
-			throw new Error('index out of bounds');
-		}
 		var size = this.__size__,
 			entry = this.__header__;
 		if (index < (size >> 1)) {//二分法
@@ -359,6 +354,7 @@
 	 *在指定位置插入一个新的节点元素
 	 */
 	LinkedList.prototype.insert = function(index, elem) {
+		this.__rangeCheck__(index, true);
 		this.__addBefore__(elem, (index == this.__size__ ? this.__header__ : this.__getEntry__(index)));
 	};
 
@@ -416,12 +412,7 @@
 	 *在指定位置插入一个集合对象
 	 */
 	LinkedList.prototype.insertAll = function (index, collection) {
-		if (!index || index.constructor !== Number) {
-			throw new Error('index must be specified');
-		}
-		if (index < 0 || index > this.__size__) {
-			throw new Error('index out of bounds');
-		}
+		this.__rangeCheck__(index, true);
 		if (!(collection instanceof Collection)) {
 			throw new Error('not a Collection instance');
 		}
@@ -533,6 +524,7 @@
 	 *获取指定位置的结点元素
 	 */
 	LinkedList.prototype.get = function(index) {
+		this.__rangeCheck__(index);
 		return this.__getEntry__(index).elem;
 	};
 
@@ -541,6 +533,7 @@
 	 *将指定位置的结点替换成新的结点元素
 	 */
 	LinkedList.prototype.set = function(index, elem) {
+		this.__rangeCheck__(index);
 		this.__getEntry__(index).elem = elem;
 	};
 
@@ -561,10 +554,11 @@
 	};
 
 	/**
-	 *remove(index);
+	 *removeAt(index);
 	 *移除指定位置的元素结点
 	 */
-	LinkedList.prototype.remove = function(index) {
+	LinkedList.prototype.removeAt = function(index) {
+		this.__rangeCheck__(index);
 		return this.__removeEntry__(this.__getEntry__(index));
 	};
 
@@ -616,9 +610,7 @@
 			size = this.__size__,
 			header = this.__header__;
 
-		if (index < 0 || index > size) {
-			throw new Error('index out of bounds');
-		}
+		this.__rangeCheck__(index);
 
 		var LinkedListIterator = function(linkedList) {
 			var last = header,

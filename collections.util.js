@@ -67,6 +67,18 @@
 	};
 
 	/**
+	 *是否是JSON格式
+	 */
+	Storage.isJSONFormat = function(str) {
+		try {
+			global.JSON.parse(str);
+			return true;
+		} catch (e) {
+			return false;
+		}
+	};
+
+	/**
 	 *静态方法 用于创建一个Storage实例
 	 */
 	Storage.create = function() {

@@ -1,5 +1,7 @@
 <html>
-	<meta charset="utf-8"/>
+	<head>
+		<meta charset="utf-8"/>
+	</head>
 	<body>
 
 	</body>
@@ -41,8 +43,17 @@
 			console.log(entry.getValue());
 		}
 
-		store.delItems(function(key, value) {//根据过滤器删除多个键值对 如遇异常 则不匹配
-			return key === 'test';
+		store.delItems(function(key, value) {//根据过滤器删除多个键值对 value是字符串类型
+			//return key === 'test';
+			if (Storage.isJSONFormat(value)) {
+				return Storage.fromJSON(value).name === 'steve';
+			}
+			return false;
 		});
+
+		/*
+		store.delItems(function(key, value) {//删除所有
+			return true;
+		});*/
 	</script>
 </html>

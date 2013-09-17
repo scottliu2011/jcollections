@@ -26,7 +26,7 @@ while (iter.hasNext()) {
 
 console.log('after remove: ' + list.toArray());//['hello', 'world', 'scott']
 
-list.remove(0);
+list.removeAt(0);
 console.log(list.toArray());//['world', 'scott']
 
 list.removeElement('world');
