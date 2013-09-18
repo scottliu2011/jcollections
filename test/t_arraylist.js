@@ -58,3 +58,11 @@ while (iter.hasNext()) {
 	}
 }
 console.log(list.toArray());
+
+list.add('789');
+
+imports('collections.Collections');
+
+Collections.replaceAll(list, '789', '000');
+
+console.log(list.toArray());

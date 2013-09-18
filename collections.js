@@ -1147,8 +1147,19 @@
 			};
 			return search(list.toArray());
 		},
-		replaceAll: function() {
-			//...
+		/**
+		 *将List中的指定元素全部替换为新元素
+		 */
+		replaceAll: function(list, oldElem, newElem) {
+			var replaced = false,
+				iter = list.iterator();
+			while (iter.hasNext()) {
+				if (list.__equals__(oldElem, iter.next())) {
+					iter.set(newElem);
+					replaced = true;
+				}
+			}
+			return replaced;
 		},
 		reverse: function(list) {
 			if (list instanceof ArrayList) {
