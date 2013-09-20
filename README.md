@@ -44,6 +44,8 @@ collections.js是一个简化数据操作、提高开发效率的集合类框架
 	list.contains('hello');
 该方法返回true或false,表示元素是否存在。在调用该方法时涉及到元素的比较，默认是比较基本类型的值或对象类型的引用，也可以自定义比较函数，例如：
 
-	list.defineEquals(function(person0, person1) {
-		return person0.name === person1.name;
-	});
+```javascript
+list.defineEquals(function(person0, person1) {
+	return person0.name === person1.name;
+});
+```
