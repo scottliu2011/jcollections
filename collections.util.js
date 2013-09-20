@@ -1,13 +1,23 @@
-;(function(global, undefined) {
+(function(global, undefined) {
 
 	"use strict";
 
-	var store = global.localStorage;
+	var colletions = global.collections,
+		mapLiberaryDefined = collections && collections.Map && collections.HashMap;
+
+	if (!mapLiberaryDefined) {
+		throw new Error('Map liberary is required');
+	}
+
+	var Map = colletions.Map,
+		HashMap = colletions.HashMap,
+		store = global.localStorage;
 
 	function Storage() {
 		if (!(this instanceof Storage)) {
 			return new Storage();
 		}
+
 		this.__toStore__ = function(value){return value;};
 		this.__fromStore__ = function(json){return json;};
 	}
@@ -88,14 +98,14 @@
 	/**
 	 *定义外部结构到内部值的转换函数
 	 */
-	Storage.prototype.toStore = function(toStoreFn) {
+	Storage.prototype.defineToStore = function(toStoreFn) {
 		this.__toStore__ = toStoreFn;
 	};
 
 	/**
 	 *定义内部值到外部结构的转换函数
 	 */
-	Storage.prototype.fromStore = function(fromStoreFn) {
+	Storage.prototype.defineFromStore = function(fromStoreFn) {
 		this.__fromStore__ = fromStoreFn;
 	};
 
@@ -103,8 +113,8 @@
 	 *存储以map的形式组成的多个键值对
 	 */
 	Storage.prototype.saveItems = function(map) {
-		if (!(map instanceof HashMap)) {
-			throw new TypeError('not a HashMap instance');
+		if (!(map instanceof Map)) {
+			throw new TypeError('not a Map instance');
 		}
 		var iter = map.entrySet().iterator();
 		while (iter.hasNext()) {
@@ -155,15 +165,15 @@
 	 */
 	var getFn = function(source) {
 		var $ = '$' + (+ new Date);
-		var fn = function (data) {
+		var fn = function (dataMap) {
 			var keys = [$], values = [[]];
-			var iter = data.entrySet().iterator();
+			var iter = dataMap.entrySet().iterator();
 			while (iter.hasNext()) {
 				var entry = iter.next();
 				keys.push(entry.getKey());
 				values.push(entry.getValue());
 			};
-			return (new Function(keys, fn.$)).apply(data, values).join("");
+			return (new Function(keys, fn.$)).apply(dataMap, values).join("");
 		};
 		fn.$ = $ + ".push('"
 				+ source.replace(/\\/g, "\\\\")
@@ -212,11 +222,11 @@
 	/**
 	 *编译模板
 	 */
-	Template.prototype.compile = function(data) {
-		if (!(data instanceof HashMap)) {
-			throw new TypeError('not a HashMap instance');
+	Template.prototype.compile = function(dataMap) {
+		if (!(dataMap instanceof Map)) {
+			throw new TypeError('not a Map instance');
 		}
-		this.__html__ = this.__fn__(data);
+		this.__html__ = this.__fn__(dataMap);
 		return this;
 	};
 

@@ -141,4 +141,18 @@ set.defineEquals(function(elem0, elem1) {
 set.add({id:1, name:'hello'});
 set.add({id:1, name:'world'});
 
+var iter = set.iterator();
+while (iter.hasNext()) {
+	console.log(iter.next());
+}
+
+console.log(set.toArray());
 console.log(set.toString());
+
+var obj = {t:3};
+set.add(obj);
+
+console.log(set.contains(obj));
+
+set.clear();
+console.log(set);

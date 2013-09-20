@@ -695,7 +695,10 @@
 	//负责对象和内部键之间的相互转换
 	var KeyConvertor = {
 		toInnerKey: function(outerValue) {
-			return (typeof outerValue) + '@' + outerValue;
+			if ((typeof outerValue) === 'object' && !outerValue.__hash__) {
+				outerValue.__hash__ = collections.__hash__++;
+			}
+			return (typeof outerValue) + '@' + (outerValue.__hash__ || outerValue);
 		},
 		fromInnerKey: function(innerKey) {
 			var first = innerKey.indexOf('@'),
@@ -762,9 +765,14 @@
 	 *返回含有set所有元素的数组
 	 */
 	HashSet.prototype.toArray = function() {
-		var result = [];
-		for (var i in this.__store__) {
-			result.push(KeyConvertor.fromInnerKey(i));
+		var result = [],
+			store = this.__store__;
+		for (var key in store) {
+			if (key.indexOf('object@') === 0) {
+				result.push(store[key]);
+			} else {
+				result.push(KeyConvertor.fromInnerKey(key));
+			}
 		}
 		return result;
 	};
@@ -1179,23 +1187,6 @@
 		}
 	};
 
-	var collections = {};
-	collections.ArrayList = ArrayList;
-	collections.LinkedList = LinkedList;
-	collections.HashSet = HashSet;
-	collections.HashMap = HashMap;
-	collections.Collections = Collections;
-
-	collections.__hash__ = 1024;
-	
-	//重写Object的toString函数 每个对象类型都有一个hash值
-	Object.prototype.toString = function() {
-		if (!this.__hash__) {
-			this.__hash__ = collections.__hash__++;
-		}
-		return this.__hash__;
-	}
-
 	//Object.keys是ECMAScript 5th Edition中新增函数
 	if (!Object.keys) {//如果不是现代浏览器则实现一个Object.keys函数
 		Object.keys = (function () {
@@ -1227,8 +1218,25 @@
 				return result;
 			};
 		}());
-	}
+	};
 
+	var collections = {};//collections包
+
+	collections.Collection = Collection;//Collection接口
+	collections.List = List;//List接口
+	collections.Map = Map;//Map接口
+
+	collections.ArrayList = ArrayList;
+	collections.LinkedList = LinkedList;
+	collections.HashSet = HashSet;
+	collections.HashMap = HashMap;
+	collections.Collections = Collections;
+
+	collections.__hash__ = 1024;//用于标识对象
+
+	global.collections = collections;//将collections包放置在全局区
+
+	//将某个模块导入到全局区 例如imports('collections.*');
 	global.imports = function(module) {
 		if (!module || !/^collections\.(\*|[a-zA-Z]+)$/g.test(module)) {
 			throw new Error('imports function arguments error');
@@ -1243,4 +1251,19 @@
 		}
 	};
 
-})(window);
+	//for RequireJS || SeaJS || NodeJS
+	//var collections = require('./collections');
+	//collections.imports('*');
+	collections.imports = function(module) {
+		global.imports('collections.' + module);
+	};
+
+	if (typeof define === 'function') {// RequireJS || SeaJS
+	    define(function(require, exports, module) {
+	        module.exports = collections;
+	    });
+	} else if (typeof exports !== 'undefined') {// NodeJS
+	    module.exports = collections;
+	}
+
+})(this);
