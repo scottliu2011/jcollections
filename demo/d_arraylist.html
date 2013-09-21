@@ -4,8 +4,9 @@
 		<meta charset="utf-8"/>
 		<title>arraylist demo</title>
 		<style>
-		body{background:#ddd;color:#fff;font-family: Courier, "Courier New", monospace;}
-		p{margin:0;}
+		body{background:#ddd;color:#fff;}
+		p,pre{margin:0;}
+		body,pre{font-family: Courier, "Courier New", monospace;}
 		.module{width:95%;margin:0 auto;margin-top:10px;padding:10px;overflow:hidden}
 		.code{background:#272822;height:400px;}
 		.console{background:#aaa;height:140px;padding-top:5px;padding-bottom:5px;}
@@ -18,7 +19,7 @@
 	</head>
 	<body>
 		<div class="module code">
-			<div id="codePrint"></div>
+			<pre id="codePrint"></pre>
 			<div id="codeTip"><span></span></div>
 		</div>
 		<div class="module">
@@ -31,28 +32,29 @@
 			</div>
 		</div>
 		<script src="../collections.js"></script>
+		<script src="painter.js"></script>
 		<script src="demo.js"></script>
 		<script>
 			var codes = [
-				[
-					'$c{//begin}',
-					'imports($s{"collections.*"});',
-					'$d{var} list $o{=} $k{new} $C{ArrayList}();',
-					'console.$m{log}(list);$c{//[]}'
+				[//0
+					'//begin',
+					'imports("collections.*");',
+					'var list = new ArrayList();',
+					'console.log(list);//[]'
 				],
-				[
-					'list.$m{add}($s{"hello"});$c{//["hello"]}',
-					'list.$m{add}($s{"world"});$c{//["hello", "world"]}',
-					'list.$m{insert}($n{1}, $s{"scott"});$c{//["hello", "scott", "world"]}',
-					'console.$m{log}(list);'
+				[//1
+					'list.add("hello");//["hello"]',
+					'list.add("world");//["hello", "world"]',
+					'list.insert(1, "scott");//["hello", "scott", "world"]',
+					'console.log(list);'
 				],
-				[
-					'$d{var} iter $o{=} list.$m{iterator}();',
-					'$k{while} (iter.$m{hasNext}()) {',
-					'&emsp;$d{var} elem $o{=} iter.$m{next}();',
-					'&emsp;console.$m{log}(elem);',
+				[//2
+					'var iter = list.iterator();',
+					'while (iter.hasNext()) {',
+					'    var elem = iter.next();',
+					'    console.log(elem);',
 					'}',
-					'$c{//end}'
+					'//end'
 				]
 			],
 

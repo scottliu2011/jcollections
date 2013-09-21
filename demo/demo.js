@@ -1,5 +1,6 @@
 (function(global, undefined) {
-	var demo = {};
+	var demo = {},
+		paintCodes = global.paintCodes;
 
 	var $ = function(id) {
 		return document.getElementById(id);
@@ -28,18 +29,6 @@
 			return;
 		}
 
-		function highLightCode(code) {
-			var regex = /\$\w*?\{.*?\}/g;//lazy pattern(*?)
-			return code.replace(regex, function(s) {
-				var i = s.indexOf('{');
-				var type = s.substring(0, i);
-				var wrap = s.substring(i);
-				var color = hightLightColor[type];
-				var code = wrap.replace(/\{|\}/g, '');
-				return '<span style="color:'+color+'">'+code+'</span>';
-			});
-		}
-
 		var step = demo.codes[currStep],
 			stepLine = 0;
 
@@ -59,7 +48,8 @@
 			}
 
 			var p = document.createElement('p');
-			p.innerHTML = highLightCode(step[stepLine++]);
+			p.innerHTML = paintCodes(step[stepLine++]);
+
 			codePrint.appendChild(p);
 
 			setTimeout(printStep, 500);

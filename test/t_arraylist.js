@@ -66,3 +66,12 @@ imports('collections.Collections');
 Collections.replaceAll(list, '789', '000');
 
 console.log(list.toArray());
+
+list.defineEquals(function(person0, person1) {
+	return person0.name === person1.name;
+});
+
+list.add({name:'bill'});
+list.add({name:'scott'});
+
+console.log(list.indexOf({name:'scott'}));
