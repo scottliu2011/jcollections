@@ -11,17 +11,6 @@
 		consoleTip = $('consoleTip'),
 		nextStep = $('nextStep');
 
-	var hightLightColor = {
-		'$d':'#66D9D0',//declare
-		'$o':'#B92722',//operator
-		'$k':'#B92722',//keyword
-		'$C':'#A6E22E',//class
-		'$c':'#75715E',//comment
-		'$m':'#66BE91',//method
-		'$n':'#AE81FF',//number
-		'$s':'#C8DB5A'//string
-	};
-
 	var currStep = 0;
 
 	var printCode = function() {
@@ -39,7 +28,24 @@
 				codePrint.appendChild(p);
 			}
 			if (stepLine >= step.length) {//step is over.
-				demo.tasks['task' + currStep] && demo.tasks['task' + currStep]();
+				var body = '';
+
+				for (var i = 0; i < step.length; i++) {
+					var line = step[i].replace(/\/\/.+$/g, '');
+					line = line.replace('console', 'this');
+					body += line;
+				}
+
+				var varName = demo.varName;
+
+				if (currStep === 0) {
+					body += 'this.' + varName + '=' + varName + ';';
+				} else {
+					body = 'var ' + varName + '=this.' + varName + ';' + body;
+				}
+
+				new Function([],body).apply(demo.tasks, []);
+
 				currStep++;
 				if (currStep === demo.codes.length) {
 					nextStep.innerHTML = 'restart';
@@ -52,7 +58,7 @@
 
 			codePrint.appendChild(p);
 
-			setTimeout(printStep, 500);
+			setTimeout(printStep, 300);
 		}
 
 		printStep();
@@ -64,9 +70,22 @@
 		consolePrint.appendChild(p);
 	};
 
-	demo.run = function(codes, tasks) {
-		demo.codes = codes;
-		demo.tasks = tasks;
+	demo.run = function() {
+		demo.codes = [];
+		demo.tasks = new (function() {
+			this.log = function(obj) {
+				demo.log(obj);
+			};
+		});
+
+		var preCodes = $('preCodes');
+		demo.varName = preCodes.className;
+
+		var pres = preCodes.getElementsByTagName('pre');
+		for (var i = 0; i < pres.length; i++) {
+			var ary = pres[i].innerHTML.split('\n');
+			demo.codes.push(ary);
+		}
 
 		nextStep.onclick = function() {
 			if (currStep === demo.codes.length) {
@@ -86,9 +105,7 @@
 			var consoleTipStyle = consoleTip.style;
 			codeTipStyle.visibility = codeTipStyle.visibility !== 'hidden' ? 'hidden' : 'visible';
 			consoleTipStyle.visibility = consoleTipStyle.visibility !== 'hidden' ? 'hidden' : 'visible';
-		}, 500);
-	};
-
-	global.Demo = demo;
+		}, 300);
+	}();
 
 })(window);

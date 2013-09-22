@@ -73,8 +73,8 @@
 				break;
 			}
 
-			if (curr === '"') {
-				var content = lookFor('"'),
+			if (curr === '\'' || curr === '"') {
+				var content = lookFor(curr),
 					len = content.length;
 				update(wrap(colors.string, content));
 				continue;
@@ -83,7 +83,7 @@
 			var str = forward(index),
 				len = str.length;
 
-			console.log(str);
+			//console.log(str);
 
 			if (ary[index - 1] === ' ' && ary[index + len] === '(') {
 				update(wrap(colors.class, str));
@@ -109,7 +109,7 @@
 				continue;
 			}
 
-			if (/\d+/.test(str)) {
+			if (/^\d+$/.test(str)) {
 				if (ary[index + len] === '.') {
 					str = str + '.' + forward(index + len + 1);
 					len = str.length;

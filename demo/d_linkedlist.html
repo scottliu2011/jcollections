@@ -14,6 +14,7 @@
 		#nextStep:hover{cursor:pointer;color:#000;box-shadow:1px 1px 1px #000;}
 		#codeTip>span{display:block;width:2px;height:1em;background:#fff;}
 		#consoleTip{color:#333;font-size:22px;}
+		#preCodes{display:none;}
 		</style>
 	</head>
 	<body>
@@ -30,64 +31,39 @@
 				<span style="color:gray">></span><span id="consoleTip">|</span>
 			</div>
 		</div>
+		<div id="preCodes" class="list">
+<pre>
+//begin
+imports('collections.*');
+var list = new LinkedList();
+console.log(list);
+</pre>
+<pre>
+list.add('hello', 'world', 1, 2, 3);
+console.log(list.getFirst());
+console.log(list.getLast());
+console.log(list.indexOf('world'));
+list.insert(2, 'world');
+console.log(list.lastIndexOf('world'));
+</pre>
+<pre>
+list.clear();
+console.log(list);
+</pre>
+<pre>
+var list2 = new ArrayList();
+list2.add('a', 'b', 'c');
+var list3 = new LinkedList();
+list3.add('x', 'y', 'z');
+var set = new HashSet();
+set.add(7, 8, 9);
+list.addAll(list2);
+list.addAll(list3);
+list.insertAll(1, set);
+</pre>
+		</div>
 		<script src="../collections.js"></script>
+		<script src="painter.js"></script>
 		<script src="demo.js"></script>
-		<script>
-			var codes = [
-				[
-					'$c{//begin}',
-					'imports($s{"collections.*"});',
-					'$d{var} list $o{=} $k{new} $C{ArrayList}();',
-					'console.$m{log}(list);$c{//[]}'
-				],
-				[
-					'list.$m{add}($s{"hello"});$c{//["hello"]}',
-					'list.$m{add}($s{"world"});$c{//["hello", "world"]}',
-					'list.$m{insert}($n{1}, $s{"scott"});$c{//["hello", "scott", "world"]}',
-					'console.$m{log}(list);'
-				],
-				[
-					'$d{var} iter $o{=} list.$m{iterator}();',
-					'$k{while} (iter.$m{hasNext}()) {',
-					'&emsp;$d{var} elem $o{=} iter.$m{next}();',
-					'&emsp;console.$m{log}(elem);',
-					'}',
-					'$c{//end}'
-				]
-			],
-
-			Tasks = function() {
-				this.task0 = function() {
-					imports('collections.*');
-					this.list = new ArrayList();
-					this.log(this.list);
-				};
-				this.task1 = function() {
-					var list = this.list;
-					list.add('hello');
-					list.add('world');
-					list.insert(1, 'scott');
-					this.log(list);
-				};
-				this.task2 = function() {
-					var iter = this.list.iterator();
-					while (iter.hasNext()) {
-						this.log(iter.next());
-					}
-				};
-				this.task3 = function() {
-					
-				};
-				this.task4 = function() {
-
-				};
-				this.log = function(obj) {
-					Demo.log(obj);
-				};
-			}
-
-			Demo.run(codes, new Tasks());
-			
-		</script>
 	</body>
 </html>
