@@ -2,85 +2,110 @@ imports('collections.*');
 	
 var list = new LinkedList();
 
-console.log('0.---------------------------------');
+console.log('0.---------------------------------------------------------------------');
 
 console.log('init: ' + list.toString());//[]
 console.log('isEmpty? ' + list.isEmpty());//true
 console.log('size: ' + list.size());//0
 
-console.log('1.---------------------------------');
+console.log('1.---------------------------------------------------------------------');
 
 list.add('hello');
 list.add('world');
 list.add('scott');
+list.add(1, 2, 3);
 
-console.log('after add: ' + list.toString());//[hello, world, scott]
-console.log('get 0: ' + list.get(0));//hello
+console.log('after add: ' + list.toString());//[hello, world, scott, 1, 2, 3]
+console.log('get 1: ' + list.get(1));//world
+console.log('getFirst: ' + list.getFirst());//hello
+console.log('getLast: ' + list.getLast());//3
 console.log('contains world? ' + list.contains('world'));//true
 console.log('indexOf soctt? ' + list.indexOf('scott'));//2
+console.log('lastIndexOf soctt? ' + list.lastIndexOf('scott'));//2
 
-console.log('2.---------------------------------');
+console.log('2.---------------------------------------------------------------------');
 
 list.insert(1, 'bill');
-console.log('after insert: ' + list.toString());//[hello, bill, world, scott]
+list.insert(4, -1, 0);
+console.log('after insert: ' + list.toString());//[hello, bill, world, scott, -1, 0, 1, 2, 3]
 
 list.removeAt(2);
-console.log('after removeAt: ' + list.toString());//[hello, bill, scott]
+console.log('after removeAt: ' + list.toString());//[hello, bill, scott, -1, 0, 1, 2, 3]
 
-list.removeElement(hello);
-console.log('after removeElement: ' + list.toString());//[bill, scott]
+list.removeElement('hello');
+console.log('after removeElement: ' + list.toString());//[bill, scott, -1, 0, 1, 2, 3]
 
-/*
-imports('collections.ArrayList');
-var list2 = new ArrayList();
-list2.add('123');
-list2.add('456');
+list.addFirst('first');
+list.addLast('last');
+console.log('after addFirst and addLast: ' + list.toString());//[first, bill, scott, -1, 0, 1, 2, 3, last]
 
-list.addAll(list2);
-console.log(list.toArray());
+list.removeFirst();
+list.removeLast();
+console.log('after removeFirst and removeLast: ' + list.toString());//[bill, scott, -1, 0, 1, 2, 3]
 
-list.insertAll(2, list2);
-console.log(list.toArray());
-
-console.log(list.indexOf('456'));
-
-console.log(list.size());
+console.log('3.---------------------------------------------------------------------');
 
 list.clear();
+console.log('after clear: ' + list.toString());//[]
+console.log('isEmpty? ' + list.isEmpty());//true
+console.log('size: ' + list.size());//0
 
-console.log(list.toArray());
+console.log('4.---------------------------------------------------------------------');
 
-list.add('123');
-list.add('456');
-list.add('789');
-list.add('abc');
-list.add('def');
-list.add('xyz');
-list.add('asd');
+var list2 = new ArrayList();
+list2.add('a', 'b', 'c');
+
+var list3 = new LinkedList();
+list3.add('x', 'y', 'z');
+
+var set = new HashSet();
+set.add(7, 8, 9);
+
+list.addAll(list2);
+list.addAll(list3);
+console.log('after addAll: ' + list.toString());//[a, b, c, x, y, z]
+
+list.insertAll(1, set);
+console.log('after insertAll: ' + list.toString());//[a, 7, 8, 9, b, c, x, y, z]
+
+console.log('5.---------------------------------------------------------------------');
+
 var iter = list.iterator();
 while (iter.hasNext()) {
 	var elem = iter.next();
-	console.log('iter:' + elem);
-	if (elem === '789') {
+	if (elem === 7) {
 		iter.remove();
+	}
+	if (elem === 'z') {
+		iter.set(0);
 	}
 }
 
-console.log(list.toArray());
+console.log('after iterator: ' + list.toString());//[a, 8, 9, b, c, x, y, 0]
 
-var iter2 = list.iterator(list.size());
-while (iter2.hasPrevious()) {
-	console.log(iter2.previous());
+console.log('___iterator from the specified positon: index:2');
+var iter2 = list.iterator(2);
+while (iter2.hasNext()) {
+	var elem = iter2.next();
+	console.log(elem);
 }
+console.log('___iterator is over');
 
-imports('collections.Collections');
+console.log('6.---------------------------------------------------------------------');
 
-Collections.reverse(list);
+list.clear();
 
-console.log(list.toArray());
+list.defineEquals(function(elem0, elem1) {
+	return elem0.name === elem1.name;
+});
 
-list.add('abc');
+var person0 = {name:'bill', company:'Microsoft'};
+var person1 = {name:'steve', company:'Apple'};
 
-Collections.replaceAll(list, 'abc', 100);
+list.add(person0, person1);
 
-console.log(list.toArray());*/
+console.log(list.get(0));
+console.log(list.get(1));
+
+console.log('contains bill? ' + list.contains({name:'bill'}));
+console.log('indexOf steve: ' + list.indexOf({name:'steve'}));

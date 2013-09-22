@@ -2,13 +2,13 @@ imports('collections.*');
 
 var list = new ArrayList();
 
-console.log('0.---------------------------------');
+console.log('0.---------------------------------------------------------------------');
 
 console.log('init: ' + list.toString());//[]
 console.log('isEmpty? ' + list.isEmpty());//true
 console.log('size: ' + list.size());//0
 
-console.log('1.---------------------------------');
+console.log('1.---------------------------------------------------------------------');
 
 list.add('hello');
 list.add('world');
@@ -20,7 +20,7 @@ console.log('get 0: ' + list.get(0));//hello
 console.log('contains soctt? ' + list.contains('scott'));//true
 console.log('indexOf soctt? ' + list.indexOf('scott'));//2
 
-console.log('2.---------------------------------');
+console.log('2.---------------------------------------------------------------------');
 
 list.insert(3, -1, 0);//insert two elements at the specified positon that index is 3.
 console.log('after insert: ' + list.toString());//[hello, world, scott, -1, 0, 1, 2, 3]
@@ -36,7 +36,7 @@ console.log('after set: ' + list.toString());//[hello, 1, 0, 1, 2, 3]
 console.log('indexOf 1? ' + list.indexOf(1));//1
 console.log('lastIndexOf 1? ' + list.lastIndexOf(1));//3
 
-console.log('3.---------------------------------');
+console.log('3.---------------------------------------------------------------------');
 
 list.removeRange(0, 2);
 console.log('after removeRange: ' + list.toString());//[0, 1, 2, 3]
@@ -46,15 +46,13 @@ console.log('after clear: ' + list.toString());//[]
 console.log('isEmpty? ' + list.isEmpty());//true
 console.log('size: ' + list.size());//0
 
-console.log('4.---------------------------------');
+console.log('4.---------------------------------------------------------------------');
 
 var list2 = new ArrayList();
 list2.add(1, 2, 3);
 
 var list3 = new LinkedList();
-list3.add(4);
-list3.add(5);
-list3.add(6);
+list3.add(4, 5, 6);
 
 var set = new HashSet();
 set.add('hello');
@@ -66,7 +64,7 @@ console.log('after addAll: ' + list.toString());//[1, 2, 3, 4, 5, 6]
 list.insertAll(0, set);
 console.log('after insertAll: ' + list.toString());//[hello, 1, 2, 3, 4, 5, 6]
 
-console.log('5.---------------------------------');
+console.log('5.---------------------------------------------------------------------');
 
 var iter = list.iterator();
 while (iter.hasNext()) {
@@ -89,7 +87,7 @@ while (iter2.hasNext()) {
 }
 console.log('___iterator is over');
 
-console.log('6.---------------------------------');
+console.log('6.---------------------------------------------------------------------');
 
 list.clear();
 

@@ -371,20 +371,33 @@
 	};
 
 	/**
-	 *add(elem);
-	 *添加一个指定的元素节点到链表尾部
+	 *add(elem0[, elem1[, elem2[,...]]]);
+	 *添加一个到多个元素节点到链表尾部
 	 */
-	LinkedList.prototype.add = function(elem) {
-		this.__addBefore__(elem, this.__header__);
+	LinkedList.prototype.add = function() {
+		var args = arguments;
+		for (var i = 0, len = args.length; i < len; i++) {
+			this.__addBefore__(args[i], this.__header__);	
+		}
 	};
 
 	/**
-	 *insert(index, elem);
-	 *在指定位置插入一个新的节点元素
+	 *insert(index, elem0[, elem1[, elem2[,...]]]);
+	 *在指定位置插入一个到多个新的节点元素
 	 */
-	LinkedList.prototype.insert = function(index, elem) {
+	LinkedList.prototype.insert = function() {
+		var args = arguments,
+			index = args[0];
+
 		this.__rangeCheck__(index, true);
-		this.__addBefore__(elem, (index === this.__size__ ? this.__header__ : this.__getEntry__(index)));
+
+		var elems = Array.prototype.slice.call(arguments);
+		elems.splice(0, 1);
+
+		for (var i = 0, len = elems.length; i < len; i++) {
+			this.__addBefore__(elems[i], (index === this.__size__ ? this.__header__ : this.__getEntry__(index)));
+			index++;
+		}
 	};
 
 	/**
@@ -504,10 +517,10 @@
 		var index = this.__size__,
 			header = this.__header__;
 		for (var entry = header.previous; entry !== header; entry = entry.previous) {
+			index--;
 			if (this.__equals__(entry.elem, elem)) {
 				return index;
 			}
-			index--;
 		}
 		return -1;
 	};
@@ -758,16 +771,20 @@
 	 *add(elem);
 	 *添加一个元素到set中
 	 */
-	HashSet.prototype.add = function(elem) {
-		var isNew = !this.contains(elem),
-			store = this.__store__,
-			key = KeyConvertor.toInnerKey(elem);
-		if ((typeof elem) === 'object') {
-			store[key] = elem;
-		} else {
-			store[key] = 1;
+	HashSet.prototype.add = function() {
+		var args = arguments,
+			store = this.__store__;
+		for (var i = 0, len = args.length; i < len; i++) {
+			var elem = args[i],
+				isNew = !this.contains(elem),
+				key = KeyConvertor.toInnerKey(elem);
+			if ((typeof elem) === 'object') {
+				store[key] = elem;
+			} else {
+				store[key] = 1;
+			}
+			if (isNew) this.__size__++;
 		}
-		if (isNew) this.__size__++;
 	};
 
 	/**
