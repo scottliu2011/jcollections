@@ -22,10 +22,21 @@
 	 */
 	function Collection(){};
 
-	//默认的equals函数
-	Collection.prototype.__equals__ = function(elem0, elem1) {
-		return elem0 === elem1;
-	};
+	/**
+	 *size();
+	 *返回集合元素个数
+	 */
+	Collection.prototype.size = function() {
+		return this.__mSize__();
+	}
+
+	/**
+	 *isEmpty();
+	 *集合是否为空
+	 */
+	Collection.prototype.isEmpty = function() {
+		return this.size() === 0;
+	}
 
 	/**
 	 *用于自定义equals函数，例如：
@@ -37,19 +48,26 @@
 		this.__equals__ = equalsFn;
 	};
 
+	//默认的equals函数
+	Collection.prototype.__equals__ = function(elem0, elem1) {
+		return elem0 === elem1;
+	};
+
 	/*
 	 *有序集合标识类型
 	 */
 	var List = function(){}.inherits(Collection);//继承了Collection
 
 	//检查索引值的范围
-	List.prototype.__rangeCheck__ = function(index, canBeTail) {
+	List.prototype.__rangeCheck__ = function(index, canBeSize) {
 		if ((typeof index) !== 'number') {
 			throw new Error('index incorrect');
 		}
+
+		if (index === 0 && this.size() === 0) return;
 		
-		if (index < 0 || (canBeTail ? index > this.size() : index >= this.size())) {
-			throw new Error('index out of bounds');
+		if (index < 0 || (canBeSize ? index > this.size() : index >= this.size())) {
+			throw new Error('index out of bounds: index:' + index + ', size:' + this.size());
 		}
 	};
 
@@ -67,6 +85,11 @@
 	 */
 	ArrayList.create = function() {
 		return new ArrayList();
+	};
+
+	//返回list元素个数
+	ArrayList.prototype.__mSize__ = function() {
+		return this.__data__.length;
 	};
 
 	/**
@@ -133,7 +156,9 @@
 		if (!(collection instanceof Collection)) {
 			throw new Error('not a Collection instance');
 		}
-		this.__data__.concat(collection.toArray());
+		if (!collection.isEmpty()) {
+			this.__data__ = this.__data__.concat(collection.toArray());
+		}
 	};
 
 	/**
@@ -145,23 +170,9 @@
 		if (!(collection instanceof Collection)) {
 			throw new Error('not a Collection instance');
 		}
-		Array.prototype.splice.apply(this.__data__, [parseInt(index), 0].concat(collection.toArray()));
-	};
-
-	/**
-	 *size();
-	 *返回集合元素个数
-	 */
-	ArrayList.prototype.size = function() {
-		return this.__data__.length;
-	};
-
-	/**
-	 *isEmpty();
-	 *集合是否为空
-	 */
-	ArrayList.prototype.isEmpty = function() {
-		return this.__data__.length === 0;
+		if (!collection.isEmpty()) {
+			Array.prototype.splice.apply(this.__data__, [parseInt(index), 0].concat(collection.toArray()));
+		}
 	};
 
 	/**
@@ -178,7 +189,7 @@
 	 */
 	ArrayList.prototype.removeAt = function(index) {
 		this.__rangeCheck__(index);
-		this.__data__.splice(index, 1);
+		return this.__data__.splice(index, 1)[0];
 	};
 
 	/**
@@ -190,9 +201,10 @@
 		for (var i = 0, len = data.length; i < len; i++) {
 			if (this.__equals__(data[i], elem)) {
 				data.splice(i, 1);
-				break;
+				return true;
 			}
 		}
+		return false;
 	};
 
 	/**
@@ -205,7 +217,7 @@
 		if (fromIndex > toIndex) {
 			throw new Error('fromIndex is too large (fromIndex > toIndex)');
 		}
-		this.__data__.splice(fromIndex, toIndex - fromIndex);
+		return this.__data__.splice(fromIndex, toIndex - fromIndex);
 	};
 
 	/**
@@ -258,9 +270,9 @@
 	 *获取一个迭代器
 	 */
 	ArrayList.prototype.iterator = function(index) {
-		var index = index || 0;
-
-		this.__rangeCheck__(index);
+		if ((index = index || 0) !== 0) {
+			this.__rangeCheck__(index);
+		}
 		
 		var ArrayListIterator = function(arrayList) {
 			var cursor = index,
@@ -308,6 +320,11 @@
 	 */
 	LinkedList.create = function() {
 		return new LinkedList();
+	};
+
+	//返回链表个数
+	LinkedList.prototype.__mSize__ = function() {
+		return this.__size__;
 	};
 
 	//在指定节点前添加一个新的节点元素
@@ -399,11 +416,10 @@
 	 *返回一个含有所有元素的数组
 	 */
 	LinkedList.prototype.toArray = function() {
-		var i = 0,
-			result = [],
+		var result = [],
 			header = this.__header__;
 		for (var entry = header.next; entry !== header; entry = entry.next) {
-			result[i++] = entry.elem;
+			result.push(entry.elem);
 		}
 		return result;
 	};
@@ -416,7 +432,9 @@
 		if (!(collection instanceof Collection)) {
 			throw new Error('not a Collection instance');
 		}
-		this.insertAll(this.__size__, collection);
+		if (!collection.isEmpty()) {
+			this.insertAll(this.__size__, collection);
+		}
 	};
 
 	/**
@@ -425,10 +443,11 @@
 	 */
 	LinkedList.prototype.insertAll = function (index, collection) {
 		this.__rangeCheck__(index, true);
+
 		if (!(collection instanceof Collection)) {
 			throw new Error('not a Collection instance');
 		}
-		if (collection.size() === 0) return;
+		if (collection.isEmpty()) return;
 
 		var successor = (index === this.__size__ ? this.__header__ : this.__getEntry__(index)),
 			predecessor = successor.previous,
@@ -442,14 +461,6 @@
 		successor.previous = predecessor;
 
 		this.__size__ += data.length;
-	};
-
-	/**
-	 *size();
-	 *返回链表元素个数
-	 */
-	LinkedList.prototype.size = function() {
-		return this.__size__;
 	};
 
 	/**
@@ -716,6 +727,11 @@
 		}
 	};
 
+	/*
+	 *无序集合标识类型
+	 */
+	var Set = function(){}.inherits(Collection);//继承了Collection
+
 	//#HashSet
 	var HashSet = function() {
 		if (!(this instanceof HashSet)) {
@@ -723,7 +739,7 @@
 		}
 		this.__store__  = {};
 		this.__size__ = 0;
-	}.inherits(Collection);//HashSet直接继承了Collection
+	}.inherits(Set);//HashSet继承了Set
 
 	/**
 	 *HashSet.create();
@@ -731,6 +747,11 @@
 	 */
 	HashSet.create = function() {
 		return new HashSet();
+	};
+
+	//返回set元素个数
+	HashSet.prototype.__mSize__ = function() {
+		return this.__size__;
 	};
 
 	/**
@@ -747,6 +768,22 @@
 			store[key] = 1;
 		}
 		if (isNew) this.__size__++;
+	};
+
+	/**
+	 *addAll(collection);
+	 *添加一个集合对象到set中
+	 */
+	HashSet.prototype.addAll = function(collection) {
+		if (!(collection instanceof Collection)) {
+			throw new Error('not a Collection instance');
+		}
+		if (collection.isEmpty()) return;
+
+		var iter = collection.iterator();
+		while (iter.hasNext()) {
+			this.add(iter.next());
+		}
 	};
 
 	/**
@@ -783,22 +820,6 @@
 	 */
 	HashSet.prototype.toString = function() {
 		return '[' + this.toArray().join(',') + ']';
-	};
-
-	/**
-	 *size();
-	 *返回set元素个数
-	 */
-	HashSet.prototype.size = function() {
-		return this.__size__;
-	};
-
-	/**
-	 *isEmpty();
-	 *set是否为空
-	 */
-	HashSet.prototype.isEmpty = function() {
-		return this.__size__ === 0;
 	};
 
 	/**
@@ -866,6 +887,22 @@
 	 */
 	function Map(){};
 
+	/**
+	 *size();
+	 *返回map键值对个数
+	 */
+	Map.prototype.size = function() {
+		return this.__mSize__();
+	};
+
+	/**
+	 *isEmpty();
+	 *map是否为空
+	 */
+	Map.prototype.isEmpty = function() {
+		return this.size() === 0;
+	};
+
 	//#HashMap
 	var HashMap = function() {
 		if (!(this instanceof HashMap)) {
@@ -882,6 +919,11 @@
 	 */
 	HashMap.create = function() {
 		return new HashMap();
+	};
+
+	//返回键值对个数
+	HashMap.prototype.__mSize__ = function() {
+		return this.__size__;
 	};
 
 	/**
@@ -909,6 +951,8 @@
 		if (!(map instanceof Map)) {
 			throw new Error('not a Map instance');
 		}
+		if (map.isEmpty()) return;
+
 		var keySet = map.keySet(),
 			iter = keySet.iterator();
 		while (iter.hasNext()) {
@@ -931,14 +975,19 @@
 	 */
 	HashMap.prototype.remove = function(key) {
 		if (this.containsKey(key)) {
-			var innerKey = KeyConvertor.toInnerKey(key);
-			delete this.__store__[innerKey];
+			var innerKey = KeyConvertor.toInnerKey(key),
+				store = this.__store__,
+				value = store[innerKey];
+
+			delete store[innerKey];
 			this.__size__--;
 
 			if ((typeof key) === 'object') {
 				delete this.__xkey__[innerKey];
 			}
+			return value;
 		}
+		return null;
 	};
 
 	/**
@@ -949,22 +998,6 @@
 		this.__store__ = {};
 		this.__xkey__ = {};
 		this.__size__ = 0;
-	};
-
-	/**
-	 *size();
-	 *返回map键值对个数
-	 */
-	HashMap.prototype.size = function() {
-		return this.__size__;
-	};
-
-	/**
-	 *isEmpty();
-	 *map是否为空
-	 */
-	HashMap.prototype.isEmpty = function() {
-		return this.__size__ === 0;
 	};
 
 	/**
@@ -1237,7 +1270,7 @@
 	global.collections = collections;//将collections包放置在全局区
 
 	//将某个模块导入到全局区 例如imports('collections.*');
-	global.imports = function(module) {
+	var globalImports = function(module) {
 		if (!module || !/^collections\.(\*|[a-zA-Z]+)$/g.test(module)) {
 			throw new Error('imports function arguments error');
 		}
@@ -1251,19 +1284,27 @@
 		}
 	};
 
-	//for RequireJS || SeaJS || NodeJS
-	//var collections = require('./collections');
-	//collections.imports('*');
-	collections.imports = function(module) {
-		global.imports('collections.' + module);
-	};
+	var isModule = false;
 
 	if (typeof define === 'function') {// RequireJS || SeaJS
 	    define(function(require, exports, module) {
 	        module.exports = collections;
+	        isModule = true;
 	    });
 	} else if (typeof exports !== 'undefined') {// NodeJS
 	    module.exports = collections;
+	    isModule = true;
+	} else {
+		global.imports = globalImports;
+	}
+
+	if (isModule) {
+		//for RequireJS || SeaJS || NodeJS
+		//var collections = require('./collections');
+		//collections.imports('*');
+		collections.imports = function(module) {
+			globalImports('collections.' + module);
+		};
 	}
 
 })(this);

@@ -1,16 +1,36 @@
-imports('collections.LinkedList');
+imports('collections.*');
 	
 var list = new LinkedList();
 
+console.log('0.---------------------------------');
+
+console.log('init: ' + list.toString());//[]
+console.log('isEmpty? ' + list.isEmpty());//true
+console.log('size: ' + list.size());//0
+
+console.log('1.---------------------------------');
+
 list.add('hello');
 list.add('world');
+list.add('scott');
 
-console.log(list.toArray());
+console.log('after add: ' + list.toString());//[hello, world, scott]
+console.log('get 0: ' + list.get(0));//hello
+console.log('contains world? ' + list.contains('world'));//true
+console.log('indexOf soctt? ' + list.indexOf('scott'));//2
 
-list.insert(1, 'scott');
+console.log('2.---------------------------------');
 
-console.log(list.toArray());
+list.insert(1, 'bill');
+console.log('after insert: ' + list.toString());//[hello, bill, world, scott]
 
+list.removeAt(2);
+console.log('after removeAt: ' + list.toString());//[hello, bill, scott]
+
+list.removeElement(hello);
+console.log('after removeElement: ' + list.toString());//[bill, scott]
+
+/*
 imports('collections.ArrayList');
 var list2 = new ArrayList();
 list2.add('123');
@@ -63,4 +83,4 @@ list.add('abc');
 
 Collections.replaceAll(list, 'abc', 100);
 
-console.log(list.toArray());
+console.log(list.toArray());*/
