@@ -16,6 +16,7 @@
 		#codeTip>span{display:block;width:2px;height:1em;background:#fff;}
 		#consoleTip{color:#333;font-size:22px;}
 		#preCodes{display:none;}
+		.disabled{background:gray !important;}
 		</style>
 	</head>
 	<body>
@@ -32,31 +33,26 @@
 				<span style="color:gray">></span><span id="consoleTip">|</span>
 			</div>
 		</div>
-		<div id="preCodes" class="list">
-<pre>
+<pre id="preCodes" class="list">
 //begin
 imports('collections.*');
 var list = new ArrayList();
 console.log(list);
-</pre>
-<pre>
+
 list.add('hello', 'world');
 list.insert(1, 'scott');
 console.log(list);
-</pre>
-<pre>
+
 var iter = list.iterator();
 while (iter.hasNext()) {
     var elem = iter.next();
     console.log(elem);
 }
-</pre>
-<pre>
+
 list.removeAt(0);
 list.removeElement('world');
 console.log(list);
-</pre>
-<pre>
+
 var list2 = new ArrayList();
 list2.add(1, 2, 3);
 var list3 = new LinkedList();
@@ -67,8 +63,7 @@ list.addAll(list2);
 list.addAll(list3);
 list.insertAll(0, set);
 console.log(list);
-</pre>
-<pre>
+
 var iter2 = list.iterator(2);
 while (iter2.hasNext()) {
     var elem = iter2.next();
@@ -83,8 +78,7 @@ while (iter2.hasNext()) {
     }
 }
 console.log(list);
-</pre>
-<pre>
+
 list.clear();
 console.log(list);
 //end

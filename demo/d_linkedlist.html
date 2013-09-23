@@ -15,6 +15,7 @@
 		#codeTip>span{display:block;width:2px;height:1em;background:#fff;}
 		#consoleTip{color:#333;font-size:22px;}
 		#preCodes{display:none;}
+		.disabled{background:gray !important;}
 		</style>
 	</head>
 	<body>
@@ -31,26 +32,22 @@
 				<span style="color:gray">></span><span id="consoleTip">|</span>
 			</div>
 		</div>
-		<div id="preCodes" class="list">
-<pre>
+<pre id="preCodes" class="list">
 //begin
 imports('collections.*');
 var list = new LinkedList();
 console.log(list);
-</pre>
-<pre>
+
 list.add('hello', 'world', 1, 2, 3);
 console.log(list.getFirst());
 console.log(list.getLast());
 console.log(list.indexOf('world'));
 list.insert(2, 'world');
 console.log(list.lastIndexOf('world'));
-</pre>
-<pre>
+
 list.clear();
 console.log(list);
-</pre>
-<pre>
+
 var list2 = new ArrayList();
 list2.add('a', 'b', 'c');
 var list3 = new LinkedList();
@@ -60,6 +57,8 @@ set.add(7, 8, 9);
 list.addAll(list2);
 list.addAll(list3);
 list.insertAll(1, set);
+console.log(list);
+//end
 </pre>
 		</div>
 		<script src="../collections.js"></script>

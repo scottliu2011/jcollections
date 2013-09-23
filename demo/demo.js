@@ -11,7 +11,8 @@
 		consoleTip = $('consoleTip'),
 		nextStep = $('nextStep');
 
-	var currStep = 0;
+	var currStep = 0,
+		btnDisabled = false;
 
 	var printCode = function() {
 		if (currStep >= demo.codes.length) {
@@ -62,6 +63,9 @@
 		}
 
 		printStep();
+
+		btnDisabled = true;
+		nextStep.className = 'disabled';
 	}
 
 	demo.log = function(obj) {
@@ -75,19 +79,23 @@
 		demo.tasks = new (function() {
 			this.log = function(obj) {
 				demo.log(obj);
+
+				btnDisabled = false;
+				nextStep.className = '';
 			};
 		});
 
 		var preCodes = $('preCodes');
 		demo.varName = preCodes.className;
 
-		var pres = preCodes.getElementsByTagName('pre');
-		for (var i = 0; i < pres.length; i++) {
-			var ary = pres[i].innerHTML.split('\n');
-			demo.codes.push(ary);
+		var ary = preCodes.innerHTML.split('\n\n');
+		for (var i = 0; i < ary.length; i++) {
+			demo.codes.push(ary[i].split('\n'));
 		}
 
 		nextStep.onclick = function() {
+			if (btnDisabled) return;
+
 			if (currStep === demo.codes.length) {
 				codePrint.innerHTML = '';
 				consolePrint.innerHTML = '';
