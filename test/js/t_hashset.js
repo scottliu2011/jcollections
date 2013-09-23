@@ -85,3 +85,7 @@ set.defineEquals(function(elem0, elem1) {
 set.add({id:1, name:'hello'});
 set.add({id:1, name:'world'});
 console.log('after defineEquals and add: ' + set.toString());//[]
+
+
+//重点测试add remove contains方法
+//定义equals易出错

@@ -16,16 +16,6 @@
 		'<<', '^', '~', '!', '!=', '!==', '+=', '-=', '*=', '/=',
 		'%=', '&=', '|=', '^=', '>>=', '>>>=', '<<='
 	],
-	colors = {
-		'operator':'#CC0033',
-		'keyword':'#CC0033',
-		'class':'#A6E22E',
-		'comment':'#75715E',
-		'method':'#66BE91',
-		'property':'#CCCC99',
-		'number':'#AE81FF',
-		'string':'#C8DB5A'
-	},
 	aryFn = Array.prototype,
 	strFn = String.prototype;
 
@@ -69,14 +59,14 @@
 
 			if (curr === '/' && (ary[index + 1] === '/')) {
 				var comment = ary.splice(index).join('');
-				aryFn.splice.apply(ary, [index, ary.length - index].concat(wrap(colors.comment, comment)));
+				aryFn.splice.apply(ary, [index, ary.length - index].concat(wrap('comment', comment)));
 				break;
 			}
 
 			if (curr === '\'' || curr === '"') {
 				var content = lookFor(curr),
 					len = content.length;
-				update(wrap(colors.string, content));
+				update(wrap('string', content));
 				continue;
 			}
 
@@ -86,26 +76,26 @@
 			//console.log(str);
 
 			if (ary[index - 1] === ' ' && ary[index + len] === '(') {
-				update(wrap(colors.class, str));
+				update(wrap('class', str));
 				continue;
 			}
 			
 			if (ary[index - 1] === '.') {
 				if (ary[index + len] === '(') {
-					update(wrap(colors.method, str));	
+					update(wrap('method', str));	
 				} else {
-					update(wrap(colors.property, str));
+					update(wrap('property', str));
 				}
 				continue;
 			}
 
 			if (keywords.contains(str)) {
-				update(wrap(colors.keyword, str));
+				update(wrap('keyword', str));
 				continue;
 			}
 
 			if (operators.contains(str)) {
-				update(wrap(colors.operator, str));
+				update(wrap('operator', str));
 				continue;
 			}
 
@@ -114,7 +104,7 @@
 					str = str + '.' + forward(index + len + 1);
 					len = str.length;
 				}
-				update(wrap(colors.number, str));
+				update(wrap('number', str));
 				continue;
 			}
 
@@ -148,8 +138,8 @@
 			return result.join('');
 		}
 
-		function wrap(color, value) {
-			var span = '<span style="color:' + color + '">' + value + '</span>';
+		function wrap(className, value) {
+			var span = '<span class="' + className + '">' + value + '</span>';
 			return span.toArray();
 		}
 		

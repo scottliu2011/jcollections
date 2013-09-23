@@ -767,6 +767,12 @@
 		return this.__size__;
 	};
 
+	//重写Collection的defineEquals函数
+	HashSet.prototype.defineEquals = function(equalsFn) {
+		Collection.prototype.defineEquals.call(this, equalsFn);
+		this.__overwriteEquals__ = true;
+	};
+
 	/**
 	 *add(elem);
 	 *添加一个元素到set中
@@ -776,14 +782,16 @@
 			store = this.__store__;
 		for (var i = 0, len = args.length; i < len; i++) {
 			var elem = args[i],
-				isNew = !this.contains(elem),
-				key = KeyConvertor.toInnerKey(elem);
-			if ((typeof elem) === 'object') {
-				store[key] = elem;
-			} else {
-				store[key] = 1;
+				isNew = !this.contains(elem);
+			if (isNew) {
+				var key = KeyConvertor.toInnerKey(elem);
+				if ((typeof elem) === 'object') {
+					store[key] = elem;
+				} else {
+					store[key] = 1;
+				}
+				this.__size__++;
 			}
-			if (isNew) this.__size__++;
 		}
 	};
 
@@ -808,8 +816,19 @@
 	 *从set集合中移除一个指定元素
 	 */
 	HashSet.prototype.remove = function(elem) {
-		if (this.contains(elem)) {
-			delete this.__store__[KeyConvertor.toInnerKey(elem)];
+		if (!this.contains(elem)) return;
+
+		var store = this.__store__;
+		if ((typeof elem) === 'object' && this.__overwriteEquals__) {
+			for (var key in store) {
+				if (this.__equals__(store[key], elem)) {
+					delete store[key];
+					this.__size__--;
+					return;
+				}
+			}
+		} else {
+			delete store[KeyConvertor.toInnerKey(elem)];
 			this.__size__--;
 		}
 	};
@@ -844,6 +863,15 @@
 	 *set是否含有指定元素
 	 */
 	HashSet.prototype.contains = function(elem) {
+		var store = this.__store__;
+		if ((typeof elem) === 'object' && this.__overwriteEquals__) {
+			for (var key in store) {
+				if (this.__equals__(store[key], elem)) {
+					return true;
+				}
+			}
+			return false;
+		}
 		return !!this.__store__[KeyConvertor.toInnerKey(elem)];
 	};
 
