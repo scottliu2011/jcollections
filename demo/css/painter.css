@@ -1,0 +1,9 @@
+@charset "utf-8"
+.operator{color:#CC0033;}
+.keyword{color:#CC0033;}
+.class{color:#A6E22E;}
+.comment{color:#75715E;}
+.method{color:#66BE91;}
+.property{color:#CCCC99;}
+.number{color:#AE81FF;}
+.string{color:#C8DB5A;}

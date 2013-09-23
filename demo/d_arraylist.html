@@ -3,21 +3,8 @@
 	<head>
 		<meta charset="utf-8"/>
 		<title>arraylist demo</title>
-		<style>
-		body{background:#ddd;color:#fff;}
-		p,pre{margin:0;}
-		body,pre{font-family: Courier, "Courier New", monospace;}
-		.module{width:95%;margin:0 auto;margin-top:10px;padding:10px;overflow:hidden}
-		.code{background:#272822;height:400px;}
-		.console{background:#aaa;height:140px;padding-top:5px;padding-bottom:5px;}
-		.console p{color:blue;line-height:1.2em;border-bottom:1px solid gray;margin-left:1em;}
-		#nextStep{background:#008287;color:#fff;padding:5px 20px;font-size:18px;}
-		#nextStep:hover{cursor:pointer;color:#000;box-shadow:1px 1px 1px #000;}
-		#codeTip>span{display:block;width:2px;height:1em;background:#fff;}
-		#consoleTip{color:#333;font-size:22px;}
-		#preCodes{display:none;}
-		.disabled{background:gray !important;}
-		</style>
+		<link rel="stylesheet" type="text/css" href="css/demo.css"/>
+		<link rel="stylesheet" type="text/css" href="css/painter.css"/>
 	</head>
 	<body>
 		<div class="module code">
@@ -34,24 +21,39 @@
 			</div>
 		</div>
 <pre id="preCodes" class="list">
-//begin
 imports('collections.*');
 var list = new ArrayList();
-console.log(list);
+console.log('init: ' + list.toString());//[]
+console.log('isEmpty? ' + list.isEmpty());//true
+console.log('size: ' + list.size());//0
 
-list.add('hello', 'world');
-list.insert(1, 'scott');
-console.log(list);
+list.add('hello');
+list.add('world');
+list.add('scott');
+list.add(1, 2, 3);//add three elements.
+console.log('after add: ' + list.toString());//[hello, world, scott, 1, 2, 3]
+console.log('get 0: ' + list.get(0));//hello
+console.log('contains soctt? ' + list.contains('scott'));//true
+console.log('indexOf soctt? ' + list.indexOf('scott'));//2
 
-var iter = list.iterator();
-while (iter.hasNext()) {
-    var elem = iter.next();
-    console.log(elem);
-}
-
-list.removeAt(0);
+list.insert(3, -1, 0);//insert two elements at the specified positon that index is 3.
+console.log('after insert: ' + list.toString());//[hello, world, scott, -1, 0, 1, 2, 3]
+list.removeAt(2);
+console.log('after removeAt: ' + list.toString());//[hello, world, -1, 0, 1, 2, 3]
 list.removeElement('world');
-console.log(list);
+console.log('after removeElement: ' + list.toString());//[hello, -1, 0, 1, 2, 3]
+
+list.set(1, 1);
+console.log('after set: ' + list.toString());//[hello, 1, 0, 1, 2, 3]
+console.log('indexOf 1? ' + list.indexOf(1));//1
+console.log('lastIndexOf 1? ' + list.lastIndexOf(1));//3
+
+list.removeRange(0, 2);
+console.log('after removeRange: ' + list.toString());//[0, 1, 2, 3]
+list.clear();
+console.log('after clear: ' + list.toString());//[]
+console.log('isEmpty? ' + list.isEmpty());//true
+console.log('size: ' + list.size());//0
 
 var list2 = new ArrayList();
 list2.add(1, 2, 3);
@@ -61,31 +63,45 @@ var set = new HashSet();
 set.add('hello');
 list.addAll(list2);
 list.addAll(list3);
+console.log('after addAll: ' + list.toString());//[1, 2, 3, 4, 5, 6]
 list.insertAll(0, set);
-console.log(list);
+console.log('after insertAll: ' + list.toString());//[hello, 1, 2, 3, 4, 5, 6]
 
+var iter = list.iterator();
+while (iter.hasNext()) {
+	var elem = iter.next();
+	if (elem === 6) {
+		iter.remove();
+	}
+	if (elem === 'hello') {
+		iter.set(0);
+	}
+}
+console.log('after iterator: ' + list.toString());//[0, 1, 2, 3, 4, 5]
+
+console.log('___iterator from the specified positon: index:2');
 var iter2 = list.iterator(2);
 while (iter2.hasNext()) {
-    var elem = iter2.next();
-    if (elem === 3) {
-        iter2.remove();
-        console.log(elem + ' removed');
-    } else if (elem === 5) {
-        iter2.set(0);
-        console.log(elem + ' changed: 5 -> 0');
-    } else {
-        console.log(elem);
-    }
+	var elem = iter2.next();
+	console.log(elem);
 }
-console.log(list);
+console.log('___iterator is over');
 
 list.clear();
-console.log(list);
-//end
+list.defineEquals(function(elem0, elem1) {
+	return elem0.name === elem1.name;
+});
+var person0 = {name:'bill', company:'Microsoft'};
+var person1 = {name:'steve', company:'Apple'};
+list.add(person0, person1);
+console.log('first person\'s name: ' + list.get(0).name);//bill
+console.log('second person\'s name: ' + list.get(1).name);//scott
+console.log('contains bill? ' + list.contains({name:'bill'}));
+console.log('indexOf steve: ' + list.indexOf({name:'steve'}));
 </pre>
 		</div>
 		<script src="../collections.js"></script>
-		<script src="painter.js"></script>
-		<script src="demo.js"></script>
+		<script src="js/painter.js"></script>
+		<script src="js/demo.js"></script>
 	</body>
 </html>

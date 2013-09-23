@@ -29,6 +29,9 @@
 				codePrint.appendChild(p);
 			}
 			if (stepLine >= step.length) {//step is over.
+				btnDisabled = false;
+				nextStep.className = '';
+
 				var body = '';
 
 				for (var i = 0; i < step.length; i++) {
@@ -79,9 +82,6 @@
 		demo.tasks = new (function() {
 			this.log = function(obj) {
 				demo.log(obj);
-
-				btnDisabled = false;
-				nextStep.className = '';
 			};
 		});
 
