@@ -60,7 +60,7 @@
 
 	//检查索引值的范围
 	List.prototype.__rangeCheck__ = function(index, canBeSize) {
-		if ((typeof index) !== 'number') {
+		if (typeof index !== 'number') {
 			throw new Error('index incorrect');
 		}
 
@@ -72,11 +72,11 @@
 	};
 
 	//#ArrayList
-	var ArrayList = function() {
+	var ArrayList = function(ary) {
 		if (!(this instanceof ArrayList)) {
-			return new ArrayList();
+			return new ArrayList(ary);
 		}
-		this.__data__ = [];
+		this.__data__ = (ary instanceof Array) ? ary : [];
 	}.inherits(List);//ArrayList继承了List
 
 	/**
@@ -305,13 +305,17 @@
 	};
 
 	//#LinkedList
-	var LinkedList = function() {
+	var LinkedList = function(collection) {
 		if (!(this instanceof LinkedList)) {
-			return new LinkedList();
+			return new LinkedList(collection);
 		}
 		this.__size__ = 0;
 		this.__header__ = {};
 		this.__header__.next = this.__header__.previous = this.__header__;
+
+		if (collection instanceof Collection) {
+			this.addAll(collection);
+		}
 	}.inherits(List);//LinkedList继承了List
 
 	/**
@@ -719,7 +723,7 @@
 	//负责对象和内部键之间的相互转换
 	var KeyConvertor = {
 		toInnerKey: function(outerValue) {
-			if ((typeof outerValue) === 'object' && !outerValue.__hash__) {
+			if (typeof outerValue === 'object' && !outerValue.__hash__) {
 				outerValue.__hash__ = collections.__hash__++;
 			}
 			return (typeof outerValue) + '@' + (outerValue.__hash__ || outerValue);
@@ -746,12 +750,16 @@
 	var Set = function(){}.inherits(Collection);//继承了Collection
 
 	//#HashSet
-	var HashSet = function() {
+	var HashSet = function(collection) {
 		if (!(this instanceof HashSet)) {
-			return new HashSet();
+			return new HashSet(collection);
 		}
 		this.__store__  = {};
 		this.__size__ = 0;
+
+		if (collection instanceof Collection) {
+			this.addAll(collection);
+		}
 	}.inherits(Set);//HashSet继承了Set
 
 	/**
@@ -785,7 +793,7 @@
 				isNew = !this.contains(elem);
 			if (isNew) {
 				var key = KeyConvertor.toInnerKey(elem);
-				if ((typeof elem) === 'object') {
+				if (typeof elem === 'object') {
 					store[key] = elem;
 				} else {
 					store[key] = 1;
@@ -819,7 +827,7 @@
 		if (!this.contains(elem)) return;
 
 		var store = this.__store__;
-		if ((typeof elem) === 'object' && this.__overwriteEquals__) {
+		if (typeof elem === 'object' && this.__overwriteEquals__) {
 			for (var key in store) {
 				if (this.__equals__(store[key], elem)) {
 					delete store[key];
@@ -864,7 +872,7 @@
 	 */
 	HashSet.prototype.contains = function(elem) {
 		var store = this.__store__;
-		if ((typeof elem) === 'object' && this.__overwriteEquals__) {
+		if (typeof elem === 'object' && this.__overwriteEquals__) {
 			for (var key in store) {
 				if (this.__equals__(store[key], elem)) {
 					return true;
@@ -949,13 +957,17 @@
 	};
 
 	//#HashMap
-	var HashMap = function() {
+	var HashMap = function(map) {
 		if (!(this instanceof HashMap)) {
-			return new HashMap();
+			return new HashMap(map);
 		}
 		this.__store__ = {};
 		this.__xkey__ = {};//object key mapping.
 		this.__size__ = 0;
+
+		if (map instanceof Map) {
+			this.putAll(map);
+		}
 	}.inherits(Map);//HashMap继承了Map
 
 	/**
@@ -982,7 +994,7 @@
 		if (isNew) {
 			this.__size__++;
 
-			if ((typeof key) === 'object') {
+			if (typeof key === 'object') {
 				this.__xkey__[innerKey] = key;//{hash:real_key}
 			}
 		}
@@ -1027,7 +1039,7 @@
 			delete store[innerKey];
 			this.__size__--;
 
-			if ((typeof key) === 'object') {
+			if (typeof key === 'object') {
 				delete this.__xkey__[innerKey];
 			}
 			return value;
@@ -1151,6 +1163,78 @@
 	};
 
 	/**
+	 *数组工具类
+	 */
+	var Arrays = {
+		/**
+		 *asList(elem0[, elem1[, elem2[,...]]]);
+		 *将指定一到多个元素转化成ArrayList
+		 */
+		asList: function() {
+			return new ArrayList(Array.prototype.slice.call(arguments));
+		},
+		/**
+		 *binarySearch(ary, target, compareFn);
+		 *对有序数组进行二分查找
+		 */
+		binarySearch: function(ary, target, compareFn) {
+			return Arrays.binarySearchRange(ary, 0, ary.length, target, compareFn);
+		},
+		/**
+		 *对有序数组指定范围内进行二分查找
+		 */
+		binarySearchRange: function(ary, fromIndex, toIndex, target, compareFn) {
+			var low = fromIndex,
+				high = toIndex - 1,
+				mid;
+			while (low <= high) {
+				mid = Math.floor((low + high) / 2);
+				if (ary[mid] < target) {
+					low = mid + 1;
+				} else if (ary[mid] > target) {
+					high = mid - 1;
+				} else {
+					return mid;
+				}
+			}
+			return -1;
+		},
+		copyOf: function(ary, length) {
+
+		},
+		copyOfRange: function(ary, fromIndex, toIndex) {
+
+		},
+		equals: function(ary0, ary1, equalsFn) {
+			if (ary0 === ary1) return true;
+			if (ary0.length !== ary1.length) return false;
+
+			for (var i = 0, len = ary0.length; i < len; i++) {
+				var isEquals = false;
+				if (equalsFn && typeof equalsFn === 'function') {
+					isEquals = equalsFn(ary0[i], ary1[i]);
+				} else {
+					isEquals = ary0[i] === ary1[i];
+				}
+				if (isEquals) return true;
+			}
+			return false;
+		},
+		fill: function(ary, elem) {
+
+		},
+		fillRange: function(ary, fromIndex, toIndex, elem) {
+
+		},
+		sort: function(ary, fn) {
+
+		},
+		sortRange: function(ary, fromIndex, toIndex, fn) {
+
+		}
+	};
+
+	/**
 	 *集合工具类
 	 */
 	var Collections = {
@@ -1247,6 +1331,9 @@
 			}
 			return replaced;
 		},
+		/**
+		 *将List元素反转
+		 */
 		reverse: function(list) {
 			if (list instanceof ArrayList) {
 				var size = list.size();
@@ -1265,6 +1352,7 @@
 		}
 	};
 
+	
 	//Object.keys是ECMAScript 5th Edition中新增函数
 	if (!Object.keys) {//如果不是现代浏览器则实现一个Object.keys函数
 		Object.keys = (function () {
@@ -1309,6 +1397,7 @@
 	collections.HashSet = HashSet;
 	collections.HashMap = HashMap;
 	collections.Collections = Collections;
+	collections.Arrays = Arrays;
 
 	collections.__hash__ = 1024;//用于标识对象
 
