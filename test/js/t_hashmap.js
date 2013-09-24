@@ -1,123 +1,73 @@
-imports('collections.HashMap');
-
-console.log('0.---------------------------------');
-
+imports('collections.*');
 var map = new HashMap();
 
-console.log('init: ' + map.toString());
+console.log('0.------------------------------------------------------------------');
 
+console.log('init: ' + map);
 console.log('is empty? ' + map.isEmpty());
-
 console.log('size: ' + map.size());
 
-map.put('one', 'hello');
+console.log('1.------------------------------------------------------------------');
 
-var o = {name:'soctt'};
-map.put(o, 'world');
+map.put(0, 'hello');
+console.log('get by 0: ' + map.get(0));//hello
 
-console.log(map.get('one'));
-console.log(map.get(o));
+var person = {
+	id:'007',
+	name:'soctt',
+	toString: function() {
+		return '007:scott';
+	}
+};
+map.put('person', person);
+console.log('get by person: ' + map.get('person'));//007:scott
 
+var key = {
+	id:'008',
+	name:'scott',
+	toString:function() {
+		return "this is scott's key";
+	}
+};
+var value = {
+	lang:'java python javascript html css',
+	addr:'Beijing HaiDian',
+	friends:['john', 'tom', 'jack'],
+	toString:function() {
+		return "this is scott's details"
+	}
+};
+map.put(key, value);
+console.log('get by object key: ' + map.get(key));//this is scott's details. 
+
+console.log('map: ' + map);
+console.log("map's keys: " + map.keySet());
+console.log("map's values: " + map.values());
+
+console.log('contains key? ' + map.containsKey(key));
+console.log('contains value? ' + map.containsValue(value));
+
+console.log('2.------------------------------------------------------------------');
+
+console.log('___start keySet iterator');
 var set = map.keySet().iterator();
 while (set.hasNext()) {
-	console.log(set.next());
+	var key = set.next();
+	var value = map.get(key);
+	console.log(key + " = " + value);
 }
+console.log('___keySet iterator is over');
 
-console.log(map.toString());
-
-console.log(map.values());
-
+console.log('___start entrySet iterator');
 var iter = map.entrySet().iterator();
 while (iter.hasNext()) {
-	console.log(iter.next());
+	console.log(iter.next() + '');
 }
-
-/*
-
-console.log('1.---------------------------------');
-
-map.put('one', 'hello');
-map.put('two', 'world');
-
-console.log('after put: ' + map.toString());
-
-console.log('is empty? ' + map.isEmpty());
-
-console.log('size: ' + map.size());
-
-console.log('2.---------------------------------');
+console.log('___entrySet iterator is over');
 
 var map2 = new HashMap();
-map2.put(1, 'black');
-map2.put(2, 'white');
-
+map2.put(1, 'one');
+map2.put(2, 'two');
+map2.put(3, 'three');
 map.putAll(map2);
-
-console.log(map.entrySet());
-
-console.log('after putAll: ' + map.toString());
-
-console.log('map values: ' + map.values());
-
-console.log('size: ' + map.size());
-
-console.log('3.---------------------------------');
-
-console.log('get(1): ' + map.get(1));
-
-console.log('contains key(1)?: ' + map.containsKey(1));
-
-console.log('contains value(black)?: ' + map.containsValue('black'));
-
-console.log('contains key(3)?: ' + map.containsKey(3));
-
-console.log('contains value(red)?: ' + map.containsValue('red'));
-
-console.log('4.---------------------------------');
-
-map.remove(2);
-
-console.log('after remove: ' + map.toString());
-
-console.log('size: ' + map.size());
-
-console.log('4.---------------------------------');
-
-console.log('===== start to iterator =====');
-
-var keySet = map.keySet();
-
-console.log('key set: ' + keySet.toString());
-
-var keyIter = keySet.iterator();
-while (keyIter.hasNext()) {
-	var key = keyIter.next();
-	console.log(key + ':' + map.get(key));
-}
-
-console.log('===== iterator is over =====');
-
-console.log('4.---------------------------------');
-
-console.log('===== start to iterator =====');
-
-var entrySet = map.entrySet();
-
-console.log('entry set: ' + entrySet.toString());
-
-var entryIter = entrySet.iterator();
-while (entryIter.hasNext()) {
-	var entry = entryIter.next();
-	
-	console.log(entry);
-
-	if (entry.getKey() === 1) {
-		entry.set('white');
-	}
-}
-
-console.log('===== start to iterator =====');
-
-console.log('after entry::set: ' + map.toString());
-
-*/
+console.log('after putAll: ' + map);

@@ -1117,6 +1117,9 @@
 				this.__value__ = value;
 				map.put(this.__key__, value);
 			};
+			this.toString = function() {
+				return this.__key__ + '=' + this.__value__;
+			};
 		};
 
 		for (var key in this.__store__) {
@@ -1143,7 +1146,7 @@
 			if (key.indexOf('object@') !== 0) {
 				result.push(KeyConvertor.fromInnerKey(key) + '=' + store[key]);
 			} else {
-				result.push(key + '=' + store[key]);
+				result.push(this.__xkey__[key] + '=' + store[key]);
 			}
 		}
 		return '{' + result.join(',') + '}';

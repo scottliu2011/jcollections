@@ -69,27 +69,27 @@ console.log('after insertAll: ' + list.toString());//[hello, 1, 2, 3, 4, 5, 6]
 
 var iter = list.iterator();
 while (iter.hasNext()) {
-	var elem = iter.next();
-	if (elem === 6) {
-		iter.remove();
-	}
-	if (elem === 'hello') {
-		iter.set(0);
-	}
+    var elem = iter.next();
+    if (elem === 6) {
+        iter.remove();
+    }
+    if (elem === 'hello') {
+        iter.set(0);
+    }
 }
 console.log('after iterator: ' + list.toString());//[0, 1, 2, 3, 4, 5]
 
 console.log('___iterator from the specified positon: index:2');
 var iter2 = list.iterator(2);
 while (iter2.hasNext()) {
-	var elem = iter2.next();
-	console.log(elem);
+    var elem = iter2.next();
+    console.log(elem);
 }
 console.log('___iterator is over');
 
 list.clear();
 list.defineEquals(function(elem0, elem1) {
-	return elem0.name === elem1.name;
+    return elem0.name === elem1.name;
 });
 var person0 = {name:'bill', company:'Microsoft'};
 var person1 = {name:'steve', company:'Apple'};
