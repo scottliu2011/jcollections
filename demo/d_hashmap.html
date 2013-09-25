@@ -20,14 +20,14 @@
 				<span style="color:gray">></span><span id="consoleTip">|</span>
 			</div>
 		</div>
-<div id="preCodes" class="map">
+<pre id="preCodes" class="map">
 //begin
 imports('collections.*');
 var map = new HashMap();
 console.log('init: ' + map);//{}
 console.log('is empty? ' + map.isEmpty());//true
 console.log('size: ' + map.size());//0
-
+$
 map.put(0, 'hello');
 console.log('get by 0: ' + map.get(0));//hello
 var person = {
@@ -39,7 +39,7 @@ var person = {
 };
 map.put('person', person);
 console.log('get by person: ' + map.get('person'));//007:scott
-
+$
 var key = {
 	id: '008',
 	name: 'scott',
@@ -62,7 +62,7 @@ console.log("map's keys: " + map.keySet());
 console.log("map's values: " + map.values());
 console.log('contains key? ' + map.containsKey(key));
 console.log('contains value? ' + map.containsValue(value));
-
+$
 console.log('___start keySet iterator');
 var set = map.keySet().iterator();
 while (set.hasNext()) {
@@ -71,14 +71,14 @@ while (set.hasNext()) {
 	console.log(key + " = " + value);
 }
 console.log('___keySet iterator is over');
-
+$
 console.log('___start entrySet iterator');
 var iter = map.entrySet().iterator();
 while (iter.hasNext()) {
 	console.log(iter.next() + '');
 }
 console.log('___entrySet iterator is over');
-
+$
 var map2 = new HashMap();
 map2.put(1, 'one');
 map2.put(2, 'two');
@@ -86,7 +86,7 @@ map2.put(3, 'three');
 map.putAll(map2);
 console.log('after putAll: ' + map);
 //end
-</div>
+</pre>
 		<script src="../collections.js"></script>
 		<script src="js/painter.js"></script>
 		<script src="js/demo.js"></script>

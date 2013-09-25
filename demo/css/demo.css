@@ -2,8 +2,8 @@ body{background:#ddd;color:#fff;}
 p,pre{margin:0;}
 body,pre{font-family: Courier, "Courier New", monospace;}
 .module{width:95%;margin:10px auto 0;padding:10px;overflow:hidden}
-.code{background:#272822;height:400px;}
-.console{background:#aaa;height:140px;padding-top:5px;padding-bottom:5px;}
+.code{background:#272822;height:300px;}
+.console{background:#aaa;height:100px;padding-top:5px;padding-bottom:5px;}
 .console p{color:blue;line-height:1.2em;border-bottom:1px solid gray;margin-left:1em;}
 #nextStep{background:#008287;color:#fff;padding:5px 20px;font-size:18px;}
 #nextStep:hover{cursor:pointer;color:#000;box-shadow:1px 1px 1px #000;}

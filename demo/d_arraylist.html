@@ -7,7 +7,7 @@
 		<link rel="stylesheet" type="text/css" href="css/painter.css"/>
 	</head>
 	<body>
-		<div class="module code">
+		<div id="codeArea" class="module code">
 			<pre id="codePrint"></pre>
 			<div id="codeTip"><span></span></div>
 		</div>
@@ -20,7 +20,7 @@
 				<span style="color:gray">></span><span id="consoleTip">|</span>
 			</div>
 		</div>
-<div id="preCodes" class="list">
+<pre id="preCodes" class="list">
 //begin
 imports('collections.*');
 var list = new ArrayList();
@@ -109,7 +109,7 @@ console.log(list.get(0) + ' & ' + list.get(1));
 console.log('contains bill? ' + list.contains({name:'bill'}));
 console.log('indexOf steve: ' + list.indexOf({name:'steve'}));
 //end
-</div>
+</pre>
 		<script src="../collections.js"></script>
 		<script src="js/painter.js"></script>
 		<script src="js/demo.js"></script>
