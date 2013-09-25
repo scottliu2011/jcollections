@@ -99,7 +99,7 @@
 				continue;
 			}
 
-			if (/^\d+$/.test(str)) {
+			if (/^-?\d+$/.test(str)) {
 				if (ary[index + len] === '.') {
 					str = str + '.' + forward(index + len + 1);
 					len = str.length;

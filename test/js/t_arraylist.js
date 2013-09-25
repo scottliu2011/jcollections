@@ -88,16 +88,16 @@ list.defineEquals(function(a, b) {
 });
 
 var person0 = {
-	name:'bill',
-	company:'Microsoft',
-	toString:function() {
+	name: 'bill',
+	company: 'Microsoft',
+	toString: function() {
 		return 'bill gates';
 	}
 };
 var person1 = {
-	name:'steve',
-	company:'Apple',
-	toString:function() {
+	name: 'steve',
+	company: 'Apple',
+	toString: function() {
 		return 'steve jobs';
 	}
 };

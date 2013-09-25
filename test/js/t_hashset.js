@@ -41,8 +41,8 @@ console.log('size: ' + set.size());//0
 console.log('4.---------------------------------------------------------------------');
 
 var person = {
-	name:'john', 
-	age:40, 
+	name: 'john', 
+	age: 40, 
 	toString: function() {
 		return person.name + ' => ' + person.age;
 	}
@@ -94,16 +94,16 @@ set.defineEquals(function(elem0, elem1) {
 });
 
 var obj0 = {
-	id:1,
-	name:'hello',
+	id: 1,
+	name: 'hello',
 	toString:function() {
 		return 'obj => id:' + obj0.id;
 	}
 };
 var obj1 = {
-	id:1,
-	name:'world',
-	toString:function() {
+	id: 1,
+	name: 'world',
+	toString: function() {
 		return 'obj => id:' + obj1.id;
 	}
 };

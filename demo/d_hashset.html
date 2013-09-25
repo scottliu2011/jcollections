@@ -20,57 +20,106 @@
 				<span style="color:gray">></span><span id="consoleTip">|</span>
 			</div>
 		</div>
-<pre id="preCodes" class="list">
+<div id="preCodes" class="set">
 //begin
 imports('collections.*');
-var list = new ArrayList();
-console.log(list);
-
-list.add('hello', 'world');
-list.insert(1, 'scott');
-console.log(list);
-
-var iter = list.iterator();
-while (iter.hasNext()) {
-    var elem = iter.next();
-    console.log(elem);
-}
-
-list.removeAt(0);
-list.removeElement('world');
-console.log(list);
-
-var list2 = new ArrayList();
-list2.add(1, 2, 3);
-var list3 = new LinkedList();
-list3.add(4, 5, 6);
 var set = new HashSet();
-set.add('hello');
-list.addAll(list2);
-list.addAll(list3);
-list.insertAll(0, set);
-console.log(list);
+console.log('init: ' + set);//[]
+console.log('isEmpty? ' + set.isEmpty());//true
+console.log('size: ' + set.size());//0
 
-var iter2 = list.iterator(2);
-while (iter2.hasNext()) {
-    var elem = iter2.next();
-    if (elem === 3) {
-        iter2.remove();
-        console.log(elem + ' removed');
-    } else if (elem === 5) {
-        iter2.set(0);
-        console.log(elem + ' changed: 5 -> 0');
-    } else {
-        console.log(elem);
-    }
+set.add('hello', 'world');
+set.add('hello');//repeat!
+set.add('world');//repeat!
+console.log('after add: ' + set);//[hello,world]
+console.log('isEmpty? ' + set.isEmpty());//false
+console.log('size: ' + set.size());//2
+set.remove('world');
+console.log('after remove world: ' + set);//[hello]
+console.log('contains world? ' + set.contains('world'));//false
+
+var set2 = new HashSet();
+set2.add('bill', 'scott');
+var list = new ArrayList();
+list.add(1, 2);
+var list2 = new LinkedList();
+list2.add(3, 4);
+set.addAll(set2);
+set.addAll(list);
+set.addAll(list2);
+console.log('after addAll: ' + set);//[hello,bill,scott,1,2,3,4]
+set.clear();
+console.log('after clear: ' + set);//[]
+console.log('isEmpty? ' + set.isEmpty());//true
+console.log('size: ' + set.size());//0
+
+var person = {
+	name: 'john', 
+	age: 40, 
+	toString: function() {
+		return person.name + ' => ' + person.age;
+	}
+};
+set.add(person);
+set.add(person);//repeat!
+console.log('after add person object: ' + set);//[john => 40]
+console.log('contains person object? ' + set.contains(person));//true
+set.remove(person);
+console.log('after remove person object: ' + set);//[]
+
+var Teacher = function(id, name) {
+	this.id = id;
+	this.name = name;
+	this.toString = function() {
+		return this.id + ' => ' + this.name;
+	};
+};
+var teacher = new Teacher('007', 'teacher wang');
+set.add(teacher);
+set.add(teacher);//repeat!
+console.log('after add teacher: ' + set);//[007 => teacher wang]
+console.log('contains teacher object? ' + set.contains(teacher));//true
+set.remove(teacher);
+console.log('after remove teacher object: ' + set);//[]
+
+set.add(1, 2, 3, 4, 5, 6);
+console.log('after add: ' + set);//[1,2,3,4,5,6]
+var iter = set.iterator();
+while (iter.hasNext()) {
+	var elem = iter.next();
+	if (elem === 2) {
+		iter.remove();
+		console.log(elem + ' is removed.');
+	}
 }
-console.log(list);
+console.log('after iterator: ' + set);//[1,3,4,5,6]
 
-list.clear();
-console.log(list);
+set.clear();
+set.defineEquals(function(elem0, elem1) {
+	return elem0.id === elem1.id;
+});
+var obj0 = {
+	id: 1,
+	name: 'hello',
+	toString: function() {
+		return 'obj => id:' + obj0.id;
+	}
+};
+var obj1 = {
+	id: 1,
+	name: 'world',
+	toString: function() {
+		return 'obj => id:' + obj1.id;
+	}
+};
+set.add(obj0);
+set.add(obj1);//repeat!
+console.log('after defineEquals and add: ' + set);//[]
+console.log('contains obj1? ' + set.contains(obj1));//true
+set.remove(obj1);
+console.log('after remove obj1: ' + set);//[]
 //end
-</pre>
-		</div>
+</div>
 		<script src="../collections.js"></script>
 		<script src="js/painter.js"></script>
 		<script src="js/demo.js"></script>

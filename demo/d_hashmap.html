@@ -20,57 +20,73 @@
 				<span style="color:gray">></span><span id="consoleTip">|</span>
 			</div>
 		</div>
-<pre id="preCodes" class="list">
+<div id="preCodes" class="map">
 //begin
 imports('collections.*');
-var list = new ArrayList();
-console.log(list);
+var map = new HashMap();
+console.log('init: ' + map);//{}
+console.log('is empty? ' + map.isEmpty());//true
+console.log('size: ' + map.size());//0
 
-list.add('hello', 'world');
-list.insert(1, 'scott');
-console.log(list);
+map.put(0, 'hello');
+console.log('get by 0: ' + map.get(0));//hello
+var person = {
+	id: '007',
+	name: 'soctt',
+	toString: function() {
+		return '007:scott';
+	}
+};
+map.put('person', person);
+console.log('get by person: ' + map.get('person'));//007:scott
 
-var iter = list.iterator();
+var key = {
+	id: '008',
+	name: 'scott',
+	toString: function() {
+		return "this is scott's key";
+	}
+};
+var value = {
+	langs: 'chinese english',
+	addr: 'Beijing HaiDian',
+	friends: ['john', 'tom', 'jack'],
+	toString: function() {
+		return "this is scott's details"
+	}
+};
+map.put(key, value);
+console.log('get by object key: ' + map.get(key));//this is scott's details. 
+console.log('map: ' + map);
+console.log("map's keys: " + map.keySet());
+console.log("map's values: " + map.values());
+console.log('contains key? ' + map.containsKey(key));
+console.log('contains value? ' + map.containsValue(value));
+
+console.log('___start keySet iterator');
+var set = map.keySet().iterator();
+while (set.hasNext()) {
+	var key = set.next();
+	var value = map.get(key);
+	console.log(key + " = " + value);
+}
+console.log('___keySet iterator is over');
+
+console.log('___start entrySet iterator');
+var iter = map.entrySet().iterator();
 while (iter.hasNext()) {
-    var elem = iter.next();
-    console.log(elem);
+	console.log(iter.next() + '');
 }
+console.log('___entrySet iterator is over');
 
-list.removeAt(0);
-list.removeElement('world');
-console.log(list);
-
-var list2 = new ArrayList();
-list2.add(1, 2, 3);
-var list3 = new LinkedList();
-list3.add(4, 5, 6);
-var set = new HashSet();
-set.add('hello');
-list.addAll(list2);
-list.addAll(list3);
-list.insertAll(0, set);
-console.log(list);
-
-var iter2 = list.iterator(2);
-while (iter2.hasNext()) {
-    var elem = iter2.next();
-    if (elem === 3) {
-        iter2.remove();
-        console.log(elem + ' removed');
-    } else if (elem === 5) {
-        iter2.set(0);
-        console.log(elem + ' changed: 5 -> 0');
-    } else {
-        console.log(elem);
-    }
-}
-console.log(list);
-
-list.clear();
-console.log(list);
+var map2 = new HashMap();
+map2.put(1, 'one');
+map2.put(2, 'two');
+map2.put(3, 'three');
+map.putAll(map2);
+console.log('after putAll: ' + map);
 //end
-</pre>
-		</div>
+</div>
 		<script src="../collections.js"></script>
 		<script src="js/painter.js"></script>
 		<script src="js/demo.js"></script>

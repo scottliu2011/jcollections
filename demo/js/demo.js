@@ -90,9 +90,20 @@
 
 		var ary = preCodes.innerHTML.split('\n\n');
 		for (var i = 0; i < ary.length; i++) {
-			demo.codes.push(ary[i].split('\n'));
+			var stepCodes = ary[i].split('\n');
+			for (var j = 0; j < stepCodes.length; j++) {
+				var currStepCode = stepCodes[j];
+				if (currStepCode.indexOf('&amp;') > -1) {
+					currStepCode = currStepCode.replace(/&amp;/g, '&');
+				}
+				if (currStepCode.indexOf('\t') > -1) {
+					currStepCode = currStepCode.replace('\t', '    ');
+				}
+				stepCodes[j] = currStepCode;
+			}
+			demo.codes.push(stepCodes);
 		}
-
+		
 		nextStep.onclick = function() {
 			if (btnDisabled) return;
 

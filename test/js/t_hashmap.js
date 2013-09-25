@@ -3,9 +3,9 @@ var map = new HashMap();
 
 console.log('0.------------------------------------------------------------------');
 
-console.log('init: ' + map);
-console.log('is empty? ' + map.isEmpty());
-console.log('size: ' + map.size());
+console.log('init: ' + map);//{}
+console.log('is empty? ' + map.isEmpty());//true
+console.log('size: ' + map.size());//0
 
 console.log('1.------------------------------------------------------------------');
 
@@ -13,8 +13,8 @@ map.put(0, 'hello');
 console.log('get by 0: ' + map.get(0));//hello
 
 var person = {
-	id:'007',
-	name:'soctt',
+	id: '007',
+	name: 'soctt',
 	toString: function() {
 		return '007:scott';
 	}
@@ -23,17 +23,17 @@ map.put('person', person);
 console.log('get by person: ' + map.get('person'));//007:scott
 
 var key = {
-	id:'008',
-	name:'scott',
-	toString:function() {
+	id: '008',
+	name: 'scott',
+	toString: function() {
 		return "this is scott's key";
 	}
 };
 var value = {
-	lang:'java python javascript html css',
-	addr:'Beijing HaiDian',
-	friends:['john', 'tom', 'jack'],
-	toString:function() {
+	langs: 'chinese english',
+	addr: 'Beijing HaiDian',
+	friends: ['john', 'tom', 'jack'],
+	toString: function() {
 		return "this is scott's details"
 	}
 };
