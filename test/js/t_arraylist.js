@@ -83,8 +83,8 @@ console.log('6.-----------------------------------------------------------------
 
 list.clear();
 
-list.defineEquals(function(elem0, elem1) {
-	return elem0.name === elem1.name;
+list.defineEquals(function(a, b) {
+	return a.name === b.name;
 });
 
 var person0 = {

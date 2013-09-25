@@ -19,10 +19,10 @@
 		Storage.turnLocalMode();//转为local storage模式
 
 		var store = Storage.create();
-		store.toStore(function(value) {//定义外部结构到内部值的转换
+		store.defineToStore(function(value) {//定义外部结构到内部值的转换
 			return Storage.toJSON(value);
 		});
-		store.fromStore(function(json) {//定义内部值到外部结构的转换
+		store.defineFromStore(function(json) {//定义内部值到外部结构的转换
 			return Storage.fromJSON(json);
 		});
 		

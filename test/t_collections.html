@@ -1,75 +1,12 @@
-<html>
+<head>
 	<meta charset="utf-8"/>
-	<body>
-
-	</body>
+</head>
+<body>
+	<h1>please check the console.</h1>
+	<h3>if you're using Chrome, F12 and click the "console" tab.</h3>
+	<pre>
+	
+	</pre>
 	<script type="text/javascript" src="../collections.js"></script>
-	<script type="text/javascript">
-		imports('collections.*');
-		
-		var list = new ArrayList();
-		list.add({id:1, name:'soctt'});
-		list.add({id:2, name:'bill'});
-		list.add({id:3, name:'steve'});
-
-		var max = Collections.max(list, function(elem0, elem1) {
-			if (elem0.id > elem1.id) {
-				return 1;
-			} else if (elem0.id < elem1.id) {
-				return -1;
-			}
-			return 0;
-		});
-		console.log(max);
-
-		var min = Collections.min(list, function(elem0, elem1) {
-			if (elem0.id > elem1.id) {
-				return 1;
-			} else if (elem0.id < elem1.id) {
-				return -1;
-			}
-			return 0;
-		});
-		console.log(min);
-
-		Collections.sort(list, function(elem0, elem1) {
-			if (elem0.id > elem1.id) {
-				return 1;
-			} else if (elem0.id < elem1.id) {
-				return -1;
-			}
-			return 0;
-		});
-		console.log('after sort...');
-		console.log(list.toArray());
-
-		list.add({id:5, name:'john'});
-		list.add({id:4, name:'tom'});
-		list.add({id:6, name:'tom'});
-
-		var target = {id:5};
-
-		Collections.sort(list, function(elem0, elem1) {
-			if (elem0.id > elem1.id) {
-				return 1;
-			} else if (elem0.id < elem1.id) {
-				return -1;
-			}
-			return 0;
-		});
-
-		var index = Collections.binarySearch(list, target, function(elem0, elem1) {
-			if (elem0.id > elem1.id) {
-				return 1;
-			} else if (elem0.id < elem1.id) {
-				return -1;
-			}
-			return 0;
-		});
-		console.log(index);
-
-		Collections.reverse(list);
-
-		console.log(list.toArray());		
-	</script>
+	<script type="text/javascript" src="js/t_collections.js"></script>
 </html>

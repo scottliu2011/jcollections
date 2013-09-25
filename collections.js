@@ -6,7 +6,7 @@
 	 *继承
 	 */
 	Function.prototype.inherits = function(Parent) {
-		if (!Parent) {
+		if (Parent === undefined) {
 			throw new Error('Parent must be specified');
 		}
 		if (Parent.constructor !== Function) {
@@ -71,7 +71,10 @@
 		}
 	};
 
-	//#ArrayList
+	/**
+	 *new ArrayList(); || new ArrayList(Array);
+	 *构造一个新的ArrayList实例
+	 */
 	var ArrayList = function(ary) {
 		if (!(this instanceof ArrayList)) {
 			return new ArrayList(ary);
@@ -80,11 +83,11 @@
 	}.inherits(List);//ArrayList继承了List
 
 	/**
-	 *ArrayList.create();
-	 *静态方法 用于创建一个ArrayList对象实例
+	 *ArrayList.create(); || ArrayList.create(Array);
+	 *静态方法，创建一个ArrayList实例
 	 */
-	ArrayList.create = function() {
-		return new ArrayList();
+	ArrayList.create = function(ary) {
+		return new ArrayList(ary);
 	};
 
 	//返回list元素个数
@@ -215,7 +218,7 @@
 		this.__rangeCheck__(fromIndex);
 		this.__rangeCheck__(toIndex);
 		if (fromIndex > toIndex) {
-			throw new Error('fromIndex is too large (fromIndex > toIndex)');
+			throw new Error('fromIndex > toIndex');
 		}
 		return this.__data__.splice(fromIndex, toIndex - fromIndex);
 	};
@@ -304,7 +307,10 @@
 		return new ArrayListIterator(this);
 	};
 
-	//#LinkedList
+	/**
+	 *new LinkedList(); || new LinkedList(Collection);
+	 *构造一个新的LinkedList实例
+	 */
 	var LinkedList = function(collection) {
 		if (!(this instanceof LinkedList)) {
 			return new LinkedList(collection);
@@ -319,11 +325,11 @@
 	}.inherits(List);//LinkedList继承了List
 
 	/**
-	 *LinkedList.create();
-	 *静态方法 用于创建一个LinkedList对象实例
+	 *LinkedList.create(); || LinkedList.create(Collection);
+	 *静态方法，创建一个LinkedList实例
 	 */
-	LinkedList.create = function() {
-		return new LinkedList();
+	LinkedList.create = function(collection) {
+		return new LinkedList(collection);
 	};
 
 	//返回链表个数
@@ -749,7 +755,10 @@
 	 */
 	var Set = function(){}.inherits(Collection);//继承了Collection
 
-	//#HashSet
+	/**
+	 *new HashSet(); || new HashSet(Collection);
+	 *构造一个新的HashSet实例
+	 */
 	var HashSet = function(collection) {
 		if (!(this instanceof HashSet)) {
 			return new HashSet(collection);
@@ -763,11 +772,11 @@
 	}.inherits(Set);//HashSet继承了Set
 
 	/**
-	 *HashSet.create();
-	 *静态方法 用于创建一个HashSet对象实例
+	 *HashSet.create(); || HashSet.create(Collection);
+	 *静态方法，创建一个HashSet实例
 	 */
-	HashSet.create = function() {
-		return new HashSet();
+	HashSet.create = function(collection) {
+		return new HashSet(collection);
 	};
 
 	//返回set元素个数
@@ -956,7 +965,10 @@
 		return this.size() === 0;
 	};
 
-	//#HashMap
+	/**
+	 *new HashMap(); || new HashMap(Map);
+	 *构造一个新的HashMap实例
+	 */
 	var HashMap = function(map) {
 		if (!(this instanceof HashMap)) {
 			return new HashMap(map);
@@ -971,11 +983,11 @@
 	}.inherits(Map);//HashMap继承了Map
 
 	/**
-	 *HashMap.create();
-	 *静态方法 用于创建一个HashMap对象实例
+	 *HashMap.create(); || HashMap.create(Map);
+	 *静态方法，创建一个HashMap实例
 	 */
-	HashMap.create = function() {
-		return new HashMap();
+	HashMap.create = function(map) {
+		return new HashMap(map);
 	};
 
 	//返回键值对个数
@@ -1181,20 +1193,33 @@
 		 *对有序数组进行二分查找
 		 */
 		binarySearch: function(ary, target, compareFn) {
+			Arrays.__aryCheck__(ary);
+			if (target === undefined) throw new Error('target must be specified');
 			return Arrays.binarySearchRange(ary, 0, ary.length, target, compareFn);
 		},
 		/**
-		 *对有序数组指定范围内进行二分查找
+		 *binarySearchRange(ary, fromIndex, toIndex, target, compareFn);
+		 *对有序数组指定范围进行二分查找
 		 */
 		binarySearchRange: function(ary, fromIndex, toIndex, target, compareFn) {
+			Arrays.__aryCheck__(ary);
+			Arrays.__rangeCheck__(ary, fromIndex, toIndex);
+
 			var low = fromIndex,
 				high = toIndex - 1,
-				mid;
+				mid,
+				compareFnDefined = compareFn && typeof compareFn === 'function';;
 			while (low <= high) {
-				mid = Math.floor((low + high) / 2);
-				if (ary[mid] < target) {
+				mid = Math.floor((low + high) >> 1);
+				var result = 0;
+				if (compareFnDefined) {
+					result = compareFn(ary[mid], target);
+				} else {
+					result = ary[mid] - target;
+				}
+				if (result < 0) {
 					low = mid + 1;
-				} else if (ary[mid] > target) {
+				} else if (result > 0) {
 					high = mid - 1;
 				} else {
 					return mid;
@@ -1202,19 +1227,37 @@
 			}
 			return -1;
 		},
+		/**
+		 *复制指定数组内指定长度的元素
+		 */
 		copyOf: function(ary, length) {
-
+			Arrays.__aryCheck__(ary);
+			if (length === undefined) {
+				return ary.slice(0, ary.length);
+			}
+			if (typeof length !== 'number') {
+				throw new TypeError('length is not a number');
+			}
+			return Arrays.copyOfRange(ary, 0, length);
 		},
+		/**
+		 *复制指定数组内指定范围的元素
+		 */
 		copyOfRange: function(ary, fromIndex, toIndex) {
-
+			Arrays.__rangeCheck__(ary, fromIndex, toIndex);
+			return ary.slice(fromIndex, toIndex);
 		},
+		/**
+		 *两个指定数组是否相等
+		 */
 		equals: function(ary0, ary1, equalsFn) {
 			if (ary0 === ary1) return true;
 			if (ary0.length !== ary1.length) return false;
 
+			var equalsFnDefined = equalsFn && typeof equalsFn === 'function';
 			for (var i = 0, len = ary0.length; i < len; i++) {
 				var isEquals = false;
-				if (equalsFn && typeof equalsFn === 'function') {
+				if (equalsFnDefined) {
 					isEquals = equalsFn(ary0[i], ary1[i]);
 				} else {
 					isEquals = ary0[i] === ary1[i];
@@ -1223,17 +1266,72 @@
 			}
 			return false;
 		},
+		/**
+		 *用指定元素填充指定数组
+		 */
 		fill: function(ary, elem) {
-
+			Arrays.fillRange(ary, 0, ary.length, elem);
 		},
+		/**
+		 *用指定元素填充指定数组的指定范围
+		 */
 		fillRange: function(ary, fromIndex, toIndex, elem) {
-
+			Arrays.__rangeCheck__(ary, fromIndex, toIndex);
+			for (var i = fromIndex; i < toIndex; i++) {
+				ary[i] = elem;
+			}
 		},
-		sort: function(ary, fn) {
-
+		/**
+		 *对指定数组排序
+		 */
+		sort: function(ary, compareFn) {
+			return Arrays.sortRange(ary, 0, ary.length, compareFn);
 		},
-		sortRange: function(ary, fromIndex, toIndex, fn) {
+		/**
+		 *对指定数组指定范围排序
+		 */
+		sortRange: function(ary, fromIndex, toIndex, compareFn) {
+			Arrays.__rangeCheck__(ary, fromIndex, toIndex);
+			var quickSort = function(ary) {
+				if (ary.length <= 1) return ary;
+				var pivotIndex = Math.floor(ary.length >> 1),
+					pivot = ary.splice(pivotIndex, 1)[0],
+					left = [],
+					right = [],
+					compareFnDefined = compareFn && typeof compareFn === 'function';
+				for (var i = 0, len = ary.length; i < len; i++) {
+					var result = 0;
+					if (compareFnDefined) {
+						result = compareFn(ary[i], pivot);
+					} else {
+						result = ary[i] - pivot;
+					}
+					if (result < 0) {
+						left.push(ary[i]);
+					} else {
+						right.push(ary[i]);
+					}
+				}
+				return quickSort(left).concat([pivot], quickSort(right));
+			};
 
+			return quickSort(fromIndex === 0 && toIndex === 0 ? ary : ary.slice(fromIndex, toIndex));
+		},
+		__aryCheck__: function(ary) {
+			if (!(ary instanceof Array)) {
+				throw new TypeError('not an Array');
+			}
+		},
+		__rangeCheck__: function(ary, fromIndex, toIndex) {
+			if (typeof fromIndex !== 'number' || typeof toIndex !== 'number') {
+				throw new TypeError('fromIndex or toIndex must be a number');
+			} else if (fromIndex < 0 || fromIndex > ary.length) {
+				throw new Error('fromIndex out of bounds');
+			} else if (toIndex < 0 || toIndex > ary.length) {
+				throw new Error('toIndex out of bounds');
+			} else if (fromIndex > toIndex) {
+				throw new Error('fromIndex > toIndex');
+			}
 		}
 	};
 
@@ -1245,11 +1343,21 @@
 		 *取得集合中最大的元素
 		 */
 		max: function(collection, compareFn) {
+			Collections.__collectionCheck__(collection);
+			if (collection.isEmpty()) throw new Error('collection is empty');
+
 			var iter = collection.iterator(),
-				result = iter.next();
+				result = iter.next(),
+				compareFnDefined = compareFn && typeof compareFn === 'function';
 			while (iter.hasNext()) {
 				var current = iter.next();
-				if (compareFn(current, result) > 0) {
+				var compareResult = 0;
+				if (compareFnDefined) {
+					compareResult = compareFn(current, result);
+				} else {
+					compareResult = current - result;
+				}
+				if (compareResult > 0) {
 					result = current;
 				}
 			}
@@ -1259,11 +1367,21 @@
 		 *取得集合中最小的元素
 		 */
 		min: function(collection, compareFn) {
+			Collections.__collectionCheck__(collection);
+			if (collection.isEmpty()) throw new Error('collection is empty');
+
 			var iter = collection.iterator(),
-				result = iter.next();
+				result = iter.next(),
+				compareFnDefined = compareFn && typeof compareFn === 'function';
 			while (iter.hasNext()) {
 				var current = iter.next();
-				if (compareFn(current, result) < 0) {
+				var compareResult = 0;
+				if (compareFnDefined) {
+					compareResult = compareFn(current, result);
+				} else {
+					compareResult = current - result;
+				}
+				if (compareResult < 0) {
 					result = current;
 				}
 			}
@@ -1273,25 +1391,11 @@
 		 *对List进行排序
 		 */
 		sort: function(list, compareFn) {
-			if (list.size() <= 1) return;
+			Collections.__listCheck__(list);
 
-			var quickSort = function(ary) {
-				if (ary.length <= 1) return ary;
-				var pivotIndex = Math.floor(ary.length / 2),
-					pivot = ary.splice(pivotIndex, 1)[0],
-					left = [],
-					right = [];
-				for (var i = 0, len = ary.length; i < len; i++) {
-					if (compareFn(ary[i], pivot) < 0) {
-						left.push(ary[i]);
-					} else {
-						right.push(ary[i]);
-					}
-				}
-				return quickSort(left).concat([pivot], quickSort(right));
-			};
+			if (list.isEmpty()) return;
 
-			var ary = quickSort(list.toArray());
+			var ary = Arrays.sort(list.toArray(), compareFn);
 
 			for (var i = 0, len = ary.length; i < len; i++) {
 				list.set(i, ary[i]);				
@@ -1301,29 +1405,15 @@
 		 *对有序List进行二分查找 返回索引值
 		 */
 		binarySearch: function(list, target, compareFn) {
-			var search = function(ary) {
-				var low = 0,
-					high = ary.length - 1,
-					mid;
-				while (low <= high) {
-					mid = Math.floor((low + high) / 2);
-					var result = compareFn(ary[mid], target);
-					if (result < 0) {
-						low = mid + 1;
-					} else if (result > 0) {
-						high = mid - 1;
-					} else {
-						return mid;
-					}
-				}
-				return -1;
-			};
-			return search(list.toArray());
+			Collections.__listCheck__(list);
+			
+			return Arrays.binarySearch(list.toArray(), target, compareFn);
 		},
 		/**
 		 *将List中的指定元素全部替换为新元素
 		 */
 		replaceAll: function(list, oldElem, newElem) {
+			Collections.__listCheck__(list);
 			var replaced = false,
 				iter = list.iterator();
 			while (iter.hasNext()) {
@@ -1338,6 +1428,7 @@
 		 *将List元素反转
 		 */
 		reverse: function(list) {
+			Collections.__listCheck__(list);
 			if (list instanceof ArrayList) {
 				var size = list.size();
 				for (var i = 0, mid = size >> 1, j = size - 1; i < mid; i++, j--) {
@@ -1352,6 +1443,12 @@
 					backward.set(temp);
 				}
 			}
+		},
+		__listCheck__: function(list) {
+			if (!(list instanceof List)) throw new TypeError('not a List');
+		},
+		__collectionCheck__: function(collection) {
+			if (!(collection instanceof Collection)) throw new TypeError('not a Collection');
 		}
 	};
 
@@ -1399,8 +1496,8 @@
 	collections.LinkedList = LinkedList;
 	collections.HashSet = HashSet;
 	collections.HashMap = HashMap;
-	collections.Collections = Collections;
 	collections.Arrays = Arrays;
+	collections.Collections = Collections;
 
 	collections.__hash__ = 1024;//用于标识对象
 
@@ -1408,7 +1505,7 @@
 
 	//将某个模块导入到全局区 例如imports('collections.*');
 	var globalImports = function(module) {
-		if (!module || !/^collections\.(\*|[a-zA-Z]+)$/g.test(module)) {
+		if (!/^collections\.(\*|[a-zA-Z]+)$/g.test(module)) {
 			throw new Error('imports function arguments error');
 		}
 		module = module.replace('collections.', '');
