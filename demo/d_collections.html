@@ -1,12 +1,28 @@
-<head>
-	<meta charset="utf-8"/>
-</head>
-<body>
-	<h1>please check the console.</h1>
-	<h3>if you're using Chrome, F12 and click the "console" tab.</h3>
-	<pre>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>collections demo</title>
+		<link rel="stylesheet" type="text/css" href="css/demo.css"/>
+		<link rel="stylesheet" type="text/css" href="css/painter.css"/>
+	</head>
+	<body>
+		<div id="codeArea" class="module code">
+			<pre id="codePrint"></pre>
+			<div id="codeTip"><span></span></div>
+		</div>
+		<div class="module">
+			<span id="nextStep">start</span>
+		</div>
+		<div class="module console">
+			<div id="consolePrint"></div>
+			<div>
+				<span style="color:gray">></span><span id="consoleTip">|</span>
+			</div>
+		</div>
+<pre id="preCodes" class="list">
+//------------------------------begin
 imports('collections.*');
-
 var list = new ArrayList();
 list.add({id:1, name:'soctt', toString:function() {return '1:scott';}});
 list.add({id:3, name:'steve', toString:function() {return '3:steve';}});
@@ -19,7 +35,7 @@ var max = Collections.max(list, function(a, b) {
 	}
 	return a.id < b.id ? -1 : 1;
 });
-console.log('max: ' + max);//3:steve
+console.log('max: ' + max);//4:john
 
 var min = Collections.min(list, function(a, b) {
 	if (a.id === b.id) {
@@ -37,8 +53,15 @@ Collections.sort(list, function(a, b) {
 });
 console.log('after sort: ' + list);//1:scott,2:bill,3:steve,4:john
 
-var target = {id:3, name:'steve'};
+Collections.sort(list, function(a, b) {
+	if (a.id === b.id) {
+		return 0;
+	}
+	return a.id > b.id ? -1 : 1;
+});
+console.log('after sort desc: ' + list);//4:john,3:steve,2:bill,1:scott
 
+var target = {id:3, name:'steve'};
 var index = Collections.binarySearch(list, target, function(a, b) {
 	if (a.id === b.id) {
 		return 0;
@@ -46,24 +69,22 @@ var index = Collections.binarySearch(list, target, function(a, b) {
 	return a.id < b.id ? -1 : 1;
 });
 console.log('after binarySearch: index:' + index + '=>name:' + list.get(index).name);
-
 Collections.reverse(list);
 console.log('after reverse: ' + list);
 
 list.add({id:4, name:'john', toString:function() {return '4:john';}});
 console.log('after add: ' + list);
-
 list.defineEquals(function(a, b) {
 	return a.id === b.id && a.name === b.name;
 });
-
 var oldElem = {id:4, name:'john', toString:function() {return '4:john';}};
 var newElem = {id:0, name:'tom', toString:function() {return '0:tom';}};
-
 Collections.replaceAll(list, oldElem, newElem);
 console.log('after replaceAll: ' + list);
-
-	</pre>
-	<script type="text/javascript" src="../collections.js"></script>
-	<script type="text/javascript" src="js/t_collections.js"></script>
+//------------------------------end
+</pre>
+		<script src="../collections.js"></script>
+		<script src="js/painter.js"></script>
+		<script src="js/demo.js"></script>
+	</body>
 </html>

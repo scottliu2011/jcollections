@@ -1,6 +1,3 @@
-
-//CodePainter
-
 (function(global, undefined){
 	var keywords = [
 		'break', 'case', 'catch', 'continue', 'default', 'delete',

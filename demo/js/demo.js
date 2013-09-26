@@ -105,9 +105,9 @@
 			demo.codes.push(stepCodes);
 		}
 
-		/*var height = window.screen.availHeight - 180;
+		var height = window.innerHeight - 120;
 		codePrint.parentNode.style.height = height * 0.7 + 'px';
-		consolePrint.parentNode.style.height = height * 0.3 + 'px';*/
+		consolePrint.parentNode.style.height = height * 0.3 + 'px';
 		
 		nextStep.onclick = function() {
 			if (btnDisabled) return;
