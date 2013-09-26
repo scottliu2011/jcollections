@@ -9,7 +9,8 @@
 		consolePrint= $('consolePrint'),
 		codeTip = $('codeTip'),
 		consoleTip = $('consoleTip'),
-		nextStep = $('nextStep');
+		nextStep = $('nextStep'),
+		outputTip = $('outputTip');
 
 	var currStep = 0,
 		btnDisabled = false;
@@ -27,6 +28,7 @@
 				var p = document.createElement('p');
 				p.innerHTML = '&nbsp;';
 				codePrint.appendChild(p);
+				outputTip.style.display = 'none';
 			}
 			if (stepLine >= step.length) {//step is over.
 				btnDisabled = false;
@@ -52,9 +54,11 @@
 
 				new Function([],body).apply(demo.tasks, []);
 
+				outputTip.style.display = 'inline-block';
+
 				currStep++;
 				if (currStep === demo.codes.length) {
-					nextStep.innerHTML = 'restart';
+					nextStep.innerHTML = '重新开始';
 				}
 				return;
 			}
@@ -91,7 +95,7 @@
 		demo.varName = preCodes.className;
 
 		var regex = /\t|&amp;|&gt;|&lt;/g;
-		var ary = preCodes.innerHTML.split('\n\n');
+		var ary = preCodes.innerHTML.split('$');//\n\n is replaced by $, for ie8-
 		for (var i = 0; i < ary.length; i++) {
 			var stepCodes = ary[i].split('\n');
 			for (var j = 0; j < stepCodes.length; j++) {
@@ -105,7 +109,7 @@
 			demo.codes.push(stepCodes);
 		}
 
-		var height = window.innerHeight - 120;
+		var height = (window.innerHeight || document.documentElement.clientHeight) - 120;
 		codePrint.parentNode.style.height = height * 0.7 + 'px';
 		consolePrint.parentNode.style.height = height * 0.3 + 'px';
 		
@@ -115,9 +119,12 @@
 			if (currStep === demo.codes.length) {
 				codePrint.innerHTML = '';
 				consolePrint.innerHTML = '';
+				if (varName === 'data') {
+					consolePrint.innerHTML = '<ol id="ol"></ol>';
+				}
 				currStep = 0;
 			}
-			this.innerHTML = 'next step';
+			this.innerHTML = '下一步';
 			printCode();
 		};
 

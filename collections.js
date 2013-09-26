@@ -6,11 +6,8 @@
 	 *继承
 	 */
 	Function.prototype.inherits = function(Parent) {
-		if (Parent === undefined) {
-			throw new Error('Parent must be specified');
-		}
-		if (Parent.constructor !== Function) {
-			throw new TypeError("Parent is not a Function");
+		if (typeof Parent !== 'function') {
+			throw new TypeError("Parent incorrect");
 		}
 		this.prototype = new Parent();
 		this.prototype.constructor = this;

@@ -12,7 +12,8 @@
 			<div id="codeTip"><span></span></div>
 		</div>
 		<div class="module">
-			<span id="nextStep">start</span>
+			<span id="nextStep">开始运行</span>
+			<span id="outputTip">请查看下面输出</span>
 		</div>
 		<div class="module console">
 			<div id="consolePrint"></div>
@@ -27,7 +28,7 @@ var set = new HashSet();
 console.log('init: ' + set);//[]
 console.log('isEmpty? ' + set.isEmpty());//true
 console.log('size: ' + set.size());//0
-
+$
 set.add('hello', 'world');
 set.add('hello');//repeat!
 set.add('world');//repeat!
@@ -37,7 +38,7 @@ console.log('size: ' + set.size());//2
 set.remove('world');
 console.log('after remove world: ' + set);//[hello]
 console.log('contains world? ' + set.contains('world'));//false
-
+$
 var set2 = new HashSet();
 set2.add('bill', 'scott');
 var list = new ArrayList();
@@ -52,7 +53,7 @@ set.clear();
 console.log('after clear: ' + set);//[]
 console.log('isEmpty? ' + set.isEmpty());//true
 console.log('size: ' + set.size());//0
-
+$
 var person = {
 	name: 'john', 
 	age: 40, 
@@ -66,7 +67,7 @@ console.log('after add person object: ' + set);//[john => 40]
 console.log('contains person object? ' + set.contains(person));//true
 set.remove(person);
 console.log('after remove person object: ' + set);//[]
-
+$
 var Teacher = function(id, name) {
 	this.id = id;
 	this.name = name;
@@ -81,7 +82,7 @@ console.log('after add teacher: ' + set);//[007 => teacher wang]
 console.log('contains teacher object? ' + set.contains(teacher));//true
 set.remove(teacher);
 console.log('after remove teacher object: ' + set);//[]
-
+$
 set.add(1, 2, 3, 4, 5, 6);
 console.log('after add: ' + set);//[1,2,3,4,5,6]
 var iter = set.iterator();
@@ -93,7 +94,7 @@ while (iter.hasNext()) {
 	}
 }
 console.log('after iterator: ' + set);//[1,3,4,5,6]
-
+$
 set.clear();
 set.defineEquals(function(elem0, elem1) {
 	return elem0.id === elem1.id;

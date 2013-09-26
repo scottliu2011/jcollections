@@ -5,6 +5,18 @@
 		<title>template demo</title>
 		<link rel="stylesheet" type="text/css" href="css/demo.css"/>
 		<link rel="stylesheet" type="text/css" href="css/painter.css"/>
+		<style type="text/css">
+		ol{color:#CC0033;}
+		#tagImg{position:absolute;top:15px;right:35px;}
+		</style>
+		<script id="tpl" type="text/template">
+			<#= title #>:
+			<ol>
+				<# for (var i = 0; i < list.size(); i++) { #>
+						<li><#= list.get(i).name #></li>
+				<# } #>
+			</ol>
+		</script>
 	</head>
 	<body>
 		<div id="codeArea" class="module code">
@@ -12,20 +24,38 @@
 			<div id="codeTip"><span></span></div>
 		</div>
 		<div class="module">
-			<span id="nextStep">start</span>
+			<span id="nextStep">开始运行</span>
+			<span id="outputTip"></span>
 		</div>
 		<div class="module console">
-			<div id="consolePrint"></div>
-			<div>
+			<div id="consolePrint">
+				<div id="view">
+					
+				</div>
+			</div>
+			<div style="display:none;">
 				<span style="color:gray">></span><span id="consoleTip">|</span>
 			</div>
 		</div>
-<pre id="preCodes">
+		<div id="tagImg">
+			<img src="img/template.jpg"/>
+		</div>
+<pre id="preCodes" class="data">
 //------------------------------begin
-
+imports('collections.*');
+var data = new HashMap();
+data.put('title', 'students');//title
+var list = new ArrayList();
+list.add({id:0, name:'scott', age:15});
+list.add({id:1, name:'bill', age:16});
+list.add({id:2, name:'jobs', age:17});
+data.put('list', list);//list
+var tpl = Template.create();
+tpl.read('tpl').compile(data).render('view');
 //------------------------------end
 </pre>
 		<script src="../collections.js"></script>
+		<script src="../collections.util.js"></script>
 		<script src="js/painter.js"></script>
 		<script src="js/demo.js"></script>
 	</body>

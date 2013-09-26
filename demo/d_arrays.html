@@ -12,7 +12,8 @@
 			<div id="codeTip"><span></span></div>
 		</div>
 		<div class="module">
-			<span id="nextStep">start</span>
+			<span id="nextStep">开始运行</span>
+			<span id="outputTip">请查看下面输出</span>
 		</div>
 		<div class="module console">
 			<div id="consolePrint"></div>
@@ -26,7 +27,7 @@ imports('collections.*');
 //asList
 var list = Arrays.asList(1,2,3);
 console.log('asList result: ' + list);//[1,2,3]
-
+$
 var ary = [1,2,3,4,5,6,7,8,9,10];
 //binarySearch
 console.log('binarySearch result: ' + Arrays.binarySearch(ary, 7));//6
@@ -36,7 +37,7 @@ console.log('binarySearchRange result: ' + Arrays.binarySearchRange(ary, 4, 8, 6
 console.log('after copyOf: ' + Arrays.copyOf(ary, 3));//[1,2,3]
 //copyOfRange
 console.log('after copyOfRange: ' + Arrays.copyOfRange(ary, 3, 6));//[4,5,6]
-
+$
 var objAry = [
 	{id:1, name:'bill'},
 	{id:2, name:'steve'},
@@ -51,11 +52,11 @@ var position = Arrays.binarySearch(objAry, {id:4, name:'john'}, function(a, b) {
 	return a.id < b.id ? -1 : 1;
 });
 console.log('complex binarySearch result: ' + position);//3
-
+$
 var ary0 = [1,2,3];
 var ary1 = [1,2,3];
 console.log('is equals? ' + Arrays.equals(ary0, ary1));//true
-
+$
 var objAry0 = [
 	{id:1, name:'bill'},
 	{id:2, name:'steve'},
@@ -69,11 +70,11 @@ var objAry1 = [
 console.log('is equals(complex condition)? ' + Arrays.equals(objAry0, objAry1, function(a, b) {
 	return a.id === b.id && a.name === b.name;
 }));//true
-
+$
 var ary2 = [1,5,2,3,6,9,8];
 //sort
 console.log('after sort: ' + Arrays.sort(ary2));//1,2,3,5,6,8,9
-
+$
 var objAry2 = [
 	{id:1, name:'bill', toString: function() {return '1:bill';}},
 	{id:4, name:'john', toString: function() {return '4:john';}},
