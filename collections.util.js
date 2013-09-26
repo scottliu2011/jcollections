@@ -116,11 +116,14 @@
 		if (!(map instanceof Map)) {
 			throw new TypeError('not a Map instance');
 		}
-		var iter = map.entrySet().iterator();
+		var iter = map.entrySet().iterator(),
+			entry,
+			key,
+			value;
 		while (iter.hasNext()) {
-			var entry = iter.next();
-			var key = entry.getKey();
-			var value = this.__toStore__(entry.getValue());
+			entry = iter.next();
+			key = entry.getKey();
+			value = this.__toStore__(entry.getValue());
 			
 			store.setItem(key, value);
 		}
@@ -130,12 +133,14 @@
 	 *获取多个存储项
 	 */
 	Storage.prototype.getItems = function(filter) {
-		var map = new HashMap();
+		var map = new HashMap(),
+			match = false;
 		for (var key in store) {
-			var match = false;
 			try {
 				match = filter(key, store[key]);
-			} catch (e) {}
+			} catch (e) {
+				match = false;
+			}
 			
 			if (match) {
 				map.put(key, this.__fromStore__(store[key]));
@@ -148,11 +153,13 @@
 	 *删除多个存储项
 	 */
 	Storage.prototype.delItems = function(filter) {
+		var match = false;
 		for (var key in store) {
-			var match = false;
 			try {
 				match = filter(key, store[key]);
-			} catch (e) {}
+			} catch (e) {
+				match = false;
+			}
 			
 			if (match) {
 				store.removeItem(key);
@@ -164,17 +171,19 @@
 	 *获取模板对应的操作函数
 	 */
 	var getFn = function(source) {
-		var $ = '$' + (+ new Date);
-		var fn = function (dataMap) {
-			var keys = [$], values = [[]];
-			var iter = dataMap.entrySet().iterator();
-			while (iter.hasNext()) {
-				var entry = iter.next();
-				keys.push(entry.getKey());
-				values.push(entry.getValue());
+		var $ = '$' + (+ new Date),
+			fn = function (dataMap) {
+				var keys = [$],
+					values = [[]],
+					iter = dataMap.entrySet().iterator(),
+					entry;
+				while (iter.hasNext()) {
+					entry = iter.next();
+					keys.push(entry.getKey());
+					values.push(entry.getValue());
+				};
+				return (new Function(keys, fn.$)).apply(dataMap, values).join("");
 			};
-			return (new Function(keys, fn.$)).apply(dataMap, values).join("");
-		};
 		fn.$ = $ + ".push('"
 				+ source.replace(/\\/g, "\\\\")
 			 		.replace(/[\r\t\n]/g, " ")

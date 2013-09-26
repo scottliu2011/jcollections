@@ -109,11 +109,12 @@
 	 */
 	ArrayList.prototype.insert = function() {
 		var args = arguments,
-			index = args[0];
+			index = args[0],
+			elems;
 
 		this.__rangeCheck__(index, true);
 
-		var elems = Array.prototype.slice.call(arguments);
+		elems = Array.prototype.slice.call(arguments);
 		elems.splice(0, 1);
 
 		Array.prototype.splice.apply(this.__data__, [parseInt(index), 0].concat(elems));
@@ -280,12 +281,13 @@
 		var ArrayListIterator = function(arrayList) {
 			var cursor = index,
 				lastCursor = index - 1,
-				data = arrayList.__data__;
+				data = arrayList.__data__,
+				next;
 			this.hasNext = function() {
 				return cursor < arrayList.size();
 			};
 			this.next = function() {
-				var next = data[cursor];
+				next = data[cursor];
 				lastCursor = cursor++;
 				return next;
 			};
@@ -397,11 +399,12 @@
 	 */
 	LinkedList.prototype.insert = function() {
 		var args = arguments,
-			index = args[0];
+			index = args[0],
+			elems;
 
 		this.__rangeCheck__(index, true);
 
-		var elems = Array.prototype.slice.call(arguments);
+		elems = Array.prototype.slice.call(arguments);
 		elems.splice(0, 1);
 
 		for (var i = 0, len = elems.length; i < len; i++) {
@@ -492,9 +495,10 @@
 	 */
 	LinkedList.prototype.clear = function() {
 		var header = this.__header__,
-			entry = header.next;
+			entry = header.next,
+			next;
 		while (entry !== header) {
-			var next = entry.next;
+			next = entry.next;
 			entry.next = entry.previous = null;
 			entry.elem = null;
 			entry = next;
@@ -916,13 +920,10 @@
 				return cursor < set.size();
 			};
 			this.next = function() {
-				var key = keys[cursor];
-
-				var isObject = key.indexOf('object@') === 0;
-				var elem = isObject ? store[key] : KeyConvertor.fromInnerKey(key);
-
+				var key = keys[cursor],
+					isObject = key.indexOf('object@') === 0,
+					elem = isObject ? store[key] : KeyConvertor.fromInnerKey(key);
 				lastCursor = cursor++;
-				
 				return elem;
 			};
 			this.remove = function() {
@@ -930,10 +931,9 @@
 					throw new Error('illegal state');
 				}
 
-				var key = keys[lastCursor];
-				var isObject = key.indexOf('object@') === 0;
-				var elem = isObject ? store[key] : KeyConvertor.fromInnerKey(key);
-
+				var key = keys[lastCursor],
+					isObject = key.indexOf('object@') === 0,
+					elem = isObject ? store[key] : KeyConvertor.fromInnerKey(key);
 				set.remove(elem);
 				keys.splice(lastCursor, 1);
 
@@ -1023,9 +1023,10 @@
 		if (map.isEmpty()) return;
 
 		var keySet = map.keySet(),
-			iter = keySet.iterator();
+			iter = keySet.iterator(),
+			key;
 		while (iter.hasNext()) {
-			var key = iter.next();
+			key = iter.next();
 			this.put(key, map.get(key));
 		}
 	};
@@ -1141,8 +1142,7 @@
 			} else {
 				realKey = this.__xkey__[key];
 			}
-			var entry = new MapEntry(realKey, this.__store__[key]);
-			set.add(entry);
+			set.add(new MapEntry(realKey, this.__store__[key]));
 		}
 		return set;
 	};
@@ -1208,18 +1208,18 @@
 			var low = fromIndex,
 				high = toIndex - 1,
 				mid,
-				compareFnDefined = compareFn && typeof compareFn === 'function';;
+				compareFnDefined = compareFn && typeof compareFn === 'function',
+				compareResult;
 			while (low <= high) {
 				mid = Math.floor((low + high) >> 1);
-				var result = 0;
 				if (compareFnDefined) {
-					result = compareFn(ary[mid], target);
+					compareResult = compareFn(ary[mid], target);
 				} else {
-					result = ary[mid] - target;
+					compareResult = ary[mid] - target;
 				}
-				if (result < 0) {
+				if (compareResult < 0) {
 					low = mid + 1;
-				} else if (result > 0) {
+				} else if (compareResult > 0) {
 					high = mid - 1;
 				} else {
 					return mid;
@@ -1254,9 +1254,9 @@
 			if (ary0 === ary1) return true;
 			if (ary0.length !== ary1.length) return false;
 
-			var equalsFnDefined = equalsFn && typeof equalsFn === 'function';
+			var equalsFnDefined = equalsFn && typeof equalsFn === 'function',
+				isEquals;
 			for (var i = 0, len = ary0.length; i < len; i++) {
-				var isEquals = false;
 				if (equalsFnDefined) {
 					isEquals = equalsFn(ary0[i], ary1[i]);
 				} else {
@@ -1292,21 +1292,22 @@
 		 */
 		sortRange: function(ary, fromIndex, toIndex, compareFn) {
 			Arrays.__rangeCheck__(ary, fromIndex, toIndex);
+
 			var quickSort = function(ary) {
 				if (ary.length <= 1) return ary;
 				var pivotIndex = Math.floor(ary.length >> 1),
 					pivot = ary.splice(pivotIndex, 1)[0],
 					left = [],
 					right = [],
-					compareFnDefined = compareFn && typeof compareFn === 'function';
+					compareFnDefined = compareFn && typeof compareFn === 'function',
+					compareResult;
 				for (var i = 0, len = ary.length; i < len; i++) {
-					var result = 0;
 					if (compareFnDefined) {
-						result = compareFn(ary[i], pivot);
+						compareResult = compareFn(ary[i], pivot);
 					} else {
-						result = ary[i] - pivot;
+						compareResult = ary[i] - pivot;
 					}
-					if (result < 0) {
+					if (compareResult < 0) {
 						left.push(ary[i]);
 					} else {
 						right.push(ary[i]);
@@ -1348,10 +1349,11 @@
 
 			var iter = collection.iterator(),
 				result = iter.next(),
-				compareFnDefined = compareFn && typeof compareFn === 'function';
+				current,
+				compareFnDefined = compareFn && typeof compareFn === 'function',
+				compareResult;
 			while (iter.hasNext()) {
-				var current = iter.next();
-				var compareResult = 0;
+				current = iter.next();
 				if (compareFnDefined) {
 					compareResult = compareFn(current, result);
 				} else {
@@ -1372,10 +1374,11 @@
 
 			var iter = collection.iterator(),
 				result = iter.next(),
-				compareFnDefined = compareFn && typeof compareFn === 'function';
+				current,
+				compareFnDefined = compareFn && typeof compareFn === 'function',
+				compareResult;
 			while (iter.hasNext()) {
-				var current = iter.next();
-				var compareResult = 0;
+				current = iter.next();
 				if (compareFnDefined) {
 					compareResult = compareFn(current, result);
 				} else {
@@ -1429,16 +1432,18 @@
 		 */
 		reverse: function(list) {
 			Collections.__listCheck__(list);
+
+			var size = list.size();
 			if (list instanceof ArrayList) {
-				var size = list.size();
 				for (var i = 0, mid = size >> 1, j = size - 1; i < mid; i++, j--) {
 					list.set(i, list.set(j, list.get(i)));
 				}
 			} else if (list instanceof LinkedList) {
 				var forward = list.iterator(),
-					backward = list.iterator(list.size());
-				for (var i = 0, mid = list.size() >> 1; i < mid; i++) {
-					var temp = forward.next();
+					backward = list.iterator(list.size()),
+					temp;
+				for (var i = 0, mid = size >> 1; i < mid; i++) {
+					temp = forward.next();
 					forward.set(backward.previous());
 					backward.set(temp);
 				}
@@ -1516,9 +1521,7 @@
 		} else {
 			collections[module] && (global[module] = collections[module]);
 		}
-	};
-
-	var isModule = false;
+	}, isModule = false;
 
 	if (typeof define === 'function') {// RequireJS || SeaJS
 	    define(function(require, exports, module) {

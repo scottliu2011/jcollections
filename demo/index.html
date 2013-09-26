@@ -10,26 +10,21 @@
 		#box{width:600px;height:400px;position:absolute;left:50%;top:50%;margin-top:-200px;margin-left:-300px;background:white;
 			-webkit-box-shadow:0 0 20px black;-moz-box-shadow:0 0 20px black;-ms-box-shadow:0 0 20px black;box-shadow:0 0 20px black}
 		#box *{position:absolute}
-		.interface{border:1px dashed gray}
+		.frame{border-width:1px 1px 0;border-style:dashed;border-color:gray;background:white}
+		#frame0{width:260px;height:150px;top:30px;right:125px}
+		#frame1{width:170px;height:120px;top:70px;right:290px}
+		#frame2{width:170px;height:80px;top:150px;left:60px}
+		#frame3{width:100px;height:0;top:30px;left:115px}
+		.interface{border:1px dashed gray;background:white}
 		#iterator{top:20px;left:20px;width:90px;height:20px}
 		#collection{top:20px;left:160px;width:120px;height:20px}
 		#list{top:100px;left:100px;width:80px;height:20px}
+		#set{top:100px;left:270px;width:80px;height:20px}
+		#map{top:20px;right:80px;width:80px;height:20px}
+		#hashSet{top:180px;left:260px}
 		#arrayList{top:230px;left:10px}
 		#linkedList{top:230px;left:170px}
-		#set{top:100px;left:270px;width:80px;height:20px}
-		#hashSet{top:180px;left:260px}
-		#map{top:20px;right:80px;width:80px;height:20px}
 		#hashMap{top:180px;right:180px}
-		.vertical{width:0;height:25px;border-left:1px dashed gray}
-		.horizontal{width:100px;height:0;border-top:1px dashed gray}
-		#iteratorBranch0{width:40px;top:30px;left:115px}
-		#collectionBranch0{top:45px;left:210px}
-		#collectionBranch1{width:170px;height:30px;top:70px;left:140px;border-left:1px dashed gray;border-right:1px dashed gray}
-		#collectionBranch2{width:150px;top:30px;left:285px}
-		#listBranch0{top:125px;left:140px}
-		#listBranch1{width:170px;height:80px;top:150px;left:60px;border-left:1px dashed gray;border-right:1px dashed gray}
-		#setBranch0{top:120px;left:310px;height:60px}
-		#mapBranch0{top:45px;right:120px;height:150px}
 		#utilBox{width:200px;height:90px;bottom:20px;right:20px;border:1px dashed gray}
 		#utilBox a{position:static;width:180px;margin-top:10px}
 		#applyBox{width:300px;height:40px;bottom:20px;left:20px;border:1px dashed gray}
@@ -38,47 +33,38 @@
 	</head>
 	<body>
 		<div id="box">
+
+			<div id="frame0" class="frame"></div>
+			<div id="frame1" class="frame"></div>
+			<div id="frame2" class="frame"></div>
+			<div id="frame3" class="frame"></div>
+
 			<div id="iterator" class="interface">Iterator</div>
-			<div id="iteratorBranch0" class="horizontal"></div>
-
 			<div id="collection" class="interface">Collection</div>
-			<div id="collectionBranch0" class="vertical"></div>
-			<div id="collectionBranch1" class="horizontal"></div>
-			<div id="collectionBranch2" class="horizontal"></div>
-
 			<div id="list" class="interface">List</div>
-			<div id="listBranch0" class="vertical"></div>
-			<div id="listBranch1" class="horizontal"></div>	
+			<div id="set" class="interface">Set</div>
+			<div id="map" class="interface">Map</div>
 
 			<div id="arrayList">
-				<a href="d_arraylist.html">ArrayList</a>
+				<a href="d_arraylist.html" target="_blank">ArrayList</a>
 			</div>
 			<div id="linkedList">
-				<a href="d_linkedlist.html">LinkedList</a>
-			</div>
-			
-			<div id="set" class="interface">Set</div>
-			<div id="setBranch0" class="vertical"></div>
-
+				<a href="d_linkedlist.html" target="_blank">LinkedList</a>
+			</div>			
 			<div id="hashSet">
-				<a href="d_hashset.html">HashSet</a>
+				<a href="d_hashset.html" target="_blank">HashSet</a>
 			</div>
-
-			<div id="map" class="interface">Map</div>
-			<div id="mapBranch0" class="vertical"></div>
-
 			<div id="hashMap">
-				<a href="d_hashmap.html">HashMap</a>
+				<a href="d_hashmap.html" target="_blank">HashMap</a>
 			</div>
 
 			<div id="utilBox">
-				<a href="d_arrays.html">Arrays</a>
-				<a href="d_collections.html">Collections</a>
+				<a href="d_arrays.html" target="_blank">Arrays</a>
+				<a href="d_collections.html" target="_blank">Collections</a>
 			</div>
-
 			<div id="applyBox">
-				<a href="d_template.html">Template</a>
-				<a href="d_storage.html">Storage</a>
+				<a href="d_template.html" target="_blank">Template</a>
+				<a href="d_storage.html" target="_blank">Storage</a>
 			</div>
 		</div>
 	</body>
