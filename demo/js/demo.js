@@ -42,10 +42,12 @@
 
 				var varName = demo.varName;
 
-				if (currStep === 0) {
-					body += 'this.' + varName + '=' + varName + ';';
-				} else {
-					body = 'var ' + varName + '=this.' + varName + ';' + body;
+				if (varName) {
+					if (currStep === 0) {
+						body += 'this.' + varName + '=' + varName + ';';
+					} else {
+						body = 'var ' + varName + '=this.' + varName + ';' + body;
+					}
 				}
 
 				new Function([],body).apply(demo.tasks, []);
@@ -88,18 +90,17 @@
 		var preCodes = $('preCodes');
 		demo.varName = preCodes.className;
 
+		var regex = /\t|&amp;|&gt;|&lt;/g;
 		var ary = preCodes.innerHTML.split('\n\n');
 		for (var i = 0; i < ary.length; i++) {
 			var stepCodes = ary[i].split('\n');
 			for (var j = 0; j < stepCodes.length; j++) {
-				var currStepCode = stepCodes[j];
-				if (currStepCode.indexOf('&amp;') > -1) {
-					currStepCode = currStepCode.replace(/&amp;/g, '&');
-				}
-				if (currStepCode.indexOf('\t') > -1) {
-					currStepCode = currStepCode.replace('\t', '    ');
-				}
-				stepCodes[j] = currStepCode;
+				stepCodes[j] = stepCodes[j].replace(regex, function(value) {
+					if (value === '\t') return '    ';
+					if (value === '&amp;') return '&';
+					if (value === '&gt;') return '>';
+					if (value === '&lt;') return '<';
+				});
 			}
 			demo.codes.push(stepCodes);
 		}
