@@ -112,6 +112,12 @@
 		var height = (window.innerHeight || document.documentElement.clientHeight) - 120;
 		codePrint.parentNode.style.height = height * 0.7 + 'px';
 		consolePrint.parentNode.style.height = height * 0.3 + 'px';
+
+		var tplImg = $('tplImg');
+		if (tplImg) {
+			var width = (window.innerWidth || document.documentElement.clientWidth) - 60;
+			tplImg.style.width = width * 0.5 + 'px';
+		}
 		
 		nextStep.onclick = function() {
 			if (btnDisabled) return;
