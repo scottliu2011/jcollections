@@ -13,7 +13,10 @@
 			<#= title #>:
 			<ol>
 				<# for (var i = 0; i < list.size(); i++) { #>
-						<li><#= list.get(i).name #></li>
+						<# var person = list.get(i); #>
+						<li>
+							<#= person.name + ' : ' + person.age + ' years old' #>
+						</li>
 				<# } #>
 			</ol>
 		</script>
@@ -25,7 +28,7 @@
 		</div>
 		<div class="module">
 			<span id="nextStep">开始运行</span>
-			<span id="outputTip"></span>
+			<span id="outputTip">请注意下面输出</span>
 		</div>
 		<div class="module console">
 			<div id="consolePrint">
@@ -44,7 +47,7 @@
 //------------------------------begin
 imports('collections.*');
 var data = new HashMap();
-data.put('title', 'students');//title
+data.put('title', 'class one');//title
 var list = new ArrayList();
 list.add({id:0, name:'scott', age:15});
 list.add({id:1, name:'bill', age:16});

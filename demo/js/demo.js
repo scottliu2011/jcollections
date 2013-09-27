@@ -119,8 +119,8 @@
 			if (currStep === demo.codes.length) {
 				codePrint.innerHTML = '';
 				consolePrint.innerHTML = '';
-				if (varName === 'data') {
-					consolePrint.innerHTML = '<ol id="ol"></ol>';
+				if (demo.varName === 'data') {
+					consolePrint.innerHTML = '<div id="view"></div>';
 				}
 				currStep = 0;
 			}
