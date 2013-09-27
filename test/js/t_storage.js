@@ -1,47 +1,49 @@
-imports('collections.*');
-
-Storage.turnSessionMode();//转为session storage模式
-
+console.log('is Storage supported? ' + Storage.isSupported);
+Storage.turnSessionMode();// turn sessionStorage mode
 Storage.saveItem('test', 'hello');
-
-console.log(Storage.getItem('test'));//hello
-
-Storage.turnLocalMode();//转为local storage模式
-
-var store = Storage.create();
-store.defineToStore(function(value) {//定义外部结构到内部值的转换
+console.log('sessionStorage: test=>' + Storage.getItem('test'));//hello
+Storage.turnLocalMode();// turn localStorage mode
+Storage.saveItem('test', 'hello');
+console.log('localStorage: test=>' + Storage.getItem('test'));//hello
+var store = new Storage();
+store.defineToStore(function(value) {//define in rule
 	return Storage.toJSON(value);
 });
-store.defineFromStore(function(json) {//定义内部值到外部结构的转换
+store.defineFromStore(function(json) {//define out rule
 	return Storage.fromJSON(json);
 });
 
+imports('collections.*');
 var data = new HashMap();
+data.put('coder', {name:'jack', age:'30', salary:300});
+data.put('guarder', {name:'tom', age:'40', salary:200});
+data.put('cleaner', {name:'john', age:'45', salary:100});
+store.saveItems(data);//save a data map
+console.log('test exists? ' + Storage.hasItem('test'));
+console.log('coder exists? ' + Storage.hasItem('coder'));
+console.log('guarder exists? ' + Storage.hasItem('guarder'));
+console.log('cleaner exists? ' + Storage.hasItem('cleaner'));
 
-data.put('title', {name:'john', age:'40'});
-data.put('content', {name:'tom', age:'30'});
-
-store.saveItems(data);//存多个键值对
-
-var items = store.getItems(function(key, value) {//根据过滤器获取多个键值对 如遇异常 则不匹配
-	return Storage.fromJSON(value).age > 30;
+var resultMap = store.getItems(function(key, value) {
+	return Storage.fromJSON(value).age > 30;//the{test=hello} item will be ignored
 });
-var iter = items.entrySet().iterator();
+var iter = resultMap.entrySet().iterator();//raise salary
 while (iter.hasNext()) {
 	var entry = iter.next();
-	console.log(entry.getKey());
-	console.log(entry.getValue());
+	var record = entry.getValue();
+	record.salary += 50;
+	console.log('age: ' + record.age + ', current salary: ' + record.salary);
 }
+store.saveItems(resultMap);//save current salary
 
-store.delItems(function(key, value) {//根据过滤器删除多个键值对 value是字符串类型
-	//return key === 'test';
-	if (Storage.isJSONFormat(value)) {
-		return Storage.fromJSON(value).name === 'steve';
-	}
-	return false;
+Storage.delItems(function(key, stringValue) {
+	//return key === 'coder';[delete the item that key equals 'coder']
+	return Storage.fromJSON(stringValue).name === 'jack';
+	//return true;[if return true, delete all items. But call 'clear' method is better.^_^]
 });
+console.log('coder(jack) exists? ' + Storage.hasItem('coder'));
 
-/*
-store.delItems(function(key, value) {//删除所有
-	return true;
-});*/
+Storage.clear();//delete all items
+console.log('test exists? ' + Storage.hasItem('test'));
+console.log('guarder exists? ' + Storage.hasItem('guarder'));
+console.log('cleaner exists? ' + Storage.hasItem('cleaner'));

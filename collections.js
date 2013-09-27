@@ -1492,6 +1492,7 @@
 
 	collections.Collection = Collection;//Collection接口
 	collections.List = List;//List接口
+	collections.Set = Set;//Set接口
 	collections.Map = Map;//Map接口
 
 	collections.ArrayList = ArrayList;

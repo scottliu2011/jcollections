@@ -6,6 +6,7 @@
 		<link rel="stylesheet" type="text/css" href="css/demo.css"/>
 		<link rel="stylesheet" type="text/css" href="css/painter.css"/>
 		<style type="text/css">
+		#view{color:black;}
 		ol{color:#CC0033;}
 		.img{position:absolute;top:10px;right:35px;text-align:right;}
 		</style>
@@ -47,13 +48,15 @@
 //------------------------------begin
 imports('collections.*');
 var data = new HashMap();
-data.put('title', 'class one');//title
+data.put('title', 'students');//put title
 var list = new ArrayList();
 list.add({id:0, name:'scott', age:15});
 list.add({id:1, name:'bill', age:16});
 list.add({id:2, name:'jobs', age:17});
-data.put('list', list);//list
+data.put('list', list);//put list
 var tpl = Template.create();
+//read template by id, compile id with data,
+//and finally render the view that given id.
 tpl.read('tpl').compile(data).render('view');
 //------------------------------end
 </pre>

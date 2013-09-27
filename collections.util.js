@@ -56,10 +56,42 @@
 	};
 
 	/**
+	 *是否含有指定项
+	 */
+	Storage.hasItem = function(key) {
+		return !!store.getItem(key);
+	}
+
+	/**
 	 *删除指定key所对应的存储项
 	 */
 	Storage.delItem = function(key) {
 		store.removeItem(key);
+	};
+
+	/**
+	 *删除多个存储项
+	 */
+	Storage.delItems = function(filter) {
+		var match = false;
+		for (var key in store) {
+			try {
+				match = filter(key, store[key]);
+			} catch (e) {
+				match = false;
+			}
+			
+			if (match) {
+				store.removeItem(key);
+			}
+		}
+	};
+
+	/**
+	 *删除所有存储项
+	 */
+	Storage.clear = function() {
+		store.clear();
 	};
 
 	/**
@@ -136,6 +168,11 @@
 		var map = new HashMap(),
 			match = false;
 		for (var key in store) {
+			if (!filter) {
+				map.put(key, store[key]);
+				continue;
+			}
+
 			try {
 				match = filter(key, store[key]);
 			} catch (e) {
@@ -147,24 +184,6 @@
 			}
 		}
 		return map;
-	};
-
-	/**
-	 *删除多个存储项
-	 */
-	Storage.prototype.delItems = function(filter) {
-		var match = false;
-		for (var key in store) {
-			try {
-				match = filter(key, store[key]);
-			} catch (e) {
-				match = false;
-			}
-			
-			if (match) {
-				store.removeItem(key);
-			}
-		}
 	};
 
 	/**

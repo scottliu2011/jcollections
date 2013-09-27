@@ -25,6 +25,8 @@
 //------------------------------begin
 imports('collections.*');
 var list = new ArrayList();
+console.log('is a Collection? ' + (list instanceof Collection));
+console.log('is a List? ' + (list instanceof List));
 console.log('init: ' + list);//[]
 console.log('isEmpty? ' + list.isEmpty());//true
 console.log('size: ' + list.size());//0

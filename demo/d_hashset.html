@@ -25,6 +25,8 @@
 //------------------------------begin
 imports('collections.*');
 var set = new HashSet();
+console.log('is a Collection? ' + (set instanceof Collection));
+console.log('is a Set? ' + (set instanceof Set));
 console.log('init: ' + set);//[]
 console.log('isEmpty? ' + set.isEmpty());//true
 console.log('size: ' + set.size());//0
