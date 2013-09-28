@@ -4,9 +4,9 @@ collections.js是一个可以简化数据操作、提高开发效率的集合类
 
 该框架由两部分组成：
 
-`collections.js`：提供了几种常用的集合类，可直接引入到页面，也可作为一个独立的模块按需加载，支持`RequireJS`、`SeaJS`及`NodeJS`环境
+`collections.js`：集合类，提供了几种常用的集合类，这个库文件可直接引入到页面，也可作为一个独立的模块按需加载，支持RequireJS、Sea.js及Node.js环境
 
-`collections.util.js`：工具库，提供了基于集合框架的模板操作类和本地存储类，它依赖`collections.js`
+`collections.util.js`：工具库，提供了基于集合框架的模板操作类和本地存储类，它依赖于collections.js这个集合函数库
 
 ## 快速上手
 ###### 引入函数库
