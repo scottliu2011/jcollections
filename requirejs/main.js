@@ -1,9 +1,8 @@
-define(function(require, exports, module) {
-    console.log('hello SeaJS');
+require(['../collections'], function(collections) {
+	console.log('hello RequireJS');
 
     //collections.imports('ArrayList');
 
-    var collections = require('../collections');
     var arrayList = new collections.ArrayList();
     arrayList.add('hello', 'world');
     console.log(arrayList.toString());

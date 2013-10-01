@@ -7,7 +7,7 @@
 	 */
 	Function.prototype.inherits = function(Parent) {
 		if (typeof Parent !== 'function') {
-			throw new TypeError("Parent incorrect");
+			throw TypeError("Parent incorrect");
 		}
 		this.prototype = new Parent();
 		this.prototype.constructor = this;
@@ -58,13 +58,13 @@
 	//检查索引值的范围
 	List.prototype.__rangeCheck__ = function(index, canBeSize) {
 		if (typeof index !== 'number') {
-			throw new Error('index incorrect');
+			throw Error('index incorrect');
 		}
 
 		if (index === 0 && this.size() === 0) return;
 		
 		if (index < 0 || (canBeSize ? index > this.size() : index >= this.size())) {
-			throw new Error('index out of bounds: index:' + index + ', size:' + this.size());
+			throw Error('index out of bounds: index:' + index + ', size:' + this.size());
 		}
 	};
 
@@ -155,7 +155,7 @@
 	 */
 	ArrayList.prototype.addAll = function(collection) {
 		if (!(collection instanceof Collection)) {
-			throw new Error('not a Collection instance');
+			throw Error('not a Collection instance');
 		}
 		if (!collection.isEmpty()) {
 			this.__data__ = this.__data__.concat(collection.toArray());
@@ -169,7 +169,7 @@
 	ArrayList.prototype.insertAll = function(index, collection) {
 		this.__rangeCheck__(index, true);
 		if (!(collection instanceof Collection)) {
-			throw new Error('not a Collection instance');
+			throw Error('not a Collection instance');
 		}
 		if (!collection.isEmpty()) {
 			Array.prototype.splice.apply(this.__data__, [parseInt(index), 0].concat(collection.toArray()));
@@ -216,7 +216,7 @@
 		this.__rangeCheck__(fromIndex);
 		this.__rangeCheck__(toIndex);
 		if (fromIndex > toIndex) {
-			throw new Error('fromIndex > toIndex');
+			throw Error('fromIndex > toIndex');
 		}
 		return this.__data__.splice(fromIndex, toIndex - fromIndex);
 	};
@@ -290,13 +290,13 @@
 			};
 			this.set = function(elem) {
 				if (lastCursor === -1) {
-					throw new Error('illegal state');
+					throw Error('illegal state');
 				}
 				arrayList.set(lastCursor, elem);
 			};
 			this.remove = function() {
 				if (lastCursor === -1) {
-					throw new Error('illegal state');
+					throw Error('illegal state');
 				}
 				arrayList.removeAt(lastCursor);
 				cursor--;
@@ -363,7 +363,7 @@
 	//移除指定的结点
 	LinkedList.prototype.__removeEntry__ = function(entry) {
 		if (entry === this.__header__) {
-			throw new Error('no such element in this list');
+			throw Error('no such element in this list');
 		}
 
 		var retVal = entry.elem;
@@ -453,7 +453,7 @@
 	 */
 	LinkedList.prototype.addAll = function (collection) {
 		if (!(collection instanceof Collection)) {
-			throw new Error('not a Collection instance');
+			throw Error('not a Collection instance');
 		}
 		if (!collection.isEmpty()) {
 			this.insertAll(this.__size__, collection);
@@ -468,7 +468,7 @@
 		this.__rangeCheck__(index, true);
 
 		if (!(collection instanceof Collection)) {
-			throw new Error('not a Collection instance');
+			throw Error('not a Collection instance');
 		}
 		if (collection.isEmpty()) return;
 
@@ -550,7 +550,7 @@
 	 */
 	LinkedList.prototype.getFirst = function() {
 		if (this.__size__ === 0) {
-			throw new Error('no element in this list');
+			throw Error('no element in this list');
 		}
 		return this.__header__.next.elem;
 	};
@@ -561,7 +561,7 @@
 	 */
 	LinkedList.prototype.getLast = function() {
 		if (this.__size__ === 0) {
-			throw new Error('no element in this list');
+			throw Error('no element in this list');
 		}
 		return this.__header__.previous.elem;
 	};
@@ -687,7 +687,7 @@
 			};
 			this.next = function() {
 				if (nextIndex === size) {
-					throw new Error('no such element in this list');
+					throw Error('no such element in this list');
 				}
 				last = next;
 				
@@ -701,7 +701,7 @@
 			};
 			this.previous = function() {
 				if (nextIndex === 0) {
-					throw new Error('no such element in this list');
+					throw Error('no such element in this list');
 				}
 				
 				last = next = next.previous;
@@ -711,7 +711,7 @@
 			};
 			this.set = function(elem) {
 				if (last === header) {
-					throw new Error('illegal state');
+					throw Error('illegal state');
 				}
 				last.elem = elem;
 			};
@@ -819,7 +819,7 @@
 	 */
 	HashSet.prototype.addAll = function(collection) {
 		if (!(collection instanceof Collection)) {
-			throw new Error('not a Collection instance');
+			throw Error('not a Collection instance');
 		}
 		if (collection.isEmpty()) return;
 
@@ -925,7 +925,7 @@
 			};
 			this.remove = function() {
 				if (lastCursor === -1) {
-					throw new Error('illegal state');
+					throw Error('illegal state');
 				}
 
 				var key = keys[lastCursor],
@@ -1015,7 +1015,7 @@
 	 */
 	HashMap.prototype.putAll = function(map) {
 		if (!(map instanceof Map)) {
-			throw new Error('not a Map instance');
+			throw Error('not a Map instance');
 		}
 		if (map.isEmpty()) return;
 
@@ -1191,7 +1191,7 @@
 		 */
 		binarySearch: function(ary, target, compareFn) {
 			Arrays.__aryCheck__(ary);
-			if (target === undefined) throw new Error('target must be specified');
+			if (target === undefined) throw Error('target must be specified');
 			return Arrays.binarySearchRange(ary, 0, ary.length, target, compareFn);
 		},
 		/**
@@ -1233,7 +1233,7 @@
 				return ary.slice(0, ary.length);
 			}
 			if (typeof length !== 'number') {
-				throw new TypeError('length is not a number');
+				throw TypeError('length is not a number');
 			}
 			return Arrays.copyOfRange(ary, 0, length);
 		},
@@ -1317,18 +1317,18 @@
 		},
 		__aryCheck__: function(ary) {
 			if (!(ary instanceof Array)) {
-				throw new TypeError('not an Array');
+				throw TypeError('not an Array');
 			}
 		},
 		__rangeCheck__: function(ary, fromIndex, toIndex) {
 			if (typeof fromIndex !== 'number' || typeof toIndex !== 'number') {
-				throw new TypeError('fromIndex or toIndex must be a number');
+				throw TypeError('fromIndex or toIndex must be a number');
 			} else if (fromIndex < 0 || fromIndex > ary.length) {
-				throw new Error('fromIndex out of bounds');
+				throw Error('fromIndex out of bounds');
 			} else if (toIndex < 0 || toIndex > ary.length) {
-				throw new Error('toIndex out of bounds');
+				throw Error('toIndex out of bounds');
 			} else if (fromIndex > toIndex) {
-				throw new Error('fromIndex > toIndex');
+				throw Error('fromIndex > toIndex');
 			}
 		}
 	};
@@ -1342,7 +1342,7 @@
 		 */
 		max: function(collection, compareFn) {
 			Collections.__collectionCheck__(collection);
-			if (collection.isEmpty()) throw new Error('collection is empty');
+			if (collection.isEmpty()) throw Error('collection is empty');
 
 			var iter = collection.iterator(),
 				result = iter.next(),
@@ -1367,7 +1367,7 @@
 		 */
 		min: function(collection, compareFn) {
 			Collections.__collectionCheck__(collection);
-			if (collection.isEmpty()) throw new Error('collection is empty');
+			if (collection.isEmpty()) throw Error('collection is empty');
 
 			var iter = collection.iterator(),
 				result = iter.next(),
@@ -1447,10 +1447,10 @@
 			}
 		},
 		__listCheck__: function(list) {
-			if (!(list instanceof List)) throw new TypeError('not a List');
+			if (!(list instanceof List)) throw TypeError('not a List');
 		},
 		__collectionCheck__: function(collection) {
-			if (!(collection instanceof Collection)) throw new TypeError('not a Collection');
+			if (!(collection instanceof Collection)) throw TypeError('not a Collection');
 		}
 	};
 
@@ -1465,7 +1465,7 @@
 
 			return function (obj) {
 				if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
-					throw new TypeError('Object.keys called on non-object');
+					throw TypeError('Object.keys called on non-object');
 				}
 
 				var result = [], prop, i;
@@ -1509,7 +1509,7 @@
 	//将某个模块导入到全局区 例如imports('collections.*');
 	var globalImports = function(module) {
 		if (!/^collections\.(\*|[a-zA-Z]+)$/g.test(module)) {
-			throw new Error('imports function arguments error');
+			throw Error('imports function arguments error');
 		}
 		module = module.replace('collections.', '');
 		if (module === '*') {

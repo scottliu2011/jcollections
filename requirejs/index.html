@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8"/>
-		<title>SeaJS</title>
+		<title>RequireJS</title>
 	</head>
 	<body>
 		<div id="stat"></div>
@@ -11,9 +11,6 @@
 				alert('该程序需部署在服务器端运行');
 			}
 		</script>
-		<script src="sea.js"></script>
-		<script>
-			seajs.use('./main');
-		</script>
+		<script src="require.js" data-main="main"></script>
 	</body>
 </html>
