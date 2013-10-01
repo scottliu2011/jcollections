@@ -1,6 +1,6 @@
-# collections.js
+# collections-js
 
-collections.js是一个可以简化数据操作、提高开发效率的集合类框架，接口简单，容易上手；在API方面，collections.js汲取了Java集合中优秀的设计思想，同时也增添了一些新的特性，最大程度上方便开发人员的使用。
+collections-js是一个可以简化数据操作、提高开发效率的集合类框架。它接口简单，容易上手，在API方面，collections-js汲取了Java集合中优秀的设计思想，同时也增添了一些新的特性，最大程度上方便开发人员的使用。
 
 该框架由两部分组成：
 
@@ -43,7 +43,7 @@ var list = ArrayList.create();
 如果是在RequireJS、Sea.js或Node.js中使用，情况会略有不同。例如，要在Node.js中使用，首先要使用npm命令安装collections.js包：
 
 ```
-npm install collections.js
+npm install collections-js
 ```
 ## 循序渐进
 下面介绍一下常用的操作：
