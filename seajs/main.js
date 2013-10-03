@@ -3,7 +3,7 @@ define(function(require, exports, module) {
 
     //collections.imports('ArrayList');
 
-    var collections = require('../collections');
+    var collections = require('../jcollections');
     var arrayList = new collections.ArrayList();
     arrayList.add('hello', 'world');
     console.log(arrayList.toString());

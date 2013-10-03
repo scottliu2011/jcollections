@@ -2,15 +2,15 @@
 
 	"use strict";
 
-	var colletions = global.collections,
+	var jcollections = global.collections,
 		mapLiberaryDefined = collections && collections.Map && collections.HashMap;
 
 	if (!mapLiberaryDefined) {
 		throw new Error('Map liberary is required');
 	}
 
-	var Map = colletions.Map,
-		HashMap = colletions.HashMap,
+	var Map = jcollections.Map,
+		HashMap = jcollections.HashMap,
 		store = global.localStorage;
 
 	function Storage() {
@@ -272,7 +272,7 @@
 		$(targetId).innerHTML = this.__html__;
 	};
 
-	collections.Template = Template;
-	collections.Storage = Storage;
+	jcollections.Template = Template;
+	jcollections.Storage = Storage;
 
 })(this);

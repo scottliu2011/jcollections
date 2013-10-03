@@ -1,4 +1,4 @@
-require(['../collections'], function(collections) {
+require(['../jcollections'], function(collections) {
 	console.log('hello RequireJS');
 
     //collections.imports('ArrayList');

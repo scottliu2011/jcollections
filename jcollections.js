@@ -731,7 +731,7 @@
 	var KeyConvertor = {
 		toInnerKey: function(outerValue) {
 			if (typeof outerValue === 'object' && !outerValue.__hash__) {
-				outerValue.__hash__ = collections.__hash__++;
+				outerValue.__hash__ = jcollections.__hash__++;
 			}
 			return (typeof outerValue) + '@' + (outerValue.__hash__ || outerValue);
 		},
@@ -1488,44 +1488,44 @@
 		}());
 	};
 
-	var collections = {};//collections包
+	var jcollections = {};//jcollections包
 
-	collections.Collection = Collection;//Collection接口
-	collections.List = List;//List接口
-	collections.Set = Set;//Set接口
-	collections.Map = Map;//Map接口
+	jcollections.Collection = Collection;//Collection接口
+	jcollections.List = List;//List接口
+	jcollections.Set = Set;//Set接口
+	jcollections.Map = Map;//Map接口
 
-	collections.ArrayList = ArrayList;
-	collections.LinkedList = LinkedList;
-	collections.HashSet = HashSet;
-	collections.HashMap = HashMap;
-	collections.Arrays = Arrays;
-	collections.Collections = Collections;
+	jcollections.ArrayList = ArrayList;
+	jcollections.LinkedList = LinkedList;
+	jcollections.HashSet = HashSet;
+	jcollections.HashMap = HashMap;
+	jcollections.Arrays = Arrays;
+	jcollections.Collections = Collections;
 
-	collections.__hash__ = 1024;//用于标识对象
+	jcollections.__hash__ = 1024;//用于标识对象
 
-	global.collections = collections;//将collections包放置在全局区
+	global.jcollections = jcollections;//将jcollections包放置在全局区
 
 	//将一到多个模块导入到全局范围 例如imports('ArrayList', 'LinkedList');
 	global.imports = function() {
 		var args = Array.prototype.slice.call(arguments);
 		if (args[0] === '*') {
-			for (var module in collections) {
-				global[module] = collections[module];
+			for (var module in jcollections) {
+				global[module] = jcollections[module];
 			}
 		} else {
-			for (var module in collections) {
-				collections[module] && (global[module] = collections[module]);
+			for (var module in jcollections) {
+				jcollections[module] && (global[module] = jcollections[module]);
 			}
 		}
 	};
 
 	if (typeof define === 'function') {// RequireJS || SeaJS
 	    define(function(require, exports, module) {
-	        module.exports = collections;
+	        module.exports = jcollections;
 	    });
 	} else if (typeof exports !== 'undefined') {// NodeJS
-	    module.exports = collections;
+	    module.exports = jcollections;
 	}
 
 })(this);

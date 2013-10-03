@@ -1,32 +1,56 @@
-# collections-js
+# jcollections
 
-collections-js是一个可以简化数据操作、提高开发效率的集合类框架。它接口简单，容易上手，在API方面，collections-js汲取了Java集合中优秀的设计思想，同时也增添了一些新的特性，最大程度上方便开发人员的使用。
+jcollections是一个可以简化数据操作、提高开发效率的集合类框架。它接口简单，容易上手，在API方面，jcollections汲取了Java集合中优秀的设计思想，同时也增添了一些新的特性，最大程度上方便开发人员的使用。
 
 该框架由两部分组成：
 
-`collections.js`：集合类，提供了几种常用的集合类，这个库文件可直接引入到页面，也可作为一个独立的模块按需加载，支持RequireJS、Sea.js及Node.js环境
+`jcollections.js`：集合类，提供了几种常用的集合类，这个库文件可直接引入到页面，也可作为一个独立的模块按需加载，支持RequireJS、Sea.js及Node.js环境
 
-`collections.util.js`：工具库，提供了基于集合框架的模板操作类和本地存储类，它依赖于collections.js这个集合函数库
+`jcollections.util.js`：工具库，提供了基于集合框架的模板操作类和本地存储类，它依赖于collections.js这个集合函数库
 
-## 快速上手
-如果是单独使用，可以像下面这样操作：
-###### 引入函数库
+## 如何使用
+### 1.页面单独使用：
 
 ```html
-<script type="text/javascript" src="collections.js"></script>
+<script type="text/javascript" src="jcollections.js"></script>
+```
+### 2.作为模块使用：
+在Sea.js或RequireJS中作为模块使用，都需要`require`函数。
+比如在Sea.js中：
+
+```javascript
+var collections = require('./jcollections');
+```
+在RequireJS中略有不同：
+
+```javascript
+require(['../jcollections'], function(jcollections) {
+	//todo
+}
+```
+### 3.在Node.js中使用：
+首先使用`npm`命令安装`jcollections-js`模块：
+
+```
+npm install jcollections
+```
+然后使用`require`函数，把模块包含进来：
+
+```javascript
+var collections = require('jcollections');
 ```
 ###### 编写代码
-所有集合类都封装在`collections`包内，创建类实例时需要加包名：
+所有集合类都封装在`jcollections`包内，创建类实例时需要加包名：
 
 ```javascript
-var list = new collections.ArrayList();
+var list = new jcollections.ArrayList();
 ```
-为了简化开发人员的工作，collections.js提供了imports机制，将集合类导入到全局范围：
+为了简化开发人员的工作，jcollections提供了imports机制，将集合类导入到全局范围：
 
 ```javascript
-imports('collections.*');            //imports all classes
+imports('*');
 or
-imports('collections.ArrayList');    //imports the specified class
+imports('ArrayList'[, 'LinkedList'[,...]]);
 ```
 如此一来，创建实例就变得简单多了：
 
@@ -42,15 +66,13 @@ var list = ArrayList.create();
 
 如果是在RequireJS、Sea.js或Node.js中使用，情况会略有不同。例如，要在Node.js中使用，首先要使用npm命令安装collections.js包：
 
-```
-npm install collections-js
-```
+
 ## 循序渐进
 下面介绍一下常用的操作：
 ### ArrayList
 首先是创建一个ArrayList实例，可以创建一个空集合，或者传递一个数组，创建一个含有数组元素的集合：
 
-```
+```javascript
 var list = new ArrayList();
 or
 var list = new ArrayList([...]); 
