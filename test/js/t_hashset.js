@@ -1,4 +1,4 @@
-imports('collections.*');
+imports('*');
 var set = new HashSet();
 
 console.log('0.---------------------------------------------------------------------');

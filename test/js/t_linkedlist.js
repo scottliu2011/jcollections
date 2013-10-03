@@ -1,4 +1,4 @@
-imports('collections.*');
+imports('*');
 var list = new LinkedList();
 
 console.log('0.---------------------------------------------------------------------');

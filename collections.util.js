@@ -272,7 +272,7 @@
 		$(targetId).innerHTML = this.__html__;
 	};
 
-	global.Template = Template;
-	global.Storage = Storage;
+	collections.Template = Template;
+	collections.Storage = Storage;
 
-})(window);
+})(this);

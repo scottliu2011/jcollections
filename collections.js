@@ -1506,40 +1506,26 @@
 
 	global.collections = collections;//将collections包放置在全局区
 
-	//将某个模块导入到全局区 例如imports('collections.*');
-	var globalImports = function(module) {
-		if (!/^collections\.(\*|[a-zA-Z]+)$/g.test(module)) {
-			throw Error('imports function arguments error');
-		}
-		module = module.replace('collections.', '');
-		if (module === '*') {
-			for (var elem in collections) {
-				global[elem] = collections[elem];
+	//将一到多个模块导入到全局范围 例如imports('ArrayList', 'LinkedList');
+	global.imports = function() {
+		var args = Array.prototype.slice.call(arguments);
+		if (args[0] === '*') {
+			for (var module in collections) {
+				global[module] = collections[module];
 			}
 		} else {
-			collections[module] && (global[module] = collections[module]);
+			for (var module in collections) {
+				collections[module] && (global[module] = collections[module]);
+			}
 		}
-	}, isModule = false;
+	};
 
 	if (typeof define === 'function') {// RequireJS || SeaJS
 	    define(function(require, exports, module) {
 	        module.exports = collections;
-	        isModule = true;
 	    });
 	} else if (typeof exports !== 'undefined') {// NodeJS
 	    module.exports = collections;
-	    isModule = true;
-	} else {
-		global.imports = globalImports;
-	}
-
-	if (isModule) {
-		//for RequireJS || SeaJS || NodeJS
-		//var collections = require('./collections');
-		//collections.imports('*');
-		collections.imports = function(module) {
-			globalImports('collections.' + module);
-		};
 	}
 
 })(this);

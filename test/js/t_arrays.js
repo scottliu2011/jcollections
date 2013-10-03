@@ -1,4 +1,4 @@
-imports('collections.*');
+imports('*');
 		
 //asList
 var list = Arrays.asList(1,2,3);

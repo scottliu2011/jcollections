@@ -23,7 +23,7 @@
 		</div>
 <pre id="preCodes" class="list">
 //------------------------------begin
-imports('collections.*');
+imports('LinkedList', 'ArrayList', 'HashSet');
 var list = new LinkedList();
 console.log('is a Collection? ' + (list instanceof Collection));
 console.log('is a List? ' + (list instanceof List));
@@ -99,7 +99,7 @@ console.log('after remove first and last occurrence: ' + list);//[a, 9, b, c, x,
 $
 list.clear();
 list.defineEquals(function(elem0, elem1) {
-	return elem0.id === elem1.id && elem0.name === elem1.name || 3;
+	return elem0.id === elem1.id && elem0.name === elem1.name;
 });
 var Student = function(id, name) {
 	this.id = id;
@@ -112,7 +112,6 @@ var student0 = new Student('001', 'john');
 var student1 = new Student('002', 'tom');
 list.add(student0, student1);
 console.log(list.get(0) + ' & ' + list.get(0));
-$
 var student2 = new Student('001', 'john');
 console.log('contains 001? ' + list.contains(student2));//true
 console.log('indexOf 001: ' + list.indexOf(student2));//0

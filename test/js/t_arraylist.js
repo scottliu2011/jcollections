@@ -1,4 +1,4 @@
-imports('collections.*');
+imports('*');
 var list = new ArrayList();
 
 console.log('0.---------------------------------------------------------------------');

@@ -1,4 +1,4 @@
-imports('collections.*');
+imports('*');
 var map = new HashMap();
 
 console.log('0.------------------------------------------------------------------');
