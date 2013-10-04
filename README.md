@@ -68,7 +68,7 @@ jcollections.run(function() {
 	console.log(lnkList + '');
 });
 ```
-第二种方式，直接使用类型名即可，不过需要在函数参数列表中声明类型：
+第二种方式，不用任何前缀，不同的是，需要在函数参数列表中事先声明类型：
 
 ```javascript
 jcollections.run(function(ArrayList, LinkedList) {
@@ -79,6 +79,8 @@ jcollections.run(function(ArrayList, LinkedList) {
    	console.log(lnkList + '');
 });
 ```
+使用第二种方式时，可在参数列表里随意声明一到多个类型，也不用考虑声明顺序，只要声明的类型存在于jcollections包内，就可以正确运行。
+
 另外，每个集合类都提供了一个静态方法，用于创建实例，所以也可以这样写：
 
 ```javascript
