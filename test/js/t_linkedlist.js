@@ -1,4 +1,4 @@
-imports('*');
+jcollections.exports('*');
 var list = new LinkedList();
 
 console.log('0.---------------------------------------------------------------------');

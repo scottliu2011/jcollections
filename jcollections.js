@@ -731,7 +731,7 @@
 	var KeyConvertor = {
 		toInnerKey: function(outerValue) {
 			if (typeof outerValue === 'object' && !outerValue.__hash__) {
-				outerValue.__hash__ = jcollections.__hash__++;
+				outerValue.__hash__ = this.__hash__++;
 			}
 			return (typeof outerValue) + '@' + (outerValue.__hash__ || outerValue);
 		},
@@ -748,7 +748,8 @@
 			} else {
 				return innerKey;
 			}
-		}
+		},
+		__hash__: 1024
 	};
 
 	/*
@@ -1502,23 +1503,39 @@
 	jcollections.Arrays = Arrays;
 	jcollections.Collections = Collections;
 
-	jcollections.__hash__ = 1024;//用于标识对象
-
-	global.jcollections = jcollections;//将jcollections包放置在全局区
-
-	//将一到多个模块导入到全局范围 例如imports('ArrayList', 'LinkedList');
-	global.imports = function() {
+	//将一到多个模块导入到全局范围 例如jcollections.exports('ArrayList', 'LinkedList');
+	jcollections.exports = function() {
 		var args = Array.prototype.slice.call(arguments);
 		if (args[0] === '*') {
-			for (var module in jcollections) {
-				global[module] = jcollections[module];
+			for (var module in this) {
+				global[module] = this[module];
 			}
 		} else {
-			for (var module in jcollections) {
-				jcollections[module] && (global[module] = jcollections[module]);
+			for (var module in this) {
+				this[module] && (global[module] = this[module]);
 			}
 		}
 	};
+
+	//沙箱模式
+	jcollections.run = function() {
+		var callback = Array.prototype.slice.call(arguments).pop(),
+			params = /\(.*?\)/.exec(callback + '')[0].replace(/\(|\s+|\)/g, '').split(','),
+			applyParams = [];
+		
+		if (params[0]) {
+			for (var i = 0, len = params.length; i < len; i++) {
+				var type = params[i],
+					legal = this[type] && type !== 'exports' && type !== 'run';
+				if (!legal) throw TypeError('no such type: ' + type);
+				applyParams.push(this[type]);
+			}
+		}
+
+		callback.apply(this, applyParams);
+	};
+
+	global.jcollections = jcollections;//将jcollections包放置在全局区
 
 	if (typeof define === 'function') {// RequireJS || SeaJS
 	    define(function(require, exports, module) {

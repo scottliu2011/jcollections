@@ -1,4 +1,4 @@
-imports('*');
+jcollections.exports('*');
 var map = new HashMap();
 
 console.log('0.------------------------------------------------------------------');

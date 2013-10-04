@@ -2,8 +2,8 @@
 
 	"use strict";
 
-	var jcollections = global.collections,
-		mapLiberaryDefined = collections && collections.Map && collections.HashMap;
+	var jcollections = global.jcollections,
+		mapLiberaryDefined = jcollections && jcollections.Map && jcollections.HashMap;
 
 	if (!mapLiberaryDefined) {
 		throw new Error('Map liberary is required');

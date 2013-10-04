@@ -1,4 +1,4 @@
-imports('*');
+jcollections.exports('*');
 var list = new ArrayList();
 
 console.log('0.---------------------------------------------------------------------');

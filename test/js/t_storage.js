@@ -1,4 +1,4 @@
-imports('Storage');
+jcollections.exports('Storage');
 console.log('is Storage supported? ' + Storage.isSupported);
 Storage.turnSessionMode();// turn sessionStorage mode
 Storage.saveItem('test', 'hello');
@@ -14,7 +14,7 @@ store.defineFromStore(function(json) {//define out rule
 	return Storage.fromJSON(json);
 });
 
-imports('HashMap');
+jcollections.exports('HashMap');
 var data = new HashMap();
 data.put('coder', {name:'jack', age:'30', salary:300});
 data.put('guarder', {name:'tom', age:'40', salary:200});

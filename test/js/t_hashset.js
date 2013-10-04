@@ -1,4 +1,4 @@
-imports('*');
+jcollections.exports('*');
 var set = new HashSet();
 
 console.log('0.---------------------------------------------------------------------');

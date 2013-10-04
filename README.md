@@ -30,7 +30,7 @@ require(['./jcollections'], function(jcollections) {
 ### 3.在Node.js中引入：
 首先使用`npm`命令在线安装`jcollections`模块：
 
-```shell
+```
 npm install jcollections
 ```
 然后使用`require`指令，把模块包含进来：
@@ -44,21 +44,45 @@ var jcollections = require('jcollections');
 ```javascript
 var list = new jcollections.ArrayList();
 ```
-为了简化开发人员的工作，jcollections提供了imports机制，将集合类引入到全局范围：
+为了简化开发人员的工作，避免每次都输入多余的包名，jcollections提供了exports机制，将集合类引出到全局范围：
 
 ```javascript
-imports('*');//引入所有集合类
-imports('ArrayList'[, 'LinkedList'[, ...]]);//引入一到多个集合类
+jcollections.exports('*');//导出所有集合类
+jcollections.exports('ArrayList'[, 'LinkedList'[, ...]]);//导出一到多个集合类
 ```
-如此一来，创建实例就变得简单多了：
+然后可以直接创建实例：
 
-```javascript	
+```javascript
 var list = new ArrayList();
+```
+这种方式在简单的应用中比较实用，如果是大型项目，这样会污染全局变量，难以协作开发，所以推荐使用下面两种方式，有效地避免对全局变量的污染：
+
+第一种方式，使用`this`代替包名：
+
+```javascript
+jcollections.run(function() {
+	var aryList = new this.ArrayList([1, 2, 3]);
+	console.log(aryList + '');
+	var lnkList = new this.LinkedList(aryList);
+	console.log(lnkList + '');
+});
+```
+第二种方式，直接使用类型名即可，不过需要在函数参数列表中声明类型：
+
+```javascript
+jcollections.run(function(ArrayList, LinkedList) {
+	var aryList = new ArrayList(['hello', 'world']);
+   	console.log(aryList + '');
+
+   	var lnkList = new LinkedList(aryList);
+   	console.log(lnkList + '');
+});
 ```
 另外，每个集合类都提供了一个静态方法，用于创建实例，所以也可以这样写：
 
 ```javascript
-var list = ArrayList.create();
+var aryList = ArrayList.create();
+var lnkList = LinkedList.create();
 ```
 在提示功能较好的IDE中，这样也许会很方便。
 
