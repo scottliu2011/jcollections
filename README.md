@@ -104,8 +104,6 @@ var lnkList = LinkedList.create();//or LinkedList.create(aryList);
 
 `create`方法可以完成和构造函数相同的功能，在提示功能较好的IDE中，这样也许会很方便。
 
-## [演示地址](http://scottliu2011.github.com/collections/demo)
-
 ## API介绍
 
 ### ArrayList：
@@ -255,4 +253,17 @@ list.addFirst(3);
 ```javascript
 list.addLast(5);
 ```
+## HashSet
+
+## HashMap
+
+## Arrays
+
+## Collections
+
+## Template
+
+## Storage
+
+## <a href="http://scottliu2011.github.com/collections/demo" target="_blank">演示地址</a>
 
