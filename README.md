@@ -4,9 +4,9 @@ jcollections是一个可以简化数据操作、提高开发效率的集合类�
 
 该框架由两部分组成：
 
-`jcollections.js`：集合类，提供了几种常用的集合类，这个库文件可直接引入到页面，也可作为一个独立的模块按需加载，支持RequireJS、Sea.js及Node.js环境
+`jcollections.js`：集合类，提供了几种常用的集合类，这个库文件可直接引入到页面，也可作为一个独立的模块按需加载，支持RequireJS、Sea.js及Node.js环境。
 
-`jcollections.util.js`：工具库，提供了基于集合框架的模板操作类和本地存储类，它依赖于jcollections.js这个集合函数库
+`jcollections.util.js`：工具库，提供了基于集合框架的模板操作类和本地存储类，它依赖于jcollections.js这个集合函数库。
 
 ## 引入集合函数库
 ### 1.页面单独引入：
@@ -15,8 +15,7 @@ jcollections是一个可以简化数据操作、提高开发效率的集合类�
 <script type="text/javascript" src="jcollections.js"></script>
 ```
 ### 2.作为模块引入：
-在Sea.js或RequireJS中作为模块按需加载，都需要`require`函数。
-比如在Sea.js中：
+在Sea.js或RequireJS中作为模块按需加载，都需要`require`函数。比如在Sea.js中：
 
 ```javascript
 var jcollections = require('./jcollections');
@@ -26,15 +25,15 @@ var jcollections = require('./jcollections');
 ```javascript
 require(['./jcollections'], function(jcollections) {
 	//todo
-};
+});
 ```
 ### 3.在Node.js中引入：
-首先使用`npm`命令安装`jcollections`模块：
+首先使用`npm`命令在线安装`jcollections`模块：
 
-```
+```shell
 npm install jcollections
 ```
-然后使用`require`函数，把模块包含进来：
+然后使用`require`指令，把模块包含进来：
 
 ```javascript
 var jcollections = require('jcollections');
@@ -45,7 +44,7 @@ var jcollections = require('jcollections');
 ```javascript
 var list = new jcollections.ArrayList();
 ```
-为了简化开发人员的工作，jcollections提供了imports机制，将集合类导入到全局范围：
+为了简化开发人员的工作，jcollections提供了imports机制，将集合类引入到全局范围：
 
 ```javascript
 imports('*');//引入所有集合类
