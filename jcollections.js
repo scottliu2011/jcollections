@@ -1508,10 +1508,12 @@
 		var args = Array.prototype.slice.call(arguments);
 		if (args[0] === '*') {
 			for (var module in this) {
+				if (module === 'exports' || module === 'run') continue;
 				global[module] = this[module];
 			}
 		} else {
 			for (var module in this) {
+				if (module === 'exports' || module === 'run') continue;
 				this[module] && (global[module] = this[module]);
 			}
 		}

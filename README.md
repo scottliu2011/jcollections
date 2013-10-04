@@ -48,6 +48,7 @@ var list = new jcollections.ArrayList();
 
 ```javascript
 jcollections.exports('*');//导出所有集合类
+or
 jcollections.exports('ArrayList'[, 'LinkedList'[, ...]]);//导出一到多个集合类
 ```
 然后可以直接创建实例：
@@ -55,7 +56,7 @@ jcollections.exports('ArrayList'[, 'LinkedList'[, ...]]);//导出一到多个集
 ```javascript
 var list = new ArrayList();
 ```
-这种方式在简单的应用中比较实用，如果是大型项目，这样会污染全局变量，难以协作开发，所以推荐使用下面两种方式，有效地避免对全局变量的污染：
+这种方式在简单的应用中比较实用，如果是大型项目就不太好了，因为这样会污染全局变量，难以协作开发，所以推荐使用下面两种方式，有效地避免对全局变量的污染：
 
 第一种方式，使用`this`代替包名：
 
@@ -81,8 +82,8 @@ jcollections.run(function(ArrayList, LinkedList) {
 另外，每个集合类都提供了一个静态方法，用于创建实例，所以也可以这样写：
 
 ```javascript
-var aryList = ArrayList.create();
-var lnkList = LinkedList.create();
+var aryList = ArrayList.create();//or ArrayList.create([1, 2, 3]);
+var lnkList = LinkedList.create();//or LinkedList.create(aryList);
 ```
 在提示功能较好的IDE中，这样也许会很方便。
 
