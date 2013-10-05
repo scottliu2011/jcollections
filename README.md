@@ -4,9 +4,9 @@ jcollections是一个可以简化数据操作、提高开发效率的集合类�
 
 该框架由两部分组成：
 
-`jcollections.js`：集合类，提供了几种常用的集合类，这个库文件可直接引入到页面，也可作为一个独立的模块按需加载，支持RequireJS、Sea.js及Node.js环境。
+**jcollections.js**：集合类，提供了几种常用的集合类，这个库文件可直接引入到页面，也可作为一个独立的模块按需加载，支持RequireJS、Sea.js及Node.js环境。
 
-`jcollections.util.js`：工具库，提供了基于集合框架的模板操作类和本地存储类，它依赖于jcollections.js这个集合函数库。
+**jcollections.util.js**：工具库，提供了基于集合框架的模板操作类和本地存储类，它依赖于jcollections.js这个集合函数库。
 
 ## 引入集合函数库
 
@@ -18,7 +18,7 @@ jcollections是一个可以简化数据操作、提高开发效率的集合类�
 
 ### 2.作为模块引入：
 
-在Sea.js或RequireJS中作为模块按需加载，都需要`require`函数。
+在Sea.js或RequireJS中作为模块按需加载，都需要**require**函数。
 
 在Sea.js中：
 
@@ -36,13 +36,13 @@ require(['./jcollections'], function(jcollections) {
 
 ### 3.在Node.js中引入：
 
-首先使用`npm`命令在线安装`jcollections`模块：
+首先使用**npm**命令在线安装**jcollections**模块：
 
 ```
 npm install jcollections
 ```
 
-然后使用`require`指令，把模块包含进来：
+然后使用**require**指令，把模块包含进来：
 
 ```javascript
 var jcollections = require('jcollections');
@@ -50,7 +50,7 @@ var jcollections = require('jcollections');
 
 ## 创建实例
 
-所有集合类都封装在`jcollections`包内，创建类实例时需要加包名：
+所有集合类都封装在**jcollections**包内，创建类实例时需要加包名：
 
 ```javascript
 var list = new jcollections.ArrayList();
@@ -72,7 +72,7 @@ var list = new ArrayList();
 
 这种方式在简单的应用中比较实用，如果是大型项目就不太好了，因为这样会污染全局变量，难以协作开发，所以推荐使用下面两种方式，有效地避免对全局变量的污染：
 
-第一种方式，使用`this`代替包名：
+第一种方式，使用**this**代替包名：
 
 ```javascript
 jcollections.run(function() {
@@ -104,15 +104,15 @@ var aryList = ArrayList.create();//or ArrayList.create([1, 2, 3]);
 var lnkList = LinkedList.create();//or LinkedList.create(aryList);
 ```
 
-`create`方法可以完成和构造函数相同的功能，在提示功能较好的IDE中，这样也许会很方便。
+**create**方法可以完成和构造函数相同的功能，在提示功能较好的IDE中，这样也许会很方便。
 
 ## API介绍
 
 ### ArrayList：
 
-ArrayList是一种具有数组存储结构的集合，它是一种`List`类型，隶属于`Collection`。
+ArrayList是一种具有数组存储结构的集合，它是一种**List**类型，隶属于**Collection**。
 
-构造函数，可以创建一个空集合，或者传递一个数组，创建一个含有指定数组元素的集合，也可以传递一个`Collections`类型的集合对象，创建一个含有指定集合元素的新实例
+构造函数，可以创建一个空集合，或者传递一个数组，创建一个含有指定数组元素的集合，也可以传递一个**Collections**类型的集合对象，创建一个含有指定集合元素的新实例
 （这里的`Collection`类型对象指的是ArrayList、LinkedList、HashSet类型实例，下同）：
 
 ```javascript
@@ -123,63 +123,63 @@ or
 var list = new ArrayList(Collection);
 ```
 
-`add`方法，向集合中添加一到多个元素：
+**add**方法，向集合中添加一到多个元素：
 
 ```javascript
 list.add('hello');
 list.add('JavaScript', 'world');
 ```
 
-`addAll`方法，添加指定集合对象中的所有元素：
+**addAll**方法，添加指定集合对象中的所有元素：
 
 ```javascript
 list.addAll(Collection);
 ```
 
-`clear`方法，移除集合中所有元素：
+**clear**方法，移除集合中所有元素：
 
 ```javascript
 list.clear();
 ```
 
-`contains`方法，返回一个布尔值，表示集合中是否存在指定元素：
+**contains**方法，返回一个布尔值，表示集合中是否存在指定元素：
 
 ```javascript
 var isContains = list.contains('hello');
 ```
 
-`get`方法，返回指定位置的元素：
+**get**方法，返回指定位置的元素：
 
 ```javascript
 var elem = list.get(0);
 ```
 
-`indexOf`，返回指定元素第一次出现在集合中的位置索引，如果元素不存在则返回-1：
+**indexOf**，返回指定元素第一次出现在集合中的位置索引，如果元素不存在则返回-1：
 
 ```javascript
 var index = list.indexOf('JavaScript');
 ```
 
-`insert`方法，向集合中指定位置插入一到多个元素：
+**insert**方法，向集合中指定位置插入一到多个元素：
 
 ```javascript
 list.insert(1, 'a');
 list.insert(2, 'really', 'powerful');
 ```
 
-`insertAll`方法，向集合中指定位置插入指定集合对象中的所有元素：
+**insertAll**方法，向集合中指定位置插入指定集合对象中的所有元素：
 
 ```javascript
 list.insertAll(3, Collection);
 ```
 
-`isEmpty`方法，返回一个布尔值，表示集合是否为空：
+**isEmpty**方法，返回一个布尔值，表示集合是否为空：
 
 ```javascript
 var isEmpty = list.isEmpty();
 ```
 
-`iterator`方法，返回一个迭代器对象，可以选择性地传递一个索引值，表示从指定位置开始迭代：
+**iterator**方法，返回一个迭代器对象，可以选择性地传递一个索引值，表示从指定位置开始迭代：
 
 ```javascript
 var iter = list.iterator();
@@ -196,56 +196,56 @@ while (iter.hasNext()) {
 }
 ```
 
-`lastIndexOf`方法，返回指定元素最后一次出现在集合中的位置索引，如果元素不存在则返回-1：
+**lastIndexOf**方法，返回指定元素最后一次出现在集合中的位置索引，如果元素不存在则返回-1：
 
 ```javascript
 var lastIndex = list.lastIndexOf('JavaScript');
 ```
 
-`removeAt`方法，移除指定位置的元素并返回这个元素：
+**removeAt**方法，移除指定位置的元素并返回这个元素：
 
 ```javascript
 var elem = list.removeAt(0);
 ```
 
-`removeElement`方法，移除集合中第一次出现的指定元素，返回一个布尔值，表示是否移除成功：
+**removeElement**方法，移除集合中第一次出现的指定元素，返回一个布尔值，表示是否移除成功：
 
 ```javascript
 var success = list.removeElement('hello');
 ```
 
-`removeRange`方法，移除指定的开始位置到指定的结束位置的所有元素，包括开始位置，但不包括结束位置，该方法返回移除元素组成的数组：
+**removeRange**方法，移除指定的开始位置到指定的结束位置的所有元素，包括开始位置，但不包括结束位置，该方法返回移除元素组成的数组：
 
 ```javascript
 var ary = list.removeRange(1, 3);
 ```
 
-`set`方法，重新设置指定位置的元素，并返回替换前的旧值：
+**set**方法，重新设置指定位置的元素，并返回替换前的旧值：
 
 ```javascript
 var old = list.set(3, 'js');
 ```
 
-`size`方法，返回集合元素的个数：
+**size**方法，返回集合元素的个数：
 
 ```javascript
 var size = list.size();
 ```
 
-`toArray`方法，返回含有集合数据的数组：
+**toArray**方法，返回含有集合数据的数组：
 
 ```javascript
 var ary = list.toArray();
 ```
 
-`toString`方法，返回含有集合数据的字符串：
+**toString**方法，返回含有集合数据的字符串：
 ```javascript
 var str = list.toString();
 ```
 
-最后，一个特殊的`defineEquals`方法：
+最后，一个特殊的**defineEquals**方法：
 
-在上面介绍`contains`时，其实涉及到了元素的比较，默认是比较基本类型的值或对象类型的引用，也可以自定义比较函数，例如集合中添加的是person对象元素，如果名称相同则认为是同一个人，就可以定义：
+在上面介绍**contains**时，其实涉及到了元素的比较，默认是比较基本类型的值或对象类型的引用，也可以自定义比较函数，例如集合中添加的是person对象元素，如果名称相同则认为是同一个人，就可以定义：
 
 ```javascript
 list.defineEquals(function(person0, person1) {
