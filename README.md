@@ -110,10 +110,10 @@ var lnkList = LinkedList.create();//or LinkedList.create(aryList);
 
 ### ArrayList：
 
-ArrayList是一种具有数组存储结构的集合，它是一种**List**类型，隶属于**Collection**。
+ArrayList是一种具有数组存储结构的集合，它是一种**List**类型，它的最上层是**Collection**类。
 
-构造函数，可以创建一个空集合，或者传递一个数组，创建一个含有指定数组元素的集合，也可以传递一个**Collections**类型的集合对象，创建一个含有指定集合元素的新实例
-（这里的`Collection`类型对象指的是ArrayList、LinkedList、HashSet类型实例，下同）：
+构造函数，可以创建一个空集合，或者传递一个数组，创建一个含有指定数组元素的集合，也可以传递一个**Collection**类型的集合对象，创建一个含有指定集合元素的新实例
+（这里的**Collection**类型对象指的是ArrayList、LinkedList、HashSet类型实例，下同）：
 
 ```javascript
 var list = new ArrayList();
@@ -261,9 +261,10 @@ var isContains = list.contains({name:'scott'});
 
 ### LinkedList：
 
-LinkedList是一种具有双向链表存储结构的集合，它也是一种`List`类型，隶属于`Collection`。
+LinkedList是一种具有双向链表存储结构的集合，它也是一种**List**类型，它的最上层是**Collection**类。
 
-构造函数，可以创建一个空链表，也可以选择传递一个`Collection`类型对象，创建一个含有指定集合元素的链表。
+构造函数，可以创建一个空链表，也可以选择传递一个**Collection**类型对象，
+创建一个含有指定集合元素的链表。
 
 ```javascript
 var list = new LinkedList();
@@ -273,63 +274,61 @@ var list = new LinkedList(Collection);
 
 一些与ArrayList功能相同的方法：
 
-`add`、`addAll`、`clear`，`contains`，`get`，
-
-`indexOf`，`insert`、`insertAll`，`isEmpty`，`lastIndexOf`，
-
-`removeAt`，`removeElement`，`set`，`size`，`toArray`，`toString`
+**add**、**addAll**、**clear**，**contains**，**get**，
+**indexOf**，**insert**、**insertAll**，**isEmpty**，**lastIndexOf**，
+**removeAt**，**removeElement**，**set**，**size**，**toArray**，**toString**
 
 对于这些方法，将不再介绍，这里主要介绍LinkedList独特的方法。
 
-`addFirst`方法，在链表头部添加一个指定元素：
+**addFirst**方法，在链表头部添加一个指定元素：
 
 ```javascript
 list.addFirst(3);
 ```
 
-`addLast`方法，在链表尾部添加一个指定元素：
+**addLast**方法，在链表尾部添加一个指定元素：
 
 ```javascript
 list.addLast(5);
 ```
 
-`getFirst`方法，返回链表头部元素：
+**getFirst**方法，返回链表头部元素：
 
 ```javascript
 var elem = list.getFirst();
 ```
 
-`getLast`方法，返回链表尾部元素：
+**getLast**方法，返回链表尾部元素：
 
 ```javascript
 var elem = list.getLast();
 ```
 
-`removeFirst`方法，移除链表头部元素并返回已移除的元素：
+**removeFirst**方法，移除链表头部元素并返回已移除的元素：
 
 ```javascript
 var elem = list.removeFirst();
 ```
 
-`removeLast`方法，移除链表尾部元素并返回已移除的元素：
+**removeLast**方法，移除链表尾部元素并返回已移除的元素：
 
 ```javascript
 var elem = list.removeLast();
 ```
 
-`removeFirstOccurrence`方法，移除链表中第一次出现的指定元素：
+**removeFirstOccurrence**方法，移除链表中第一次出现的指定元素：
 
 ```javascript
 var success = list.removeFirstOccurrence('hello');
 ```
 
-`removeLastOccurrence`方法，移除链表中最后一次出现的指定元素：
+**removeLastOccurrence**方法，移除链表中最后一次出现的指定元素：
 
 ```javascript
 var success = list.removeLastOccurrence('hello');
 ```
 
-LinkedList中的`iterator`方法比较特殊，它还可以倒序迭代：
+LinkedList中的**iterator**方法比较特殊，它还可以倒序迭代：
 
 ```javascript
 var iter = list.iterator(list.size());
@@ -346,9 +345,9 @@ while (iter.hasPrevious()) {
 
 ### HashSet：
 
-HashSet是一种无重复元素的无序集合，它是一种`Set`类型，隶属于`Collection`
+HashSet是一种无重复元素的无序集合，它是一种**Set**类型，它的最上层是**Collection**类。
 
-构造函数，可以创建一个空的无序集合,也可以选择传递一个`Collection`类型对象，
+构造函数，可以创建一个空的无序集合,也可以选择传递一个**Collection**类型对象，
 创建一个含有指定集合元素的无序集合。
 
 ```javascript
@@ -359,19 +358,18 @@ var set = new HashSet(Collection);
 
 一些与ArrayList功能相同的方法：
 
-`add`、`addAll`、`clear`，`contains`，
-
-`isEmpty`，`size`，`toArray`，`toString`，`iterator`
+**add**、**addAll**、**clear**，**contains**，
+**isEmpty**，**size**，**toArray**，**toString**，**iterator**
 
 对于这些方法，这里也不再介绍了。
 
-`remove`方法，移除指定元素：
+**remove**方法，移除指定元素：
 
 ```javascript
 var success = set.remove('hello');
 ```
 
-HashSet中，`defineEquals`方法比较重要，
+HashSet中，**defineEquals**方法比较重要，
 如果定义了比较规则，在向集合中添加元素时，集合会根据这个规则判定是否重复：
 
 ```javascript
@@ -388,7 +386,7 @@ list.add({name:'scott'});//元素重复，添加失败
 
 ### HashMap
 
-HashMap是一种具有键值对映射关系的映射表，它是一种`Map`类型。
+HashMap是一种具有键值对映射关系的映射表，它是一种**Map**类型。
 
 构造函数，可以创建一个空的映射表，也可以传递一个`Map`类型的对象，创建一个含有指定映射表元素的新实例：
 
@@ -398,21 +396,21 @@ or
 var map = new HashMap(Map);
 ```
 
-`clear`，`isEmpty`，`size`，`toString`，这几个方法也不再介绍。
+**clear**，**isEmpty**，**size**，**toString**，这几个方法也不再介绍。
 
-`containsKey`方法，返回一个布尔值，表示映射表中是否包含指定键：
+**containsKey**方法，返回一个布尔值，表示映射表中是否包含指定键：
 
 ```javascript
 var isContainsKey = map.containsKey('hello');
 ```
 
-`containsValue`方法，返回一个布尔值，表示映射表中是否包含指定值：
+**containsValue**方法，返回一个布尔值，表示映射表中是否包含指定值：
 
 ```javascript
 var isContainsValue = map.containsValue('world');
 ```
 
-`entrySet`方法，返回映射表键值对组成的无序集合：
+**entrySet**方法，返回映射表键值对组成的无序集合：
 
 ```javascript
 var set = map.entrySet();
@@ -428,13 +426,13 @@ while (iter.hasNext()) {
 }
 ```
 
-`get`方法，返回指定键对应的值：
+**get**方法，返回指定键对应的值：
 
 ```javascript
 var value = map.get('hello');
 ```
 
-`keySet`方法，返回映射表键组成的无序集合：
+**keySet**方法，返回映射表键组成的无序集合：
 
 ```javascript
 var set = map.keySet();
@@ -446,19 +444,19 @@ while (iter.hasNext()) {
 }
 ```
 
-`put`方法，向映射表中添加一个键值对：
+**put**方法，向映射表中添加一个键值对：
 
 ```javascript
 map.put('hello', 'world');
 ``
 
-`putAll`方法，将指定映射表中的元素合并进当前表中：
+**putAll**方法，将指定映射表中的元素合并进当前表中：
 
 ```javascript
 map.putAll(Map);
 ```
 
-`remove`方法，移除指定键所对应的键值对：
+**remove**方法，移除指定键所对应的键值对：
 
 ```javascript
 map.remove('hello');
