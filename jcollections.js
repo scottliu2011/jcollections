@@ -1186,11 +1186,16 @@
 	 */
 	var Arrays = {
 		/**
-		 *asList(elem0[, elem1[, elem2[,...]]]);
-		 *将指定一到多个元素转化成ArrayList
+		 *asList([...]); || asList(elem0[, elem1[, elem2[,...]]]);
+		 *将指定数组或一到多个元素转化成ArrayList
 		 */
 		asList: function() {
-			return new ArrayList(Array.prototype.slice.call(arguments));
+			var args = arguments,
+				arg0 = args[0];
+			if (arg0 instanceof Array && args.length === 1) {
+				return new ArrayList(arg0);
+			}
+			return new ArrayList(Array.prototype.slice.call(args));
 		},
 		/**
 		 *binarySearch(ary, target, compareFn);
@@ -1252,7 +1257,7 @@
 			return ary.slice(fromIndex, toIndex);
 		},
 		/**
-		 *两个指定数组是否相等
+		 *比较两个指定数组是否相等
 		 */
 		equals: function(ary0, ary1, equalsFn) {
 			if (ary0 === ary1) return true;
@@ -1345,7 +1350,7 @@
 	 */
 	var Collections = {
 		/**
-		 *取得集合中最大的元素
+		 *返回集合中最大的元素
 		 */
 		max: function(collection, compareFn) {
 			this.__collectionCheck__(collection);
@@ -1370,7 +1375,7 @@
 			return result;
 		},
 		/**
-		 *取得集合中最小的元素
+		 *返回集合中最小的元素
 		 */
 		min: function(collection, compareFn) {
 			this.__collectionCheck__(collection);

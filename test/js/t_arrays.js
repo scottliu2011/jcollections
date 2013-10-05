@@ -19,10 +19,7 @@ var objAry = [
 ];
 
 var position = Arrays.binarySearch(objAry, {id:4, name:'john'}, function(a, b) {
-	if (a.id === b.id) {
-		return 0;
-	}
-	return a.id < b.id ? -1 : 1;
+	return a.id - b.id;
 });
 
 console.log('complex binarySearch result: ' + position);//3
@@ -62,9 +59,6 @@ var objAry2 = [
 	{id:3, name:'scott', toString: function() {return '3:scott';}}
 ];
 var sortedAry = Arrays.sort(objAry2, function(a, b) {
-	if (a.id === b.id) {
-		return 0;
-	}
-	return a.id < b.id ? -1: 1;
+	return a.id - b.id;
 });
 console.log('after sort(complex condition)? ' + sortedAry);

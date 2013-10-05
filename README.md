@@ -388,7 +388,7 @@ list.add({name:'scott'});//元素重复，添加失败
 
 HashMap是一种具有键值对映射关系的映射表，它是一种**Map**类型。
 
-构造函数，可以创建一个空的映射表，也可以传递一个`Map`类型的对象，创建一个含有指定映射表元素的新实例：
+构造函数，可以创建一个空的映射表，也可以传递一个**Map**类型的对象，创建一个含有指定映射表元素的新实例：
 
 ```javascript
 var map = new HashMap();
@@ -448,7 +448,7 @@ while (iter.hasNext()) {
 
 ```javascript
 map.put('hello', 'world');
-``
+```
 
 **putAll**方法，将指定映射表中的元素合并进当前表中：
 
@@ -464,7 +464,167 @@ map.remove('hello');
 
 ### Arrays
 
+Arrays是一个操作数组的工具类，包含以下几个方法：
+
+**asList**方法，将指定的数组或一到多个值转变为ArrayList实例：
+
+```javascript
+var aryList = Arrays.asList(['hello', 'world']);
+or
+var aryList = Arrays.asList('hello', 'world');
+```
+
+**binarySearch**方法，对指定有序数组进行二分查找，调用时需传入数组及查找目标，
+如果数组中是复杂对象，还需要传入对象比较函数：
+
+```javascript
+var objAry = [
+	{id:1, name:'bill'},
+	{id:2, name:'steve'},
+	{id:3, name:'scott'},
+	{id:4, name:'john'},
+	{id:5, name:'tom'}
+];
+var position = Arrays.binarySearch(objAry, {id:4, name:'john'}, function(a, b) {
+	return a.id - b.id;
+});
+```
+
+**binarySearchRange**方法，对指定有序数组指定范围进行二分查找，需传入起始位置和结束位置，
+包括起始位置，不包括结束位置：
+
+```javascript
+var position = Arrays.binarySearch(objAry, 1, 4, {id:4, name:'john'}, function(a, b) {
+	return a.id - b.id;
+});
+```
+
+**copyOf**方法，从指定数组起始位置开始，复制指定长度的元素：
+
+```javascript
+var subAry = Arrays.copyOf(ary, 3);
+```
+
+**copyOfRange**方法，复制指定数组内指定范围的元素，需要指定起始位置和结束位置，
+返回的结果集中包括起始位置元素，但不包括结束位置元素：
+
+```javascript
+var subAry = Arrays.copyOfRange(ary, 1, 3);
+```
+
+**equals**方法，比较两个指定数组是否相等，需要指定两个数组，如果数组内是复杂对象，
+还需要传入对象比较函数：
+
+```javascript
+var objAry0 = [
+	{id:1, name:'bill'},
+	{id:2, name:'steve'},
+	{id:3, name:'scott'}
+];
+var objAry1 = [
+	{id:1, name:'bill'},
+	{id:2, name:'steve'},
+	{id:3, name:'scott'}
+];
+var isEquals = Arrays.equals(objAry0, objAry1, function(a, b) {
+	return a.id === b.id && a.name === b.name;
+});
+```
+
+**fill**方法，用指定元素填充指定数组：
+
+```javascript
+Arrays.fill(ary, 'hello');
+```
+
+**fillRange**方法，用指定元素填充指定数组的指定范围，包括起始位置，不包括结束位置：
+
+```javascript
+Arrays.fillRange(ary, 1, 3, 'hello');
+```
+
+**sort**方法，对指定数组排序，如果数组内是复杂对象，需要传入对象比较函数：
+
+```javascript
+var objAry = [
+	{id:1, name:'bill', toString: function() {return '1:bill';}},
+	{id:4, name:'john', toString: function() {return '4:john';}},
+	{id:2, name:'steve', toString: function() {return '2:steve';}},
+	{id:5, name:'tom', toString: function() {return '5:tom';}},
+	{id:3, name:'scott', toString: function() {return '3:scott';}}
+];
+var sortedAry = Arrays.sort(objAry, function(a, b) {
+	return a.id - b.id;
+});
+```
+
+**sortRange**方法，对指定数组指定范围排序，包括起始位置，不包括结束位置：
+
+```javascript
+var sortedAry = Arrays.sort(objAry, 1, 4, function(a, b) {
+	return a.id - b.id;
+});
+```
+
 ### Collections
+
+Collections是一个操作集合对象的工具类，包含以下几个方法：
+
+**max**方法，返回指定集合中最大的元素，如果集合中是复杂对象，还需要传入对象比较函数：
+
+```javascript
+var list = new ArrayList();
+list.add({id:1, name:'soctt', toString:function() {return '1:scott';}});
+list.add({id:3, name:'steve', toString:function() {return '3:steve';}});
+list.add({id:4, name:'john', toString:function() {return '4:john';}});
+list.add({id:2, name:'bill', toString:function() {return '2:bill';}});
+
+var max = Collections.max(list, function(a, b) {
+	return a.id - b.id;
+});//4:john
+```
+
+**min**方法，返回指定集合中最小的元素，如果集合中是复杂对象，还需要传入对象比较函数：
+
+```javascript
+var min = Collections.min(list, function(a, b) {
+	return a.id - b.id;
+});//1:scott
+```
+
+**sort**方法，对List进行排序，如果List中是复杂对象，还需要传入对象比较函数：
+
+```javascript
+Collections.sort(list, function(a, b) {
+	return a.id - b.id;
+});
+```
+
+**binarySearch**方法，对有序List进行二分查找，如果List中是复杂对象，还需要传入对象比较函数：
+
+```javascript
+var index = Collections.binarySearch(list, {id:3, name:'steve'}, function(a, b) {
+	return a.id - b.id;
+});
+```
+
+**replaceAll**方法，将List中的指定元素全部替换为新元素：
+
+```javascript
+list.defineEquals(function(a, b) {
+	return a.id === b.id && a.name === b.name;
+});
+var oldElem = {id:4, name:'john', toString:function() {return '4:john';}};
+var newElem = {id:0, name:'tom', toString:function() {return '0:tom';}};
+
+Collections.replaceAll(list, oldElem, newElem);
+```
+
+**reverse**方法，将List元素反转：
+
+```javascript
+Collections.reverse(list);
+```
 
 ### Template
 
