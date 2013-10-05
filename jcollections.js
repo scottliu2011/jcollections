@@ -69,22 +69,31 @@
 	};
 
 	/**
-	 *new ArrayList(); || new ArrayList(Array);
+	 *new ArrayList(); || new ArrayList([]); || new Array(Collection);
 	 *构造一个新的ArrayList实例
 	 */
-	var ArrayList = function(ary) {
+	var ArrayList = function(arg) {
 		if (!(this instanceof ArrayList)) {
-			return new ArrayList(ary);
+			return new ArrayList(arg);
 		}
-		this.__data__ = (ary instanceof Array) ? ary : [];
+
+		var data = [];
+		
+		if (arg instanceof Array) {
+			data = arg.slice(0);
+		} else if (arg instanceof Collection) {
+			data = arg.toArray();
+		}
+
+		this.__data__ = data;
 	}.inherits(List);//ArrayList继承了List
 
 	/**
-	 *ArrayList.create(); || ArrayList.create(Array);
+	 *ArrayList.create(); || new ArrayList([]); || new Array(Collection);
 	 *静态方法，创建一个ArrayList实例
 	 */
-	ArrayList.create = function(ary) {
-		return new ArrayList(ary);
+	ArrayList.create = function(arg) {
+		return new ArrayList(arg);
 	};
 
 	//返回list元素个数
@@ -801,7 +810,7 @@
 
 	/**
 	 *add(elem);
-	 *添加一个元素到set中
+	 *添加一到多个元素到set中
 	 */
 	HashSet.prototype.add = function() {
 		var args = arguments,
@@ -842,7 +851,7 @@
 	 *从set集合中移除一个指定元素
 	 */
 	HashSet.prototype.remove = function(elem) {
-		if (!this.contains(elem)) return;
+		if (!this.contains(elem)) return false;
 
 		var store = this.__store__;
 		if (typeof elem === 'object' && this.__overwriteEquals__) {
@@ -850,13 +859,16 @@
 				if (this.__equals__(store[key], elem)) {
 					delete store[key];
 					this.__size__--;
-					return;
+					return true;
 				}
 			}
 		} else {
 			delete store[KeyConvertor.toInnerKey(elem)];
 			this.__size__--;
+			return true;
 		}
+
+		return false;
 	};
 
 	/**
@@ -1131,7 +1143,7 @@
 			this.getValue = function() {
 				return this.__value__;
 			};
-			this.set = function(value) {
+			this.setValue = function(value) {
 				this.__value__ = value;
 				map.put(this.__key__, value);
 			};
@@ -1167,19 +1179,6 @@
 			}
 		}
 		return '{' + result.join(',') + '}';
-	};
-
-	/**
-	 *values();
-	 *返回含有map所有值的字符串
-	 */
-	HashMap.prototype.values = function() {
-		var result = [],
-			store = this.__store__;;
-		for (var key in store) {
-			result.push(store[key]);
-		}
-		return '[' + result.join(',') + ']';
 	};
 
 	/**
