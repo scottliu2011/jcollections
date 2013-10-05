@@ -1,12 +1,14 @@
 # jcollections
 
-jcollections是一个可以简化数据操作、提高开发效率的集合类框架。它接口简单，容易上手；在API方面，jcollections汲取了Java集合中优秀的设计思想，同时也增添了一些新的特性，最大程度上方便开发人员的使用。
+**jcollections**是一个可以简化数据操作、提高开发效率的集合类框架，接口简单，容易上手；在API方面，它汲取了Java集合中优秀的设计思想，同时也增添了一些新的特性，最大程度上方便开发人员的使用。
 
 该框架由两部分组成：
 
-**jcollections.js**：集合类，提供了几种常用的集合类，这个库文件可直接引入到页面，也可作为一个独立的模块按需加载，支持RequireJS、Sea.js及Node.js环境。
+**jcollections.js**：集合类，提供了几种常用的集合类，这个库文件可直接引入到页面，也可作为一个独立的模块按需加载，
+支持**RequireJS**、**Sea.js**及**Node.js**环境。
 
-**jcollections.util.js**：工具库，提供了基于集合框架的模板操作类和本地存储类，它依赖于jcollections.js这个集合函数库。
+**jcollections.util.js**：工具库，提供了基于集合框架的模板操作类和本地存储类，
+它**依赖于jcollections.js**。
 
 ## 引入集合函数库
 
@@ -70,7 +72,8 @@ jcollections.exports('ArrayList'[, 'LinkedList'[, ...]]);//导出一到多个集
 var list = new ArrayList();
 ```
 
-这种方式在简单的应用中比较实用，如果是大型项目就不太好了，因为这样会污染全局变量，难以协作开发，所以推荐使用下面两种方式，有效地避免对全局变量的污染：
+这种方式在简单的应用中比较实用，如果是大型项目不推荐使用，这会污染全局变量，
+更好的方式是调用run方法，这里推荐使用下面两种方式：
 
 第一种方式，使用**this**代替包名：
 
@@ -83,7 +86,7 @@ jcollections.run(function() {
 });
 ```
 
-第二种方式，不用任何前缀，不同的是，需要在函数参数列表中事先声明类型：
+第二种方式，类型前面不用加任何前缀，不同的是，需要在函数参数列表中事先声明类型：
 
 ```javascript
 jcollections.run(function(ArrayList, LinkedList) {
@@ -113,7 +116,7 @@ var lnkList = LinkedList.create();//or LinkedList.create(aryList);
 ArrayList是一种具有数组存储结构的集合，它是一种**List**类型，它的最上层是**Collection**类。
 
 构造函数，可以创建一个空集合，或者传递一个数组，创建一个含有指定数组元素的集合，也可以传递一个**Collection**类型的集合对象，创建一个含有指定集合元素的新实例
-（这里的**Collection**类型对象指的是ArrayList、LinkedList、HashSet类型实例，下同）：
+（这里的**Collection**类型对象指的是**ArrayList**、**LinkedList**、**HashSet**类型实例，下同）：
 
 ```javascript
 var list = new ArrayList();
@@ -369,7 +372,7 @@ var set = new HashSet(Collection);
 var success = set.remove('hello');
 ```
 
-HashSet中，**defineEquals**方法比较重要，
+在HashSet中，**defineEquals**方法比较重要，
 如果定义了比较规则，在向集合中添加元素时，集合会根据这个规则判定是否重复：
 
 ```javascript
@@ -513,7 +516,7 @@ var subAry = Arrays.copyOfRange(ary, 1, 3);
 ```
 
 **equals**方法，比较两个指定数组是否相等，需要指定两个数组，如果数组内是复杂对象，
-还需要传入对象比较函数：
+还需要传入对象equals函数：
 
 ```javascript
 var objAry0 = [
