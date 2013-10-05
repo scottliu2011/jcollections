@@ -210,7 +210,7 @@
 
 	/**
 	 *removeRange(fromIndex, toIndex);
-	 *移除指定开始位置到结束位置的所有元素--包括开始位置，但不包括结束位置
+	 *移除指定的开始位置到指定的结束位置的所有元素--包括开始位置，但不包括结束位置
 	 */
 	ArrayList.prototype.removeRange = function(fromIndex, toIndex) {
 		this.__rangeCheck__(fromIndex);
@@ -716,9 +716,16 @@
 				last.elem = elem;
 			};
 			this.remove = function() {
+				var lastNext = last.next;
+
 				linkedList.__removeEntry__(last);
 				
-				nextIndex--;
+				if (next === last) {
+					next = lastNext;
+				} else {
+					nextIndex--;
+				}
+
 				size--;
 
 				last = header;
@@ -1191,17 +1198,17 @@
 		 *对有序数组进行二分查找
 		 */
 		binarySearch: function(ary, target, compareFn) {
-			Arrays.__aryCheck__(ary);
+			this.__aryCheck__(ary);
 			if (target === undefined) throw Error('target must be specified');
-			return Arrays.binarySearchRange(ary, 0, ary.length, target, compareFn);
+			return this.binarySearchRange(ary, 0, ary.length, target, compareFn);
 		},
 		/**
 		 *binarySearchRange(ary, fromIndex, toIndex, target, compareFn);
 		 *对有序数组指定范围进行二分查找
 		 */
 		binarySearchRange: function(ary, fromIndex, toIndex, target, compareFn) {
-			Arrays.__aryCheck__(ary);
-			Arrays.__rangeCheck__(ary, fromIndex, toIndex);
+			this.__aryCheck__(ary);
+			this.__rangeCheck__(ary, fromIndex, toIndex);
 
 			var low = fromIndex,
 				high = toIndex - 1,
@@ -1229,20 +1236,20 @@
 		 *复制指定数组内指定长度的元素
 		 */
 		copyOf: function(ary, length) {
-			Arrays.__aryCheck__(ary);
+			this.__aryCheck__(ary);
 			if (length === undefined) {
 				return ary.slice(0, ary.length);
 			}
 			if (typeof length !== 'number') {
 				throw TypeError('length is not a number');
 			}
-			return Arrays.copyOfRange(ary, 0, length);
+			return this.copyOfRange(ary, 0, length);
 		},
 		/**
 		 *复制指定数组内指定范围的元素
 		 */
 		copyOfRange: function(ary, fromIndex, toIndex) {
-			Arrays.__rangeCheck__(ary, fromIndex, toIndex);
+			this.__rangeCheck__(ary, fromIndex, toIndex);
 			return ary.slice(fromIndex, toIndex);
 		},
 		/**
@@ -1268,13 +1275,13 @@
 		 *用指定元素填充指定数组
 		 */
 		fill: function(ary, elem) {
-			Arrays.fillRange(ary, 0, ary.length, elem);
+			this.fillRange(ary, 0, ary.length, elem);
 		},
 		/**
 		 *用指定元素填充指定数组的指定范围
 		 */
 		fillRange: function(ary, fromIndex, toIndex, elem) {
-			Arrays.__rangeCheck__(ary, fromIndex, toIndex);
+			this.__rangeCheck__(ary, fromIndex, toIndex);
 			for (var i = fromIndex; i < toIndex; i++) {
 				ary[i] = elem;
 			}
@@ -1283,13 +1290,13 @@
 		 *对指定数组排序
 		 */
 		sort: function(ary, compareFn) {
-			return Arrays.sortRange(ary, 0, ary.length, compareFn);
+			return this.sortRange(ary, 0, ary.length, compareFn);
 		},
 		/**
 		 *对指定数组指定范围排序
 		 */
 		sortRange: function(ary, fromIndex, toIndex, compareFn) {
-			Arrays.__rangeCheck__(ary, fromIndex, toIndex);
+			this.__rangeCheck__(ary, fromIndex, toIndex);
 
 			var quickSort = function(ary) {
 				if (ary.length <= 1) return ary;
@@ -1342,7 +1349,7 @@
 		 *取得集合中最大的元素
 		 */
 		max: function(collection, compareFn) {
-			Collections.__collectionCheck__(collection);
+			this.__collectionCheck__(collection);
 			if (collection.isEmpty()) throw Error('collection is empty');
 
 			var iter = collection.iterator(),
@@ -1367,7 +1374,7 @@
 		 *取得集合中最小的元素
 		 */
 		min: function(collection, compareFn) {
-			Collections.__collectionCheck__(collection);
+			this.__collectionCheck__(collection);
 			if (collection.isEmpty()) throw Error('collection is empty');
 
 			var iter = collection.iterator(),
@@ -1392,7 +1399,7 @@
 		 *对List进行排序
 		 */
 		sort: function(list, compareFn) {
-			Collections.__listCheck__(list);
+			this.__listCheck__(list);
 
 			if (list.isEmpty()) return;
 
@@ -1406,7 +1413,7 @@
 		 *对有序List进行二分查找 返回索引值
 		 */
 		binarySearch: function(list, target, compareFn) {
-			Collections.__listCheck__(list);
+			this.__listCheck__(list);
 			
 			return Arrays.binarySearch(list.toArray(), target, compareFn);
 		},
@@ -1414,7 +1421,7 @@
 		 *将List中的指定元素全部替换为新元素
 		 */
 		replaceAll: function(list, oldElem, newElem) {
-			Collections.__listCheck__(list);
+			this.__listCheck__(list);
 			var replaced = false,
 				iter = list.iterator();
 			while (iter.hasNext()) {
@@ -1429,7 +1436,7 @@
 		 *将List元素反转
 		 */
 		reverse: function(list) {
-			Collections.__listCheck__(list);
+			this.__listCheck__(list);
 
 			var size = list.size();
 			if (list instanceof ArrayList) {

@@ -109,3 +109,17 @@ console.log(list.get(0) + ' & ' + list.get(0));
 var student2 = new Student('001', 'john');
 console.log('contains 001? ' + list.contains(student2));//true
 console.log('indexOf 001: ' + list.indexOf(student2));//0
+
+list.clear();
+
+list.add(1,2,3,4,5,6,7,8,9);
+var iter = list.iterator(9);
+while (iter.hasPrevious()) {
+	var elem = iter.previous();
+	console.log('p: ' + elem);
+	if (elem === 3) {
+		iter.remove();
+	}
+}
+
+console.log(list + '');

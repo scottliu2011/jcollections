@@ -18,7 +18,9 @@ jcollections是一个可以简化数据操作、提高开发效率的集合类�
 
 ### 2.作为模块引入：
 
-在Sea.js或RequireJS中作为模块按需加载，都需要`require`函数。比如在Sea.js中：
+在Sea.js或RequireJS中作为模块按需加载，都需要`require`函数。
+
+在Sea.js中：
 
 ```javascript
 var jcollections = require('./jcollections');
@@ -108,7 +110,7 @@ var lnkList = LinkedList.create();//or LinkedList.create(aryList);
 
 ### ArrayList：
 
-创建实例，可以创建一个空集合，或者传递一个数组，创建一个含有数组元素的集合：
+构造函数，可以创建一个空集合，或者传递一个数组，创建一个含有指定数组元素的集合：
 
 ```javascript
 var list = new ArrayList();
@@ -116,97 +118,129 @@ or
 var list = new ArrayList([...]); 
 ```
 
-创建好实例后，可以使用`add`方法向集合内部添加元素，值得一提的是，`add`方法可以向集合添加一到多个元素，在某些场景霞还是挺方便的：
+`add`方法，向集合中添加一到多个元素：
 
 ```javascript
 list.add('hello');
 list.add('JavaScript', 'world');
 ```
 
-有些时候，我们还是少不了要在指定位置插入一些元素的，这时，可以调用`insert`方法，轻松完成这
-项任务，`insert`方法和`add`方法一样，可以操作一到多个元素：
+`addAll`方法，添加指定集合对象中的所有元素（这里的`Collection`参数指的是ArrayList、LinkedList、HashSet类型实例，下同）：
+
+```javascript
+list.addAll(Collection);
+```
+
+`clear`方法，移除集合中所有元素：
+
+```javascript
+list.clear();
+```
+
+`contains`方法，返回一个布尔值，表示集合中是否存在指定元素：
+
+```javascript
+var isContains = list.contains('hello');
+```
+
+`get`方法，获取指定位置的元素：
+
+```javascript
+var elem = list.get(0);
+```
+
+`indexOf`，返回指定元素第一次出现在集合中的位置索引，如果元素不存在则返回-1：
+
+```javascript
+var index = list.indexOf('JavaScript');
+```
+
+`insert`方法，向集合中指定位置插入一到多个元素：
 
 ```javascript
 list.insert(1, 'a');
 list.insert(2, 'really', 'powerful');
 ```
 
-当向结合中添加元素后，集合的状态就会改变，下面两个方法用于显示集合的状态：
+`insertAll`方法，向集合中指定位置插入指定集合对象中的所有元素：
+
+```javascript
+list.insertAll(3, Collection);
+```
+
+`isEmpty`方法，返回一个布尔值，表示集合是否为空：
 
 ```javascript
 var isEmpty = list.isEmpty();
-var size = list.size();
 ```
 
-`isEmpty`方法返回true或false，表示集合是否为空；`size`方法返回集合中元素的个数。
-
-`contains`方法也是一个比较实用的功能，用于查看集合中是否存在指定元素：
-
-```javascript
-var isContains = list.contains('hello');
-```
-
-该方法返回true或false，表示元素是否存在。
-
-还可以调用`indexOf`及`lastIndexOf`查看元素第一次或最后一次出现在集合中的位置索引：
-
-```javascript
-var index = list.indexOf('JavaScript');
-var lastIndex = list.lastIndexOf('JavaScript');
-```
-
-如果想获取某个位置的元素，可以使用`get`方法：
-
-```javascript
-var elem = list.get(0);
-```
-
-当我们不需要某些元素，要移除它们时，可以选择使用`removeAt`和`removeElement`分别用指定索引和指定元素值的方式移除集合中的元素：
-
-```javascript
-var elem = list.removeAt(0);
-var isRemoved = list.removeElement('hello');
-```
-
-`removeAt`返回刚刚移除的元素，`removeElement`返回true或false，表示移除操作是否成功。
-
-接下来是集合的迭代，获取一个集合的迭代器对象，可以调用`iterator`方法，该方法有一个可选参数，用于从指定索引位置开始迭代：
+`iterator`方法，返回一个迭代器对象，可以选择性地传递一个索引值，表示从指定位置开始迭代：
 
 ```javascript
 var iter = list.iterator();
 or
-var iter = list.iterator(3);
-```
+var iter = list.iterator(3);//从索引为3的位置开始迭代
 
-获取到迭代器之后，就可以像下面这样对集合进行迭代了：
-
-```javascript
 while (iter.hasNext()) {
-	var elem = iter.next();
+	var elem = iter.next();//获取当前元素
 	if (elem === 'world') {
-		iter.remove();
+		iter.remove();//移除当前元素
 	} else if (elem === 'JavaScript') {
-		iter.set('JAVASCRIPT');
+		iter.set('JAVASCRIPT');//重置当前元素
 	}
 }
 ```
 
-使用迭代功能很方便，可以完成元素的输出、重置、删除等操作，相对于直接面向存储结构操作来说，简单高效，无需担心数据的误操作。
-
-最后，介绍一些高级部分的应用：
-
-`addAll`方法用于向集合中添加指定的集合内的数据，`insertAll`方法用于在集合指定位置插入指定的集合内的数据，参数必须是`Collection`的子类，必须是`ArrayList`、`LinkedList`、`HashSet`其中之一的对象实例：
+`lastIndexOf`方法，返回指定元素最后一次出现在集合中的位置索引，如果元素不存在则返回-1：
 
 ```javascript
-list.addAll(arrayList);
-list.addAll(linkedList);
-list.addAll(hashSet);
-list.insertAll(0, arrayList);
-list.insertAll(1, linkedList);
-list.insertAll(2, hashSet);
+var lastIndex = list.lastIndexOf('JavaScript');
 ```
 
-在上面调用`contains`时，其实涉及到了元素的比较，默认是比较基本类型的值或对象类型的引用，也可以自定义比较函数，例如集合中添加的是person对象元素，如果名称相同则认为是同一个人，就可以定义：
+`removeAt`方法，移除指定位置的元素并返回这个元素：
+
+```javascript
+var elem = list.removeAt(0);
+```
+
+`removeElement`方法，移除集合中第一次出现的指定元素，返回一个布尔值，表示是否移除成功：
+
+```javascript
+var success = list.removeElement('hello');
+```
+
+`removeRange`方法，移除指定的开始位置到指定的结束位置的所有元素，包括开始位置，但不包括结束位置，该方法返回移除元素组成的数组：
+
+```javascript
+var ary = list.removeRange(1, 3);
+```
+
+`set`方法，重新设置指定位置的元素，并返回替换前的旧值：
+
+```javascript
+var old = list.set(3, 'js');
+```
+
+`size`方法，返回集合元素的个数：
+
+```javascript
+var size = list.size();
+```
+
+`toArray`方法，返回含有集合数据的数组：
+
+```javascript
+var ary = list.toArray();
+```
+
+`toString`方法，返回含有集合数据的字符串：
+```javascript
+var str = list.toString();
+```
+
+最后，一个特殊的`defineEquals`方法：
+
+在上面介绍`contains`时，其实涉及到了元素的比较，默认是比较基本类型的值或对象类型的引用，也可以自定义比较函数，例如集合中添加的是person对象元素，如果名称相同则认为是同一个人，就可以定义：
 
 ```javascript
 list.defineEquals(function(person0, person1) {
@@ -217,12 +251,12 @@ list.add({name:'bill'});
 list.add({name:'steve'});
 list.add({name:'scott'});
 
-list.contains({name:'scott'});
+var isContains = list.contains({name:'scott'});
 ```
 
 ### LinkedList：
 
-创建实例，可以创建一个空链表，也可以选择传递一个`Collection`类型对象（该对象可以是ArrayList实例、LinkedList实例、HashSet实例，下同），创建一个含有指定集合元素的链表。
+创建实例，可以创建一个空链表，也可以选择传递一个`Collection`类型对象，创建一个含有指定集合元素的链表。
 
 ```javascript
 var list = new LinkedList();
@@ -230,40 +264,82 @@ or
 var list = new LinkedList(Collection);
 ```
 
-`add`方法，用于向链表添加一到多个元素：
+一些与ArrayList功能相同的方法：`add`、`addAll`、`clear`，`contains`，`get`，`indexOf`，`insert`、`insertAll`，`isEmpty`，`lastIndexOf`，`removeAt`，`removeElement`，`set`，`size`，`toArray`，`toString`。对于这些方法，将不再介绍，这里主要介绍LinkedList独特的方法。
 
-```javascript
-list.add('hello', 'world');
-```
-
-`insert`方法，用于在指定位置插入一到多个元素：
-
-```javascript
-list.insert(1, 'javascript', 'html', 'css');
-```
-
-`addFirst`方法，用于在链表头部添加一个元素：
+`addFirst`方法，在链表头部添加一个指定元素：
 
 ```javascript
 list.addFirst(3);
 ```
 
-`addLast`方法，用于在链表尾部添加一个元素：
+`addLast`方法，在链表尾部添加一个指定元素：
 
 ```javascript
 list.addLast(5);
 ```
-## HashSet
 
-## HashMap
+`getFirst`方法，获取链表头部元素：
 
-## Arrays
+```javascript
+var elem = list.getFirst();
+```
 
-## Collections
+`getLast`方法，获取链表尾部元素：
 
-## Template
+```javascript
+var elem = list.getLast();
+```
 
-## Storage
+`removeFirst`方法，移除链表头部元素并返回已移除的元素：
 
-## <a href="http://scottliu2011.github.com/collections/demo" target="_blank">演示地址</a>
+```javascript
+var elem = list.removeFirst();
+```
+
+`removeLast`方法，移除链表尾部元素并返回已移除的元素：
+
+```javascript
+var elem = list.removeLast();
+```
+
+`removeFirstOccurrence`方法，移除链表中第一次出现的指定元素：
+
+```javascript
+var success = list.removeFirstOccurrence('hello');
+```
+
+`removeLastOccurrence`方法，移除链表中最后一次出现的指定元素：
+
+```javascript
+var success = list.removeLastOccurrence('hello');
+```
+
+LinkedList中的`iterator`方法比较特殊，它还可以倒序迭代：
+
+```javascript
+var iter = list.iterator(list.size());
+while (iter.hasPrevious()) {
+	var elem = iter.previous();
+	if (elem === 'hello') {
+		iter.set('world');
+	}
+	if (elem === 'js') {
+		iter.remove();
+	}
+}
+```
+
+### HashSet
+
+### HashMap
+
+### Arrays
+
+### Collections
+
+### Template
+
+### Storage
+
+### <a href="http://scottliu2011.github.com/collections/demo" target="_blank">演示地址</a>
 
