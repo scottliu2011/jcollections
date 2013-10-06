@@ -51,6 +51,7 @@ npm install jcollections
 
 ```javascript
 var jcollections = require('jcollections');
+//todo
 ```
 
 ## 创建实例
@@ -390,7 +391,7 @@ list.add({name:'scott'});
 list.add({name:'scott'});//元素重复，添加失败
 ```
 
-### HashMap
+### HashMap：
 
 HashMap是一种具有键值对映射关系的映射表，它是一种**Map**类型。
 
@@ -468,7 +469,7 @@ map.putAll(Map);
 map.remove('hello');
 ```
 
-### Arrays
+### Arrays：
 
 Arrays是一个操作数组的工具类，包含以下几个方法：
 
@@ -572,7 +573,7 @@ var sortedAry = Arrays.sort(objAry, 1, 4, function(a, b) {
 });
 ```
 
-### Collections
+### Collections：
 
 Collections是一个操作集合对象的工具类，包含以下几个方法：
 
@@ -632,9 +633,9 @@ Collections.replaceAll(list, oldElem, newElem);
 Collections.reverse(list);
 ```
 
-### Template
+### Template：
 
-Template是一个集合模板类，包含在jcollections.util.js中，依赖于jcollections.js
+Template是一个集合模板类，包含在jcollections.util.js中，依赖于jcollections.js。
 
 创建实例，可选择传入模板组件id或模板字符串内容：
 
@@ -658,7 +659,7 @@ var tpl = tpl.read('<div><#= title #></div>');
 
 一个模板组件一般包含在一个script标签内：
 
-```html
+```
 <script id="tpl" type="text/template">
 	<#= title #>:
 	<ol>
@@ -702,15 +703,149 @@ Template支持链式调用，所以可以像下面这样使用：
 
 ```javascript
 var html = Template.create('tpl')
-				  .compile(data)
-				  .getHtml();
+				.compile(data)
+				.getHtml();
 //or
 Template.create('tpl')
 		.compile(data)
 		.render('viewId');
 ```
 
-### Storage
+### Storage：
+
+Storage是一个本地存储类，包含在jcollections.util.js中，依赖于jcollections.js。
+
+首先是几个静态属性或方法：
+
+**isSupported**属性，一个布尔值，表示是否支持本地存储：
+
+```javascript
+var isSupported = Storage.isSupported;
+```
+
+**turnSessionMode**方法，转换为sessionStorage存储模式（默认是localStorage模式）：
+
+```javascript
+Storage.turnSessionMode();
+```
+
+**turnLocalMode**方法，转换为localStorage存储模式：
+
+```javascript
+Storage.turnLocalMode();
+```
+
+**saveItem**方法，存储一个键值对：
+
+```javascript
+Storage.saveItem('hello', 'world');
+```
+
+**getItem**方法，根据指定键获取其值：
+
+```javascript
+var value = Storage.getItem('hello');
+```
+
+**hasItem**方法，返回一个布尔值，表示是否存在指定键所对应的值：
+
+```javascript
+var has = Storage.hasItem('hello');
+```
+
+**delItem**方法，移除指定键对应的值：
+
+```javascript
+Storage.delItem('hello');
+```
+
+**delItems**方法，根据过滤函数移除多个键值对
+（该方法内部有容错机制，过滤函数只需针对指定结构进行逻辑处理，无需考虑无关的数据结构）：
+
+```javascript
+Storage.delItems(function(key, value) {
+	return Storage.fromJSON(value).name === 'jack';
+});
+```
+
+**clear**方法，清空本地存储：
+
+```javascript
+Storage.clear();
+```
+
+**toJSON**方法，将对象转为JSON字符串：
+
+```javascript
+var json = Storage.toJSON({id:1, name:'jack'});
+```
+
+**fromJSON**方法，将JSON字符串转为对象：
+
+```javascript
+var obj = Storage.fromJSON('{"id":1, "name":"jack"}');
+```
+
+**isJSONFormat**方法，传入一个字符串，返回一个布尔值，表示该字符串是否为JSON格式：
+
+```javascript
+var isJSON = Storage.isJSONFormat('{"id":1, "name":"jack"}');
+```
+
+下面是实例方法：
+
+首先是创建实例：
+
+```javascript
+var store = new Storage();
+//or
+var store = Storage.create();
+```
+
+**defineToStore**方法，定义存储数据时的转换规则：
+
+```javascript
+store.defineToStore(function(value) {
+	return Storage.toJSON(value);
+});
+```
+
+**defineFromStore**方法，定义获取数据时的转换规则：
+
+```javascript
+store.defineFromStore(function(json) {
+	return Storage.fromJSON(json);
+});
+```
+
+**saveItems**方法，保存多项数据：
+
+```javascript
+var data = new HashMap();
+data.put('coder', {name:'jack', age:'30', salary:300});
+data.put('guarder', {name:'tom', age:'40', salary:200});
+data.put('cleaner', {name:'john', age:'45', salary:100});
+store.saveItems(data);
+```
+
+**getItems**方法，根据过滤函数获取多条数据
+（同样的，这里只需关心要获取的数据特定的数据结构，无关的数据结构都会被过滤掉）：
+
+```javascript
+var resultMap = store.getItems(function(key, value) {
+	return Storage.fromJSON(value).age > 30;
+});
+
+//修改数据然后存储
+var iter = resultMap.entrySet().iterator();
+while (iter.hasNext()) {
+	var entry = iter.next();
+	var record = entry.getValue();
+	record.salary += 50;
+	console.log('age: ' + record.age + ', current salary: ' + record.salary);
+}
+store.saveItems(resultMap);
+```
 
 ### <a href="http://scottliu2011.github.com/collections/demo" target="_blank">演示地址</a>
 
