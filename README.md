@@ -8,7 +8,7 @@
 支持**RequireJS**、**Sea.js**及**Node.js**环境。
 
 **jcollections.util.js**：工具库，提供了基于集合框架的模板操作类和本地存储类，
-它**依赖于jcollections.js**。
+**它依赖于jcollections.js**。
 
 ## 引入集合函数库
 
@@ -22,13 +22,16 @@
 
 在Sea.js或RequireJS中作为模块按需加载，都需要**require**函数。
 
-在Sea.js中：
+在**Sea.js**中：
 
 ```javascript
-var jcollections = require('./jcollections');
+define(function(require, exports, module) {
+	var jcollections = require('./jcollections');
+	//todo
+});
 ```
 
-在RequireJS中略有不同：
+在**RequireJS**中略有不同：
 
 ```javascript
 require(['./jcollections'], function(jcollections) {
@@ -62,7 +65,7 @@ var list = new jcollections.ArrayList();
 
 ```javascript
 jcollections.exports('*');								//导出所有集合类
-or
+//or
 jcollections.exports('ArrayList'[, 'LinkedList'[, ...]]);//导出一到多个集合类
 ```
 
@@ -73,7 +76,7 @@ var list = new ArrayList();
 ```
 
 这种方式在简单的应用中比较实用，如果是大型项目不推荐使用，这会污染全局变量，
-更好的方式是调用run方法，这里推荐使用下面两种方式：
+更好的方式是调用**run**方法，这里推荐使用下面两种方式：
 
 第一种方式，使用**this**代替包名：
 
@@ -120,9 +123,9 @@ ArrayList是一种具有数组存储结构的集合，它是一种**List**类型
 
 ```javascript
 var list = new ArrayList();
-or
+//or
 var list = new ArrayList([...]); 
-or
+//or
 var list = new ArrayList(Collection);
 ```
 
@@ -186,7 +189,7 @@ var isEmpty = list.isEmpty();
 
 ```javascript
 var iter = list.iterator();
-or
+//or
 var iter = list.iterator(3);			//从索引为3的位置开始迭代
 
 while (iter.hasNext()) {
@@ -271,7 +274,7 @@ LinkedList是一种具有双向链表存储结构的集合，它也是一种**Li
 
 ```javascript
 var list = new LinkedList();
-or
+//or
 var list = new LinkedList(Collection);
 ```
 
@@ -355,7 +358,7 @@ HashSet是一种无重复元素的无序集合，它是一种**Set**类型，它
 
 ```javascript
 var set = new HashSet();
-or
+//or
 var set = new HashSet(Collection);
 ```
 
@@ -395,7 +398,7 @@ HashMap是一种具有键值对映射关系的映射表，它是一种**Map**类
 
 ```javascript
 var map = new HashMap();
-or
+//or
 var map = new HashMap(Map);
 ```
 
@@ -473,7 +476,7 @@ Arrays是一个操作数组的工具类，包含以下几个方法：
 
 ```javascript
 var aryList = Arrays.asList(['hello', 'world']);
-or
+//or
 var aryList = Arrays.asList('hello', 'world');
 ```
 
@@ -630,6 +633,82 @@ Collections.reverse(list);
 ```
 
 ### Template
+
+Template是一个集合模板类，包含在jcollections.util.js中，依赖于jcollections.js
+
+创建实例，可选择传入模板组件id或模板字符串内容：
+
+```javascript
+var tpl = new Template();
+//or
+var tpl = new Template('tpl');
+//or
+var tpl = Template.create();
+//or
+var tpl = Template.create('tpl');
+```
+
+**read**方法，如果创建实例时没有指定组件id或模板字符串内容，调用此方法可读取指定模板：
+
+```javascript
+var tpl = tpl.read('tpl');
+//or
+var tpl = tpl.read('<div><#= title #></div>');
+```
+
+一个模板组件一般包含在一个script标签内：
+
+```html
+<script id="tpl" type="text/template">
+	<#= title #>:
+	<ol>
+		<# for (var i = 0; i < list.size(); i++) { #>
+				<# var person = list.get(i); #>
+				<li>
+					<#= person.name + ' : ' + person.age + ' years old' #>
+				</li>
+		<# } #>
+	</ol>
+</script>
+```
+
+**compile**方法，将指定数据集和模板集合，转译成HTML组件：
+
+```javascript
+var data = new HashMap();
+data.put('title', 'students');//put title
+var list = new ArrayList();
+list.add({id:0, name:'scott', age:15});
+list.add({id:1, name:'bill', age:16});
+list.add({id:2, name:'jobs', age:17});
+data.put('list', list);//put list
+
+var tpl = tpl.compile(data);
+```
+
+**getHtml**方法，返回转译后的HTML内容：
+
+```javascript
+var html = tpl.getHtml();
+```
+
+**render**方法，将HTML内容渲染到指定的视图中：
+
+```javascript
+tpl.render('viewId');
+```
+
+Template支持链式调用，所以可以像下面这样使用：
+
+```javascript
+var html = Template.create('tpl')
+				  .compile(data)
+				  .getHtml();
+//or
+Template.create('tpl')
+		.compile(data)
+		.render('viewId');
+```
 
 ### Storage
 

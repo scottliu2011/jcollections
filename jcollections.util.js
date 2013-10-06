@@ -218,9 +218,13 @@
 	$ = function(id) {
 		return document.getElementById(id);
 	},
-	Template = function() {
+	Template = function(str) {
 		if (!(this instanceof Template)) {
-			return new Template();
+			return new Template(str);
+		}
+
+		if (str) {
+			this.read(str);
 		}
 	};
 
@@ -229,8 +233,8 @@
 	/**
 	 *静态方法 用于创建一个Template实例
 	 */
-	Template.create = function() {
-		return new Template();
+	Template.create = function(str) {
+		return new Template(str);
 	};
 
 	/**
