@@ -28,21 +28,21 @@
 	Storage.isSupported = store !== undefined;
 
 	/**
-	 *启动session storage操作
+	 *启动sessionStorage操作
 	 */
 	Storage.turnSessionMode = function() {
 		store = global.sessionStorage;
 	};
 	
 	/**
-	 *启动local storage操作
+	 *启动localStorage操作
 	 */
 	Storage.turnLocalMode = function() {
 		store = global.localStorage;
 	};
 
 	/**
-	 *存储一个键值对 value为字符串类型
+	 *存储一个键值对
 	 */
 	Storage.saveItem = function(key, value) {
 		store.setItem(key, value);
@@ -113,8 +113,8 @@
 	 */
 	Storage.isJSONFormat = function(str) {
 		try {
-			global.JSON.parse(str);
-			return true;
+			var s = Object.prototype.toString.call(global.JSON.parse(str));
+			return s === '[object Object]' || s === '[object Array]';
 		} catch (e) {
 			return false;
 		}
