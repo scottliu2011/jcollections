@@ -61,4 +61,8 @@ var objAry2 = [
 var sortedAry = Arrays.sort(objAry2, function(a, b) {
 	return a.id - b.id;
 });
-console.log('after sort(complex condition)? ' + sortedAry);
+console.log('after sort asc(complex condition)? ' + sortedAry);
+var sortedAry = Arrays.sort(objAry2, function(a, b) {
+	return  b.id - a.id;
+});
+console.log('after sort desc(complex condition)? ' + sortedAry);

@@ -119,7 +119,7 @@ var lnkList = LinkedList.create();//or LinkedList.create(aryList);
 
 ArrayList是一种具有数组存储结构的集合，它是一种**List**类型，它的最上层是**Collection**类。
 
-构造函数，可以创建一个空集合，或者传递一个数组，创建一个含有指定数组元素的集合，也可以传递一个**Collection**类型的集合对象，创建一个含有指定集合元素的新实例
+构造函数--可以创建一个空集合，或者传递一个数组，创建一个含有指定数组元素的集合，也可以传递一个**Collection**类型的集合对象，创建一个含有指定集合元素的新实例
 （这里的**Collection**类型对象指的是**ArrayList**、**LinkedList**、**HashSet**类型实例，下同）：
 
 ```javascript
@@ -252,7 +252,7 @@ var str = list.toString();
 
 最后，一个特殊的**defineEquals**方法：
 
-在上面介绍**contains**时，其实涉及到了元素的比较，默认是比较基本类型的值或对象类型的引用，也可以自定义比较函数，例如集合中添加的是person对象元素，如果名称相同则认为是同一个人，就可以定义：
+在上面的**contains**、**indexOf**、**lastIndexOf**方法中，涉及到了元素的比较，默认是比较基本类型的值或对象类型的引用，也可以自定义比较函数，例如集合中添加的是person对象元素，如果名称相同则认为是同一个人，就可以定义比较函数并且应用：
 
 ```javascript
 list.defineEquals(function(person0, person1) {
@@ -270,8 +270,8 @@ var isContains = list.contains({name:'scott'});
 
 LinkedList是一种具有双向链表存储结构的集合，它也是一种**List**类型，它的最上层是**Collection**类。
 
-构造函数，可以创建一个空链表，也可以选择传递一个**Collection**类型对象，
-创建一个含有指定集合元素的链表。
+构造函数--可以创建一个空链表，也可以选择传递一个**Collection**类型对象，
+创建一个含有指定集合元素的链表：
 
 ```javascript
 var list = new LinkedList();
@@ -281,7 +281,7 @@ var list = new LinkedList(Collection);
 
 一些与ArrayList功能相同的方法：
 
-**add**、**addAll**、**clear**，**contains**，**get**，
+**add**、**addAll**、**clear**，**contains**，**defineEquals**，**get**，
 **indexOf**，**insert**、**insertAll**，**isEmpty**，**lastIndexOf**，
 **removeAt**，**removeElement**，**set**，**size**，**toArray**，**toString**
 
@@ -354,8 +354,8 @@ while (iter.hasPrevious()) {
 
 HashSet是一种无重复元素的无序集合，它是一种**Set**类型，它的最上层是**Collection**类。
 
-构造函数，可以创建一个空的无序集合,也可以选择传递一个**Collection**类型对象，
-创建一个含有指定集合元素的无序集合。
+构造函数--可以创建一个空的无序集合,也可以选择传递一个**Collection**类型对象，
+创建一个含有指定集合元素的无序集合：
 
 ```javascript
 var set = new HashSet();
@@ -395,7 +395,7 @@ list.add({name:'scott'});//元素重复，添加失败
 
 HashMap是一种具有键值对映射关系的映射表，它是一种**Map**类型。
 
-构造函数，可以创建一个空的映射表，也可以传递一个**Map**类型的对象，创建一个含有指定映射表元素的新实例：
+构造函数--可以创建一个空的映射表，也可以传递一个**Map**类型的对象，创建一个含有指定映射表元素的新实例：
 
 ```javascript
 var map = new HashMap();
@@ -560,8 +560,12 @@ var objAry = [
 	{id:5, name:'tom', toString: function() {return '5:tom';}},
 	{id:3, name:'scott', toString: function() {return '3:scott';}}
 ];
-var sortedAry = Arrays.sort(objAry, function(a, b) {
+var sortedAry = Arrays.sort(objAry, function(a, b) {//按id正序
 	return a.id - b.id;
+});
+//or
+var sortedAry = Arrays.sort(objAry, function(a, b) {//按id逆序
+	return b.id - a.id;
 });
 ```
 
@@ -677,12 +681,12 @@ var tpl = tpl.read('<div><#= title #></div>');
 
 ```javascript
 var data = new HashMap();
-data.put('title', 'students');//put title
+data.put('title', 'students');			//put title
 var list = new ArrayList();
 list.add({id:0, name:'scott', age:15});
 list.add({id:1, name:'bill', age:16});
 list.add({id:2, name:'jobs', age:17});
-data.put('list', list);//put list
+data.put('list', list);					//put list
 
 var tpl = tpl.compile(data);
 ```
@@ -703,8 +707,8 @@ Template支持链式调用，所以可以像下面这样使用：
 
 ```javascript
 var html = Template.create('tpl')
-				.compile(data)
-				.getHtml();
+					.compile(data)
+					.getHtml();
 //or
 Template.create('tpl')
 		.compile(data)
@@ -846,6 +850,8 @@ while (iter.hasNext()) {
 }
 store.saveItems(resultMap);
 ```
+
+#
 
 ### <a href="http://scottliu2011.github.com/collections/demo" target="_blank">演示地址</a>
 
