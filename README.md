@@ -119,7 +119,7 @@ var lnkList = LinkedList.create();//or LinkedList.create(aryList);
 
 ArrayList是一种具有数组存储结构的集合，它是一种**List**类型，它的最上层是**Collection**类。
 
-构造函数--可以创建一个空集合，或者传递一个数组，创建一个含有指定数组元素的集合，也可以传递一个**Collection**类型的集合对象，创建一个含有指定集合元素的新实例
+构造函数---可以创建一个空集合，或者传递一个数组，创建一个含有指定数组元素的集合，也可以传递一个**Collection**类型的集合对象，创建一个含有指定集合元素的新实例
 （这里的**Collection**类型对象指的是**ArrayList**、**LinkedList**、**HashSet**类型实例，下同）：
 
 ```javascript
@@ -270,7 +270,7 @@ var isContains = list.contains({name:'scott'});
 
 LinkedList是一种具有双向链表存储结构的集合，它也是一种**List**类型，它的最上层是**Collection**类。
 
-构造函数--可以创建一个空链表，也可以选择传递一个**Collection**类型对象，
+构造函数---可以创建一个空链表，也可以选择传递一个**Collection**类型对象，
 创建一个含有指定集合元素的链表：
 
 ```javascript
@@ -354,7 +354,7 @@ while (iter.hasPrevious()) {
 
 HashSet是一种无重复元素的无序集合，它是一种**Set**类型，它的最上层是**Collection**类。
 
-构造函数--可以创建一个空的无序集合,也可以选择传递一个**Collection**类型对象，
+构造函数---可以创建一个空的无序集合,也可以选择传递一个**Collection**类型对象，
 创建一个含有指定集合元素的无序集合：
 
 ```javascript
@@ -395,7 +395,8 @@ list.add({name:'scott'});//元素重复，添加失败
 
 HashMap是一种具有键值对映射关系的映射表，它是一种**Map**类型。
 
-构造函数--可以创建一个空的映射表，也可以传递一个**Map**类型的对象，创建一个含有指定映射表元素的新实例：
+构造函数---可以创建一个空的映射表，也可以传递一个**Map**类型的对象，
+创建一个含有指定映射表元素的新实例：
 
 ```javascript
 var map = new HashMap();
@@ -641,7 +642,7 @@ Collections.reverse(list);
 
 Template是一个集合模板类，包含在jcollections.util.js中，依赖于jcollections.js。
 
-创建实例，可选择传入模板组件id或模板字符串内容：
+创建实例---可选择传入模板组件id或模板字符串内容：
 
 ```javascript
 var tpl = new Template();
@@ -851,7 +852,5 @@ while (iter.hasNext()) {
 store.saveItems(resultMap);
 ```
 
-#
-
-### <a href="http://scottliu2011.github.com/collections/demo" target="_blank">演示地址</a>
+### ---> <a href="http://scottliu2011.github.com/collections/demo" target="_blank">演示地址</a>
 
