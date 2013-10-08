@@ -1,4 +1,4 @@
-jcollections.exports('*');
+jcollections.exports('ArrayList', 'Collections');
 
 var list = new ArrayList();
 list.add({id:1, name:'soctt', toString:function() {return '1:scott';}});

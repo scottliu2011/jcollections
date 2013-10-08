@@ -1,14 +1,13 @@
-jcollections.exports('*');
+jcollections.exports('HashMap');
+
 var map = new HashMap();
 
 console.log('0.------------------------------------------------------------------');
-
 console.log('init: ' + map);//{}
 console.log('is empty? ' + map.isEmpty());//true
 console.log('size: ' + map.size());//0
 
 console.log('1.------------------------------------------------------------------');
-
 map.put(0, 'hello');
 console.log('get by 0: ' + map.get(0));//hello
 
@@ -42,7 +41,6 @@ console.log('get by object key: ' + map.get(key));//this is scott's details.
 
 console.log('map: ' + map);
 console.log("map's keys: " + map.keySet());
-console.log("map's values: " + map.values());
 
 console.log('contains key? ' + map.containsKey(key));
 console.log('contains value? ' + map.containsValue(value));

@@ -1,12 +1,17 @@
-jcollections.exports('Storage');
+jcollections.exports('Storage', 'HashMap');
+
 console.log('is Storage supported? ' + Storage.isSupported);
+
 Storage.turnSessionMode();// turn sessionStorage mode
 Storage.saveItem('test', 'hello');
 console.log('sessionStorage: test=>' + Storage.getItem('test'));//hello
+
 Storage.turnLocalMode();// turn localStorage mode
 Storage.saveItem('test', 'hello');
 console.log('localStorage: test=>' + Storage.getItem('test'));//hello
+
 var store = new Storage();
+
 store.defineToStore(function(value) {//define in rule
 	return Storage.toJSON(value);
 });
@@ -14,7 +19,6 @@ store.defineFromStore(function(json) {//define out rule
 	return Storage.fromJSON(json);
 });
 
-jcollections.exports('HashMap');
 var data = new HashMap();
 data.put('coder', {name:'jack', age:'30', salary:300});
 data.put('guarder', {name:'tom', age:'40', salary:200});

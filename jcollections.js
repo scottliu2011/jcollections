@@ -17,7 +17,7 @@
 	/**
 	 *集合标识类型
 	 */
-	function Collection(){};
+	function Collection() {}
 
 	/**
 	 *size();
@@ -964,7 +964,7 @@
 	/**
 	 *Map标识类型
 	 */
-	function Map(){};
+	function Map() {}
 
 	/**
 	 *size();

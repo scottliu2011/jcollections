@@ -46,7 +46,7 @@
 		</div>
 <pre id="preCodes" class="data">
 //------------------------------begin
-jcollections.exports('HashMap', 'Template');
+jcollections.exports('Template', 'HashMap');
 var data = new HashMap();
 data.put('title', 'students');//put title
 var list = new ArrayList();
@@ -64,5 +64,6 @@ tpl.read('tpl').compile(data).render('view');
 		<script src="../jcollections.util.js"></script>
 		<script src="js/painter.js"></script>
 		<script src="js/demo.js"></script>
+		<script src="js/logger.js"></script>
 	</body>
 </html>

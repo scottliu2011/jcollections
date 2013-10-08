@@ -5,7 +5,7 @@ body,pre{font-family: Courier, "Courier New", monospace;}
 .code{background:#272822;height:300px;}
 .console{background:#aaa;height:100px;padding-top:5px;padding-bottom:5px;}
 .console p{color:blue;line-height:1.2em;border-bottom:1px solid gray;margin-left:1em;}
-#nextStep{background:#008287;color:#fff;padding:8px 30px;font-size:18px;}
+#nextStep{background:#2d89ef;color:#fff;padding:8px 30px;font-size:18px;}
 #outputTip{color:red;font-size:18px;font-weight:bold;display:none;}
 #nextStep:hover{cursor:pointer;color:#000;box-shadow:1px 1px 1px #000;}
 #codeTip>span{display:block;width:2px;height:1em;background:#fff;}

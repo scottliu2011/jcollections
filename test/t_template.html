@@ -5,6 +5,25 @@
 		<div id="view">
 			
 		</div>
+		<pre>
+jcollections.exports('Template', 'HashMap');
+
+/* the data-model */
+var data = new HashMap();
+
+data.put('title', 'students');
+
+var list = new ArrayList();
+list.add({id:0, name:'scott'});
+list.add({id:1, name:'bill'});
+list.add({id:2, name:'jobs'});
+
+data.put('list', list);
+
+Template.create('tpl')
+		.compile(data)
+		.render('view');
+		</pre>
 	</body>
 	<script type="text/javascript" src="../jcollections.js"></script>
 	<script type="text/javascript" src="../jcollections.util.js"></script>
@@ -16,24 +35,5 @@
 			<# } #>
 		</ol>
 	</script>
-	<script type="text/javascript">
-		jcollections.exports('*');
-
-		/* the data-model */
-		var data = new HashMap();
-
-		data.put('title', 'students');
-
-		var list = new ArrayList();
-		list.add({id:0, name:'scott'});
-		list.add({id:1, name:'bill'});
-		list.add({id:2, name:'jobs'});
-
-		data.put('list', list);
-
-		var tpl = Template.create();
-		tpl.read('tpl')
-		   .compile(data)
-		   .render('view');
-	</script>
+	<script type="text/javascript" src="js/t_template.js"></script>
 </html>

@@ -7,7 +7,8 @@
 		<h1>please check the console.</h1>
 		<h3>if you're using Chrome, F12 and click the "console" tab.</h3>
 		<pre>
-jcollections.exports('*');
+jcollections.exports('HashSet', 'ArrayList', 'LinkedList');
+
 var set = new HashSet();
 
 console.log('0.---------------------------------------------------------------------');
@@ -122,7 +123,6 @@ console.log('after defineEquals and add: ' + set);//[]
 console.log('contains obj1? ' + set.contains(obj1));//true
 set.remove(obj1);
 console.log('after remove obj1: ' + set);//[]
-
 		</pre>
 		<script src="../jcollections.js"></script>
 		<script src="js/t_hashset.js"></script>

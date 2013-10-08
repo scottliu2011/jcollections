@@ -36,6 +36,10 @@
 
 				var body = '';
 
+				if (currStep > 0) {
+					body = 'this.log("&nbsp;");';
+				}
+
 				for (var i = 0; i < step.length; i++) {
 					var line = step[i].replace(/\/\/.+$/g, '');
 					line = line.replace('console', 'this');

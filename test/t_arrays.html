@@ -6,8 +6,8 @@
 	<h1>please check the console.</h1>
 	<h3>if you're using Chrome, F12 and click the "console" tab.</h3>
 	<pre>
-jcollections.exports('*');
-		
+jcollections.exports('Arrays');
+
 //asList
 var list = Arrays.asList(1,2,3);
 console.log('asList result: ' + list);//[1,2,3]
@@ -27,10 +27,7 @@ var objAry = [
 ];
 
 var position = Arrays.binarySearch(objAry, {id:4, name:'john'}, function(a, b) {
-	if (a.id === b.id) {
-		return 0;
-	}
-	return a.id < b.id ? -1 : 1;
+	return a.id - b.id;
 });
 
 console.log('complex binarySearch result: ' + position);//3
@@ -69,13 +66,16 @@ var objAry2 = [
 	{id:5, name:'tom', toString: function() {return '5:tom';}},
 	{id:3, name:'scott', toString: function() {return '3:scott';}}
 ];
+
 var sortedAry = Arrays.sort(objAry2, function(a, b) {
-	if (a.id === b.id) {
-		return 0;
-	}
-	return a.id < b.id ? -1: 1;
+	return a.id - b.id;
 });
-console.log('after sort(complex condition)? ' + sortedAry);
+console.log('after sort asc(complex condition)? ' + sortedAry);
+
+var sortedAry = Arrays.sort(objAry2, function(a, b) {
+	return  b.id - a.id;
+});
+console.log('after sort desc(complex condition)? ' + sortedAry);
 	</pre>
 	<script type="text/javascript" src="../jcollections.js"></script>
 	<script type="text/javascript" src="js/t_arrays.js"></script>

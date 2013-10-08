@@ -1,4 +1,5 @@
-jcollections.exports('*');
+jcollections.exports('HashSet', 'ArrayList', 'LinkedList');
+
 var set = new HashSet();
 
 console.log('0.---------------------------------------------------------------------');

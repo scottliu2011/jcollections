@@ -23,7 +23,7 @@
 		</div>
 <pre id="preCodes" class="store">
 //------------------------------begin
-jcollections.exports('Storage');
+jcollections.exports('Storage', 'HashMap');
 console.log('is Storage supported? ' + Storage.isSupported);
 Storage.turnSessionMode();// turn sessionStorage mode
 Storage.saveItem('test', 'hello');
@@ -39,7 +39,6 @@ store.defineFromStore(function(json) {//define out rule
 	return Storage.fromJSON(json);
 });
 $
-jcollections.exports('collections.*');
 var data = new HashMap();
 data.put('coder', {name:'jack', age:'30', salary:300});
 data.put('guarder', {name:'tom', age:'40', salary:200});
@@ -79,5 +78,6 @@ console.log('cleaner exists? ' + Storage.hasItem('cleaner'));
 		<script src="../jcollections.util.js"></script>
 		<script src="js/painter.js"></script>
 		<script src="js/demo.js"></script>
+		<script src="js/logger.js"></script>
 	</body>
 </html>

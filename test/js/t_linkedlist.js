@@ -1,4 +1,5 @@
-jcollections.exports('*');
+jcollections.exports('LinkedList', 'ArrayList', 'HashSet');
+
 var list = new LinkedList();
 
 console.log('0.---------------------------------------------------------------------');

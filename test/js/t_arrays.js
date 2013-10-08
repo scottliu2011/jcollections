@@ -1,5 +1,5 @@
-jcollections.exports('*');
-		
+jcollections.exports('Arrays');
+
 //asList
 var list = Arrays.asList(1,2,3);
 console.log('asList result: ' + list);//[1,2,3]
@@ -58,10 +58,12 @@ var objAry2 = [
 	{id:5, name:'tom', toString: function() {return '5:tom';}},
 	{id:3, name:'scott', toString: function() {return '3:scott';}}
 ];
+
 var sortedAry = Arrays.sort(objAry2, function(a, b) {
 	return a.id - b.id;
 });
 console.log('after sort asc(complex condition)? ' + sortedAry);
+
 var sortedAry = Arrays.sort(objAry2, function(a, b) {
 	return  b.id - a.id;
 });

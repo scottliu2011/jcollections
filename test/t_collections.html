@@ -6,7 +6,7 @@
 	<h1>please check the console.</h1>
 	<h3>if you're using Chrome, F12 and click the "console" tab.</h3>
 	<pre>
-jcollections.exports('*');
+jcollections.exports('ArrayList', 'Collections');
 
 var list = new ArrayList();
 list.add({id:1, name:'soctt', toString:function() {return '1:scott';}});
@@ -20,7 +20,7 @@ var max = Collections.max(list, function(a, b) {
 	}
 	return a.id < b.id ? -1 : 1;
 });
-console.log('max: ' + max);//3:steve
+console.log('max: ' + max);//4:john
 
 var min = Collections.min(list, function(a, b) {
 	if (a.id === b.id) {
@@ -37,6 +37,14 @@ Collections.sort(list, function(a, b) {
 	return a.id < b.id ? -1 : 1;
 });
 console.log('after sort: ' + list);//1:scott,2:bill,3:steve,4:john
+
+Collections.sort(list, function(a, b) {
+	if (a.id === b.id) {
+		return 0;
+	}
+	return a.id > b.id ? -1 : 1;
+});
+console.log('after sort desc: ' + list);//4:john,3:steve,2:bill,1:scott
 
 var target = {id:3, name:'steve'};
 
@@ -63,7 +71,6 @@ var newElem = {id:0, name:'tom', toString:function() {return '0:tom';}};
 
 Collections.replaceAll(list, oldElem, newElem);
 console.log('after replaceAll: ' + list);
-
 	</pre>
 	<script type="text/javascript" src="../jcollections.js"></script>
 	<script type="text/javascript" src="js/t_collections.js"></script>

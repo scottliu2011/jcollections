@@ -456,6 +456,9 @@ while (iter.hasNext()) {
 
 ```javascript
 map.put('hello', 'world');
+map.put(3, 'three');
+map.put('3', 'different three');
+map.put({id:007, name:'scott'}, {fullName:'scott liu', info:'hello world', addr:'...'});
 ```
 
 **putAll**方法，将指定映射表中的元素合并进当前表中：
@@ -852,7 +855,7 @@ while (iter.hasNext()) {
 store.saveItems(resultMap);
 ```
 
-### =====
+### ====================
 <a href="http://scottliu2011.github.com/collections/demo" target="_blank">演示地址</a>
-=====
+
 
