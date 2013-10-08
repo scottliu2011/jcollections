@@ -285,7 +285,7 @@ var list = new LinkedList(Collection);
 **indexOf**，**insert**、**insertAll**，**isEmpty**，**lastIndexOf**，
 **removeAt**，**removeElement**，**set**，**size**，**toArray**，**toString**
 
-对于这些方法，将不再介绍，这里主要介绍LinkedList独特的方法。
+对于这些方法，将不再介绍，这里主要介绍LinkedList特有的方法。
 
 **addFirst**方法，在链表头部添加一个指定元素：
 
@@ -852,5 +852,7 @@ while (iter.hasNext()) {
 store.saveItems(resultMap);
 ```
 
-### ---> <a href="http://scottliu2011.github.com/collections/demo" target="_blank">演示地址</a>
+### =====
+<a href="http://scottliu2011.github.com/collections/demo" target="_blank">演示地址</a>
+=====
 

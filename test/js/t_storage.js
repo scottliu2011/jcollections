@@ -37,9 +37,9 @@ while (iter.hasNext()) {
 }
 store.saveItems(resultMap);//save current salary
 
-Storage.delItems(function(key, stringValue) {
+Storage.delItems(function(key, value) {
 	//return key === 'coder';[delete the item that key equals 'coder']
-	return Storage.fromJSON(stringValue).name === 'jack';
+	return Storage.fromJSON(value).name === 'jack';
 	//return true;[if return true, delete all items. But call 'clear' method is better.^_^]
 });
 console.log('coder(jack) exists? ' + Storage.hasItem('coder'));
