@@ -126,6 +126,10 @@
 		nextStep.onclick = function() {
 			if (btnDisabled) return;
 
+			if (currStep === 0) {
+				codePrint.innerHTML = '';
+			}
+
 			if (currStep === demo.codes.length) {
 				codePrint.innerHTML = '';
 				consolePrint.innerHTML = '';
