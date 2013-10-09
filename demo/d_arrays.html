@@ -8,7 +8,7 @@
 	</head>
 	<body>
 		<div id="codeArea" class="module code">
-			<pre id="codePrint"></pre>
+			<pre id="codePrint"><p>该页面演示Arrays API的使用，点击下方按钮开始演示</p></pre>
 			<div id="codeTip"><span></span></div>
 		</div>
 		<div class="module">
@@ -23,20 +23,18 @@
 		</div>
 <pre id="preCodes">
 //------------------------------begin
-jcollections.exports('Arrays');
-//asList
-var list = Arrays.asList(1,2,3);
-console.log('asList result: ' + list);//[1,2,3]
+jcollections.exports('Arrays');//导出Arrays类
+var list = Arrays.asList(1,2,3);//调用asList，将多个数值转化为ArrayList类型的集合
+console.log('调用asList方法转化成的ArrayList集合: ' + list);//打印集合数据
 $
-var ary = [1,2,3,4,5,6,7,8,9,10];
-//binarySearch
-console.log('binarySearch result: ' + Arrays.binarySearch(ary, 7));//6
-//binarySearchRange
-console.log('binarySearchRange result: ' + Arrays.binarySearchRange(ary, 4, 8, 6));//5
-//copyOf
-console.log('after copyOf: ' + Arrays.copyOf(ary, 3));//[1,2,3]
-//copyOfRange
-console.log('after copyOfRange: ' + Arrays.copyOfRange(ary, 3, 6));//[4,5,6]
+var ary = [1,2,3,4,5,6,7,8,9,10];//定义一个有序数组
+//调用binarySearch二分查找方法查找ary数组中值为7的索引
+console.log('二分查找结果索引: ' + Arrays.binarySearch(ary, 7));
+//调用binarySearchRange二分查找方法在ary数组4到8的索引范围内查找值为6的索引
+console.log('指定范围二分查找结果索引: ' + Arrays.binarySearchRange(ary, 4, 8, 6));
+console.log('复制的新数组元素: ' + Arrays.copyOf(ary, 3));//调用copyOf方法复制ary数组中的3个元素到新数组
+//调用copyOfRange方法复制从索引为3处到索引为6处的元素（索引值包括3，不包括6）
+console.log('复制指定范围的新数组元素: ' + Arrays.copyOfRange(ary, 3, 6));
 $
 var objAry = [
 	{id:1, name:'bill'},
@@ -45,18 +43,14 @@ var objAry = [
 	{id:4, name:'john'},
 	{id:5, name:'tom'}
 ];
+//根据id属性进行二分查找复杂对象
 var position = Arrays.binarySearch(objAry, {id:4, name:'john'}, function(a, b) {
-	if (a.id === b.id) {
-		return 0;
-	}
-	return a.id < b.id ? -1 : 1;
+	return a.id - b.id;
 });
-console.log('complex binarySearch result: ' + position);//3
+console.log('复杂对象二分查找结果索引: ' + position);//打印结果的索引
 $
-var ary0 = [1,2,3];
-var ary1 = [1,2,3];
-console.log('is equals? ' + Arrays.equals(ary0, ary1));//true
-$
+var ary0 = [1,2,3], ary1 = [1,2,3];
+console.log('ary0和ary1相同吗? ' + Arrays.equals(ary0, ary1));//比较两个数组是否相同
 var objAry0 = [
 	{id:1, name:'bill'},
 	{id:2, name:'steve'},
@@ -67,14 +61,13 @@ var objAry1 = [
 	{id:2, name:'steve'},
 	{id:3, name:'scott'}
 ];
-console.log('is equals(complex condition)? ' + Arrays.equals(objAry0, objAry1, function(a, b) {
+//根据比较函数来比较两个对象数组是否相同
+console.log('objAry0和objAry1相同吗? ' + Arrays.equals(objAry0, objAry1, function(a, b) {
 	return a.id === b.id && a.name === b.name;
-}));//true
+}));
 $
 var ary2 = [1,5,2,3,6,9,8];
-//sort
-console.log('after sort: ' + Arrays.sort(ary2));//1,2,3,5,6,8,9
-$
+console.log('简单排序后的数组元素: ' + Arrays.sort(ary2));//简单排序
 var objAry2 = [
 	{id:1, name:'bill', toString: function() {return '1:bill';}},
 	{id:4, name:'john', toString: function() {return '4:john';}},
@@ -82,13 +75,14 @@ var objAry2 = [
 	{id:5, name:'tom', toString: function() {return '5:tom';}},
 	{id:3, name:'scott', toString: function() {return '3:scott';}}
 ];
-var sortedAry = Arrays.sort(objAry2, function(a, b) {
-	if (a.id === b.id) {
-		return 0;
-	}
-	return a.id < b.id ? -1: 1;
+var sortedAry = Arrays.sort(objAry2, function(a, b) {//复杂排序，根据id属性正序
+	return a.id - b.id;
 });
-console.log('after sort(complex condition)? ' + sortedAry);
+console.log('按id属性正序排序后的数组元素： ' + sortedAry);//打印排序后的数组
+var sortedAry = Arrays.sort(objAry2, function(a, b) {//复杂排序，根据id属性逆序
+	return b.id - a.id;
+});
+console.log('按id属性逆序排序后的数组元素：' + sortedAry);//打印排序后的数组
 //------------------------------end
 </pre>
 		<script src="../jcollections.js"></script>

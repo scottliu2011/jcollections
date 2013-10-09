@@ -46,18 +46,19 @@
 		</div>
 <pre id="preCodes" class="data">
 //------------------------------begin
-jcollections.exports('Template', 'HashMap');
-var data = new HashMap();
-data.put('title', 'students');//put title
+jcollections.exports('Template', 'HashMap', 'ArrayList');
+var data = new HashMap();//创建HashMap实例担任数据模型角色
+data.put('title', 'students');//添加普通键值对
 var list = new ArrayList();
 list.add({id:0, name:'scott', age:15});
 list.add({id:1, name:'bill', age:16});
 list.add({id:2, name:'jobs', age:17});
-data.put('list', list);//put list
-var tpl = Template.create();
-//read template by id, compile id with data,
-//and finally render the view that given id.
-tpl.read('tpl').compile(data).render('view');
+data.put('list', list);//添加一个value为集合的键值对
+//先根据id为tpl的模板创建Template实例
+//然后将模板和数据结合，转译成html，最后渲染到指定id的组件中
+Template.create('tpl')
+		.compile(data)
+		.render('view');
 //------------------------------end
 </pre>
 		<script src="../jcollections.js"></script>

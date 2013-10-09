@@ -23,72 +23,71 @@
 		</div>
 <pre id="preCodes" class="list">
 //------------------------------begin
-jcollections.exports('ArrayList', 'LinkedList', 'HashSet');//导出ArrayList、LinkedList、HashSet类
+jcollections.exports('ArrayList', 'LinkedList', 'HashSet', 'Collection', 'List');//导出ArrayList、LinkedList、HashSet类
 var list = new ArrayList();//创建ArrayList实例
-console.log('is a Collection? ' + (list instanceof Collection));//查看该实例是否是一个Collection类型
-console.log('is a List? ' + (list instanceof List));//查看该实例是否是一个List类型
-console.log('init: ' + list);//打印集合数据
-console.log('isEmpty? ' + list.isEmpty());//查看集合是否为空
-console.log('size: ' + list.size());//查看集合元素个数
+console.log('是一个Collection类型吗? ' + (list instanceof Collection));//查看该实例是否是一个Collection类型
+console.log('是一个List类型吗? ' + (list instanceof List));//查看该实例是否是一个List类型
+console.log('初始化: ' + list);//打印集合数据
+console.log('是否为空? ' + list.isEmpty());//查看集合是否为空
+console.log('元素个数: ' + list.size());//查看集合元素个数
 $
-//添加几个元素
-list.add('hello');
-list.add('world');
-list.add('scott');
+list.add('hello');//添加单个元素
+list.add('world');//添加单个元素
+list.add('scott');//添加单个元素
 list.add(1, 2, 3);//添加多个元素
-console.log('after add: ' + list);//[hello, world, scott, 1, 2, 3]
-console.log('get 0: ' + list.get(0));//获取索引为0的元素，即hello
-console.log('contains soctt? ' + list.contains('scott'));//查看是否包含scott
-console.log('indexOf soctt? ' + list.indexOf('scott'));//查看scott在集合中的索引
+console.log('添加元素后的集合: ' + list);//打印集合数据
+console.log('索引为0处的元素: ' + list.get(0));//获取索引为0的元素
+console.log('包含soctt元素吗? ' + list.contains('scott'));//查看集合是否包含scott
+console.log('scott第一次出现的位置：' + list.indexOf('scott'));//查看scott在集合中的索引
 $
 list.insert(3, -1, 0);//在索引为3的位置插入两个元素：-1和0
-console.log('after insert: ' + list);//[hello, world, scott, -1, 0, 1, 2, 3]
+console.log('插入多个值后的集合: ' + list);////打印集合数据
 list.removeAt(2);//移除索引为2对应的元素
-console.log('after removeAt: ' + list);//[hello, world, -1, 0, 1, 2, 3]
+console.log('移除索引为2处的元素后: ' + list);//打印集合数据
 list.removeElement('world');//移除值为world的元素
-console.log('after removeElement: ' + list);//[hello, -1, 0, 1, 2, 3]
+console.log('移除值为world的元素后: ' + list);//打印集合数据
 $
-list.set(1, 1);//设置索引为1的元素值为1
-console.log('after set: ' + list);//[hello, 1, 0, 1, 2, 3]
-console.log('indexOf 1? ' + list.indexOf(1));//查看元素值为1第一次出现在集合中的索引值
-console.log('lastIndexOf 1? ' + list.lastIndexOf(1));//查看元素值为1最后一次出现在集合中的索引值
+list.set(1, 1);//设置索引为1处的元素值为1
+console.log('设置索引为1处元素值后的集合: ' + list);//打印集合数据
+console.log('值为1的元素第一次出现的索引：' + list.indexOf(1));//查看元素值为1第一次出现在集合中的索引值
+console.log('值为1的元素最后一次出现的索引：' + list.lastIndexOf(1));//查看元素值为1最后一次出现在集合中的索引值
 list.removeRange(0, 2);//移除从0到2之间的元素（包括0的位置，不包括2的位置）
-console.log('after removeRange: ' + list);//[0, 1, 2, 3]
+console.log('移除[0,2)的指定范围元素后: ' + list);//打印集合数据
 $
 list.clear();//清空集合
-console.log('after clear: ' + list);//[]
-console.log('isEmpty? ' + list.isEmpty());//查看集合是否为空
-console.log('size: ' + list.size());//查看集合元素个数
+console.log('清空元素后的集合: ' + list);//打印集合数据
+console.log('集合为空吗? ' + list.isEmpty());//查看集合是否为空
+console.log('集合的元素个数: ' + list.size());//查看集合元素个数
 $
 var list2 = new ArrayList([1, 2, 3]);//创建新的ArrayList实例
 list.addAll(list2);//把新创建的实例元素全部添加到list实例中
 var list3 = new LinkedList();//创建新的LinkedList实例
 list3.add(4, 5, 6);//向LinkedList实例中添加多个元素
 list.addAll(list3);//把新LinkedList实例元素全部添加到list实例中
-console.log('after addAll: ' + list);//[1, 2, 3, 4, 5, 6]
+console.log('添加集合后: ' + list);//打印集合数据
 var set = new HashSet();//新建一个HashSet实例
 set.add('hello');//向HashSet实例中添加一个元素
-list.insertAll(0, set);//把HashSet实例元素插入到list实例中的索引为0处
-console.log('after insertAll: ' + list);//[hello, 1, 2, 3, 4, 5, 6]
+list.insertAll(0, set);//把HashSet实例元素插入到list实例索引为0处
+console.log('插入集合后: ' + list);//打印集合数据
 $
 var iter = list.iterator();//创建一个list迭代器
 while (iter.hasNext()) {//条件：是否还有下一个元素
 	var elem = iter.next();//获取下一个元素
 	if (elem === 6) {//如果元素值等于6，就从list集合中移除
-		iter.remove();//remove 6
+		iter.remove();
 	}
 	if (elem === 'hello') {//如果元素值等于hello，就设置成新值0
-		iter.set(0);//'hello' => 0
+		iter.set(0);
 	}
 }
-console.log('after iterator: ' + list);//[0, 1, 2, 3, 4, 5]
+console.log('迭代后的集合: ' + list);//打印集合数据
 $
-console.log('iterator from the specified positon: index:2');
+console.log('从索引为2处开始迭代');
 var iter2 = list.iterator(2);//从索引为2处开始迭代
-while (iter2.hasNext()) {
-	console.log(iter2.next());
+while (iter2.hasNext()) {//是否还有下一个元素
+	console.log(iter2.next());//打印迭代元素
 }
-console.log('iterator is over');
+console.log('迭代结束');
 $
 list.clear();//清空集合
 list.defineEquals(function(a, b) {//定义equals函数，元素name属性相同者认为是同一元素
@@ -98,10 +97,11 @@ var person0 = {name: 'bill',company: 'Microsoft',
 		toString: function() {return 'bill gates';}};
 var person1 = {name: 'steve',company: 'Apple',
 		toString: function() {return 'steve jobs';}};
-list.add(person0, person1);
-console.log(list.get(0) + ' & ' + list.get(1));//获取索引为1的元素
-console.log('contains bill? ' + list.contains({name:'bill'}));//查看集合中是否包含新指定的对象
-console.log('indexOf steve: ' + list.indexOf({name:'steve'}));//查看集合中新指定对象第一次出现处索引
+list.add(person0, person1);//将person0和person1添加进list集合
+console.log('索引为1处的元素：' + list.get(1));//获取索引为1处的对象
+var newBill = {name:'bill'}, newSteve = {name:'steve'};
+console.log('包含bill吗? ' + list.contains(newBill));//查看集合中是否包含新指定的对象
+console.log('steve出现的索引: ' + list.indexOf(newSteve));//查看集合中新指定对象第一次出现处索引
 //------------------------------end
 </pre>
 		<script src="../jcollections.js"></script>

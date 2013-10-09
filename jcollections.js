@@ -1523,7 +1523,8 @@
 				global[module] = this[module];
 			}
 		} else {
-			for (var module in this) {
+			for (var i = 0, len = args.length; i < len; i++) {
+				var module = args[i];
 				if (module === 'exports' || module === 'run') continue;
 				this[module] && (global[module] = this[module]);
 			}

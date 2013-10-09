@@ -23,15 +23,15 @@
 		</div>
 <pre id="preCodes" class="map">
 //------------------------------begin
-jcollections.exports('HashMap');
-var map = new HashMap();
-console.log('is a Map? ' + (map instanceof Map));
-console.log('init: ' + map);//{}
-console.log('is empty? ' + map.isEmpty());//true
-console.log('size: ' + map.size());//0
+jcollections.exports('HashMap', 'Map');//导出HashMap类
+var map = new HashMap();//创建一个HashMap实例
+console.log('是一个Map类型吗? ' + (map instanceof Map));//查看实例是否是Map类型
+console.log('map数据: ' + map);//打印map数据
+console.log('map是否为空? ' + map.isEmpty());//查看map是否为空
+console.log('map键值对个数: ' + map.size());//查看键值对个数
 $
-map.put(0, 'hello');
-console.log('get by 0: ' + map.get(0));//hello
+map.put(0, 'hello');//添加一个键值对
+console.log('key为0的值: ' + map.get(0));//获取键为0的值
 var person = {
 	id: '007',
 	name: 'soctt',
@@ -39,8 +39,8 @@ var person = {
 		return '007:scott';
 	}
 };
-map.put('person', person);
-console.log('get by person: ' + map.get('person'));//007:scott
+map.put('person', person);//添加值为对象的键值对
+console.log('key为person的对象: ' + map.get('person'));//获取键为person的对象
 $
 var key = {
 	id: '008',
@@ -57,36 +57,35 @@ var value = {
 		return "this is scott's details"
 	}
 };
-map.put(key, value);
-console.log('get by object key: ' + map.get(key));//this is scott's details. 
-console.log('map: ' + map);
-console.log("map's keys: " + map.keySet());
-console.log("map's values: " + map.values());
-console.log('contains key? ' + map.containsKey(key));
-console.log('contains value? ' + map.containsValue(value));
+map.put(key, value);//添加键值都为对象的键值对
+console.log('对象key对应的对象value: ' + map.get(key));//根据对象key获取对象value
+console.log('map数据: ' + map);//打印map数据
+console.log("key组成的无序集合: " + map.keySet());//打印键组成的无序集合
+console.log('是否包含指定的key? ' + map.containsKey(key));//打印是否包含指定的key
+console.log('是否包含指定的value? ' + map.containsValue(value));//打印是否包含指定的value
 $
-console.log('___start keySet iterator');
-var set = map.keySet().iterator();
-while (set.hasNext()) {
-	var key = set.next();
-	var value = map.get(key);
-	console.log(key + " = " + value);
+console.log('开始key的迭代');
+var set = map.keySet().iterator();//获取key组成的无序集合迭代器
+while (set.hasNext()) {//是否含有下一个key
+	var key = set.next();//迭代key
+	var value = map.get(key);//根据key获取value
+	console.log(key + " = " + value);//打印key=value
 }
-console.log('___keySet iterator is over');
+console.log('key迭代结束');
 $
-console.log('___start entrySet iterator');
-var iter = map.entrySet().iterator();
-while (iter.hasNext()) {
-	console.log(iter.next() + '');
+console.log('开始entry迭代');
+var iter = map.entrySet().iterator();//获取entry组成的迭代器
+while (iter.hasNext()) {//是否含有下一个entry
+	console.log(iter.next() + '');//迭代entry并打印
 }
-console.log('___entrySet iterator is over');
+console.log('entry迭代结束');
 $
-var map2 = new HashMap();
+var map2 = new HashMap();//创建一个新的HashMap实例
 map2.put(1, 'one');
 map2.put(2, 'two');
 map2.put(3, 'three');
-map.putAll(map2);
-console.log('after putAll: ' + map);
+map.putAll(map2);//将新实例键值对添加到map实例中
+console.log('添加后的map: ' + map);//打印添加后的map
 //------------------------------end
 </pre>
 		<script src="../jcollections.js"></script>

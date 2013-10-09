@@ -8,7 +8,7 @@
 	</head>
 	<body>
 		<div id="codeArea" class="module code">
-			<pre id="codePrint"></pre>
+			<pre id="codePrint"><p>该页面演示Collections API的使用，点击下方按钮开始演示</p></pre>
 			<div id="codeTip"><span></span></div>
 		</div>
 		<div class="module">
@@ -23,65 +23,56 @@
 		</div>
 <pre id="preCodes" class="list">
 //------------------------------begin
-jcollections.exports('ArrayList', 'Collections');
-var list = new ArrayList();
-list.add({id:1, name:'soctt', toString:function() {return '1:scott';}});
-list.add({id:3, name:'steve', toString:function() {return '3:steve';}});
-list.add({id:4, name:'john', toString:function() {return '4:john';}});
-list.add({id:2, name:'bill', toString:function() {return '2:bill';}});
+//Collections类可以对Collection类型的实例进行操作
+//ArrayList、LinkedList、HashSet均可适用，这里用ArrayList做为演示
+jcollections.exports('ArrayList', 'Collections');//导出ArrayList、Collections类
+var list = new ArrayList();//创建ArrayList实例
+list.add({id:1, name:'soctt', toString:function(){return '1:scott';}});
+//添加多个对象元素
+list.add({id:3, name:'steve', toString:function(){return '3:steve';}});
+list.add({id:4, name:'john', toString:function(){return '4:john';}});
+list.add({id:2, name:'bill', toString:function(){return '2:bill';}});
+console.log('集合元素：' + list);
 $
+//找出id最大的对象元素
 var max = Collections.max(list, function(a, b) {
-	if (a.id === b.id) {
-		return 0;
-	}
-	return a.id < b.id ? -1 : 1;
+	return a.id - b.id;
 });
-console.log('max: ' + max);//4:john
-$
+console.log('id最大的对象: ' + max);//4:john
+//找出id最小的元素
 var min = Collections.min(list, function(a, b) {
-	if (a.id === b.id) {
-		return 0;
-	}
-	return a.id < b.id ? -1 : 1;
+	return a.id - b.id;
 });
-console.log('min: ' + min);//1:scott
+console.log('id最小的对象: ' + min);//1:scott
 $
-Collections.sort(list, function(a, b) {
-	if (a.id === b.id) {
-		return 0;
-	}
-	return a.id < b.id ? -1 : 1;
+Collections.sort(list, function(a, b) {//按id正序排序
+	return a.id - b.id;
 });
-console.log('after sort: ' + list);//1:scott,2:bill,3:steve,4:john
-$
-Collections.sort(list, function(a, b) {
-	if (a.id === b.id) {
-		return 0;
-	}
-	return a.id > b.id ? -1 : 1;
+console.log('id正序排序后的集合: ' + list);//打印id正序排序后的集合
+Collections.sort(list, function(a, b) {//按id逆序排序
+	return b.id - a.id;
 });
-console.log('after sort desc: ' + list);//4:john,3:steve,2:bill,1:scott
+console.log('id逆序排序后的集合: ' + list);//打印id逆序排序后的集合
 $
 var target = {id:3, name:'steve'};
+//按id属性进行二分查找目标对象
 var index = Collections.binarySearch(list, target, function(a, b) {
-	if (a.id === b.id) {
-		return 0;
-	}
-	return a.id < b.id ? -1 : 1;
+	return a.id - b.id;
 });
-console.log('after binarySearch: index:' + index + '=>name:' + list.get(index).name);
-Collections.reverse(list);
-console.log('after reverse: ' + list);
+console.log('按id属性二分查找结果:' + index + '=>name:' + list.get(index).name);
+console.log('元素反转前的集合: ' + list);//打印反转前的集合元素
+Collections.reverse(list);//将集合元素反转
+console.log('元素反转后的集合: ' + list);//打印反转后的集合元素
 $
 list.add({id:4, name:'john', toString:function() {return '4:john';}});
-console.log('after add: ' + list);
-list.defineEquals(function(a, b) {
+list.defineEquals(function(a, b) {//定义集合的equals方法
 	return a.id === b.id && a.name === b.name;
 });
-var oldElem = {id:4, name:'john', toString:function() {return '4:john';}};
-var newElem = {id:0, name:'tom', toString:function() {return '0:tom';}};
-Collections.replaceAll(list, oldElem, newElem);
-console.log('after replaceAll: ' + list);
+var oldElem = {id:4, name:'john', toString:function(){return '4:john';}};
+var newElem = {id:0, name:'tom', toString:function(){return '0:tom';}};
+console.log('替换前的集合：' + list);//打印替换前的集合
+Collections.replaceAll(list, oldElem, newElem);//将指定的对象元素全部替换成新对象
+console.log('全部替换指定元素后的集合: ' + list);//打印替换后的集合
 //------------------------------end
 </pre>
 		<script src="../jcollections.js"></script>
