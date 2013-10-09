@@ -8,7 +8,7 @@
 	</head>
 	<body>
 		<div class="module code">
-			<pre id="codePrint"></pre>
+			<pre id="codePrint"><p>该页面演示HashSet API的使用，点击下方按钮开始演示</p></pre>
 			<div id="codeTip"><span></span></div>
 		</div>
 		<div class="module">
@@ -23,39 +23,35 @@
 		</div>
 <pre id="preCodes" class="set">
 //------------------------------begin
-jcollections.exports('HashSet', 'ArrayList', 'LinkedList');
-var set = new HashSet();
-console.log('is a Collection? ' + (set instanceof Collection));
-console.log('is a Set? ' + (set instanceof Set));
-console.log('init: ' + set);//[]
-console.log('isEmpty? ' + set.isEmpty());//true
-console.log('size: ' + set.size());//0
+//导出HashSet、Collection、Set、ArrayList、LinkedList类
+jcollections.exports('HashSet', 'Collection', 'Set', 'ArrayList', 'LinkedList');
+var set = new HashSet();//创建HashSet实例
+console.log('是否是Collection类型? ' + (set instanceof Collection));//查看是否是Collection类型
+console.log('是否是Set类型? ' + (set instanceof Set));//查看是否是Set类型
+console.log('初始化: ' + set);//打印set数据
+console.log('set是否为空? ' + set.isEmpty());//查看set是否为空
+console.log('set元素个数: ' + set.size());//查看set元素个数
 $
-set.add('hello', 'world');
-set.add('hello');//repeat!
-set.add('world');//repeat!
-console.log('after add: ' + set);//[hello,world]
-console.log('isEmpty? ' + set.isEmpty());//false
-console.log('size: ' + set.size());//2
-set.remove('world');
-console.log('after remove world: ' + set);//[hello]
-console.log('contains world? ' + set.contains('world'));//false
+set.add('hello', 'world');//向set中添加两个不同的元素
+set.add('hello');//此次hello重复，添加失败
+set.add('world');//此次world重复，也添加失败
+console.log('添加两个重复数据后: ' + set);//打印当前set中元素
+set.remove('world');//移除world元素
+console.log('移除world元素后: ' + set);//打印移除world元素后的set数据
+console.log('set中是否包含world元素? ' + set.contains('world'));//查看set中是否包含world元素
 $
-var set2 = new HashSet();
-set2.add('bill', 'scott');
-var list = new ArrayList();
-list.add(1, 2);
-var list2 = new LinkedList();
-list2.add(3, 4);
-set.addAll(set2);
-set.addAll(list);
-set.addAll(list2);
-console.log('after addAll: ' + set);//[hello,bill,scott,1,2,3,4]
-set.clear();
-console.log('after clear: ' + set);//[]
-console.log('isEmpty? ' + set.isEmpty());//true
-console.log('size: ' + set.size());//0
+var set2 = new HashSet();//新创建一个HashSet实例
+set2.add('bill', 'scott');//向新set2中添加元素
+var list = new ArrayList();//新创建一个Arraylist实例
+list.add(1, 2);//向list中添加元素
+var list2 = new LinkedList();//新创建一个LinkedList实例
+list2.add(3, 4);//向list2中添加元素
+set.addAll(set2);//将set2元素添加到set中
+set.addAll(list);//将list元素添加到set中
+set.addAll(list2);//将list2元素添加到set中
+console.log('添加几个集合后set中的数据: ' + set);//打印当前set中元素
 $
+set.clear();//清空set
 var person = {
 	name: 'john', 
 	age: 40, 
@@ -63,64 +59,39 @@ var person = {
 		return person.name + ' => ' + person.age;
 	}
 };
-set.add(person);
-set.add(person);//repeat!
-console.log('after add person object: ' + set);//[john => 40]
-console.log('contains person object? ' + set.contains(person));//true
-set.remove(person);
-console.log('after remove person object: ' + set);//[]
+set.add(person);//添加对象
+set.add(person);//同一对象，添加失败
+console.log('添加完对象后: ' + set);//打印添加完对象后的set数据
+console.log('set中是否包含person对象? ' + set.contains(person));//查看set中是否包含person对象
+set.remove(person);//移除person对象
+console.log('移除person对象后: ' + set);//打印移除person后的set
 $
-var Teacher = function(id, name) {
-	this.id = id;
-	this.name = name;
-	this.toString = function() {
-		return this.id + ' => ' + this.name;
-	};
-};
-var teacher = new Teacher('007', 'teacher wang');
-set.add(teacher);
-set.add(teacher);//repeat!
-console.log('after add teacher: ' + set);//[007 => teacher wang]
-console.log('contains teacher object? ' + set.contains(teacher));//true
-set.remove(teacher);
-console.log('after remove teacher object: ' + set);//[]
-$
-set.add(1, 2, 3, 4, 5, 6);
-console.log('after add: ' + set);//[1,2,3,4,5,6]
-var iter = set.iterator();
-while (iter.hasNext()) {
-	var elem = iter.next();
-	if (elem === 2) {
+set.add(1, 2, 3, 4, 5, 6);//添加多个元素
+console.log('添加元素后set: ' + set);//打印当前set元素
+var iter = set.iterator();//获取set的迭代器
+while (iter.hasNext()) {//是否还有下一个元素
+	var elem = iter.next();//迭代下一个元素
+	if (elem === 2) {//当元素等于2时将其移除
 		iter.remove();
-		console.log(elem + ' is removed.');
 	}
 }
-console.log('after iterator: ' + set);//[1,3,4,5,6]
+console.log('迭代后的set: ' + set);//打印迭代后的set
 $
-set.clear();
-set.defineEquals(function(elem0, elem1) {
+set.clear();//清空set
+set.defineEquals(function(elem0, elem1) {//定义equals方法，id相同者为同一元素
 	return elem0.id === elem1.id;
 });
-var obj0 = {
-	id: 1,
-	name: 'hello',
-	toString: function() {
-		return 'obj => id:' + obj0.id;
-	}
-};
-var obj1 = {
-	id: 1,
-	name: 'world',
-	toString: function() {
-		return 'obj => id:' + obj1.id;
-	}
-};
-set.add(obj0);
-set.add(obj1);//repeat!
-console.log('after defineEquals and add: ' + set);//[]
-console.log('contains obj1? ' + set.contains(obj1));//true
-set.remove(obj1);
-console.log('after remove obj1: ' + set);//[]
+//下面的obj0和obj1，虽然是不同的对象，但id相同，在set中认为是同一元素
+var obj0 = {id: 1, name: 'hello',
+	toString: function() {return 'obj => id:' + obj0.id;}};
+var obj1 = {id: 1, name: 'world',
+	toString: function() {return 'obj => id:' + obj1.id;}};
+set.add(obj0);//添加obj0对象
+set.add(obj1);//因为obj1的id与obj0相同，所以添加失败
+console.log('添加两个元素后的set: ' + set);//打印添加元素后的set
+console.log('set中是否包含obj1? ' + set.contains(obj1));//查看set中是否包含obj1
+set.remove(obj1);//移除obj1对象，实际上移除了obj0
+console.log('移除obj1之后的set：' + set);//打印移除obj1之后的set
 //------------------------------end
 </pre>
 		<script src="../jcollections.js"></script>

@@ -8,7 +8,7 @@
 	</head>
 	<body>
 		<div id="codeArea" class="module code">
-			<pre id="codePrint"></pre>
+			<pre id="codePrint"><p>该页面演示Storage API的使用，点击下方按钮开始演示</p></pre>
 			<div id="codeTip"><span></span></div>
 		</div>
 		<div class="module">
@@ -23,55 +23,53 @@
 		</div>
 <pre id="preCodes" class="store">
 //------------------------------begin
-jcollections.exports('Storage', 'HashMap');
-console.log('is Storage supported? ' + Storage.isSupported);
-Storage.turnSessionMode();// turn sessionStorage mode
-Storage.saveItem('test', 'hello');
-console.log('sessionStorage: test=>' + Storage.getItem('test'));//hello
-Storage.turnLocalMode();// turn localStorage mode
-Storage.saveItem('test', 'hello');
-console.log('localStorage: test=>' + Storage.getItem('test'));//hello
-var store = new Storage();
-store.defineToStore(function(value) {//define in rule
+jcollections.exports('Storage', 'HashMap');//导出Storage、HashMap类
+console.log('该浏览器支持本地存储吗? ' + Storage.isSupported);//检查是否支持本地存储
+Storage.turnSessionMode();//切换到sesson storage模式
+Storage.saveItem('test', 'hello');//保存一个key=value
+console.log('sesson模式test对应的值是：' + Storage.getItem('test'));//获取key为test的value
+Storage.turnLocalMode();//切换到local storage模式
+Storage.saveItem('test', 'hello');//保存一个key=value
+console.log('local模式test对应的值是' + Storage.getItem('test'));//获取key为test的value
+var store = new Storage();//创建一个Storage实例
+store.defineToStore(function(value) {//定义外部结构到存储结构的转换规则
 	return Storage.toJSON(value);
 });
-store.defineFromStore(function(json) {//define out rule
+store.defineFromStore(function(json) {//定义存储结构到外部结构的转换规则
 	return Storage.fromJSON(json);
 });
 $
-var data = new HashMap();
-data.put('coder', {name:'jack', age:'30', salary:300});
-data.put('guarder', {name:'tom', age:'40', salary:200});
-data.put('cleaner', {name:'john', age:'45', salary:100});
-store.saveItems(data);//save a data map
-console.log('test exists? ' + Storage.hasItem('test'));
-console.log('coder exists? ' + Storage.hasItem('coder'));
-console.log('guarder exists? ' + Storage.hasItem('guarder'));
-console.log('cleaner exists? ' + Storage.hasItem('cleaner'));
+var data = new HashMap();//新建一个数据模型
+data.put('coder', {name:'jack', age:'30', salary:300});//添加key=value
+data.put('guarder', {name:'tom', age:'40', salary:200});//添加key=value
+data.put('cleaner', {name:'john', age:'45', salary:100});//添加key=value
+store.saveItems(data);//存储数据模型
+console.log('存在key为test的数据吗? ' + Storage.hasItem('test'));//查看是否存在key为test的数据
+console.log('存在key为coder的数据吗? ' + Storage.hasItem('coder'));//查看是否存在key为coder的数据
 $
-var resultMap = store.getItems(function(key, value) {
-	return Storage.fromJSON(value).age > 30;//the{test=hello} item will be ignored
+//获取年龄大于30的数据（只会过滤coder、guarder、cleaner，test=hello会被忽略）
+var resultMap = store.getItems(function(key, value) {//获取一个Map类型的数据集
+	return Storage.fromJSON(value).age > 30;
 });
-var iter = resultMap.entrySet().iterator();//raise salary
-while (iter.hasNext()) {
-	var entry = iter.next();
-	var record = entry.getValue();
-	record.salary += 50;
-	console.log('age: ' + record.age + ', current salary: ' + record.salary);
+var iter = resultMap.entrySet().iterator();//获取entry迭代器
+while (iter.hasNext()) {//是否含有下一个entry
+	var entry = iter.next();//迭代下一个entry
+	var record = entry.getValue();//获取entry的value
+	record.salary += 50;//重置entry的值
+	console.log(entry.getKey() + '的工资现在是：' + record.salary);
 }
-store.saveItems(resultMap);//save current salary
+store.saveItems(resultMap);//保存最新的数据
 $
+//删除name为jack的数据（只会过滤coder、guarder、cleaner，test=hello会被忽略）
 Storage.delItems(function(key, stringValue) {
-	//return key === 'coder';[delete the item that key equals 'coder']
 	return Storage.fromJSON(stringValue).name === 'jack';
-	//return true;[if return true, delete all items. But call 'clear' method is better.^_^]
 });
-console.log('coder(jack) exists? ' + Storage.hasItem('coder'));
+console.log('coder还存在吗? ' + Storage.hasItem('coder'));//查看是否还存在coder数据
 $
-Storage.clear();//delete all items
-console.log('test exists? ' + Storage.hasItem('test'));
-console.log('guarder exists? ' + Storage.hasItem('guarder'));
-console.log('cleaner exists? ' + Storage.hasItem('cleaner'));
+Storage.clear();//清空本地存储数据
+console.log('test还存在吗? ' + Storage.hasItem('test'));//查看是否还存在test数据
+console.log('guarder还存在吗? ' + Storage.hasItem('guarder'));//查看是否还存在guarder数据
+console.log('cleaner还存在吗? ' + Storage.hasItem('cleaner'));//查看是否还存在cleaner数据
 //------------------------------end
 </pre>
 		<script src="../jcollections.js"></script>

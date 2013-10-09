@@ -855,7 +855,7 @@ while (iter.hasNext()) {
 store.saveItems(resultMap);
 ```
 
-#### =================================
+#### ==============================================================
 
 ## <a href="http://scottliu2011.github.com/collections/demo" target="_blank">演示地址</a>
 
