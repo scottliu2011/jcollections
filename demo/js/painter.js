@@ -70,8 +70,6 @@
 			var str = forward(index),
 				len = str.length;
 
-			//console.log(str);
-
 			if (ary[index - 1] === ' ' && ary[index + len] === '(') {
 				update(wrap('class', str));
 				continue;

@@ -1,21 +1,22 @@
-(function(global, undefined) {
+(function(global, doc, undefined) {
 	var demo = {},
-		paintCodes = global.paintCodes;
+	
+	paintCodes = global.paintCodes,
 
-	var $ = function(id) {
-		return document.getElementById(id);
-	};
-	var codePrint = $('codePrint'),
-		consolePrint= $('consolePrint'),
-		codeTip = $('codeTip'),
-		consoleTip = $('consoleTip'),
-		nextStep = $('nextStep'),
-		outputTip = $('outputTip');
+	$ = function(id) {
+		return doc.getElementById(id);
+	},
+	codePrint = $('codePrint'),
+	consolePrint= $('consolePrint'),
+	codeTip = $('codeTip'),
+	consoleTip = $('consoleTip'),
+	nextStep = $('nextStep'),
+	outputTip = $('outputTip'),
 
-	var currStep = 0,
-		btnDisabled = false;
+	currStep = 0,
+	btnDisabled = false,
 
-	var printCode = function() {
+	printCode = function() {
 		if (currStep >= demo.codes.length) {
 			return;
 		}
@@ -25,7 +26,7 @@
 
 		function printStep() {
 			if (currStep > 0 && stepLine === 0) {
-				var p = document.createElement('p');
+				var p = doc.createElement('p');
 				p.innerHTML = '&nbsp;';
 				codePrint.appendChild(p);
 				outputTip.style.display = 'none';
@@ -67,7 +68,7 @@
 				return;
 			}
 
-			var p = document.createElement('p');
+			var p = doc.createElement('p');
 			p.innerHTML = paintCodes(step[stepLine++]);
 
 			codePrint.appendChild(p);
@@ -79,10 +80,10 @@
 
 		btnDisabled = true;
 		nextStep.className = 'disabled';
-	}
+	};
 
 	demo.log = function(obj) {
-		var p = document.createElement('p');
+		var p = doc.createElement('p');
 		p.innerHTML = obj.toString();
 		consolePrint.appendChild(p);
 	};
@@ -113,13 +114,13 @@
 			demo.codes.push(stepCodes);
 		}
 
-		var height = (window.innerHeight || document.documentElement.clientHeight) - 120;
+		var height = (global.innerHeight || doc.documentElement.clientHeight) - 120;
 		codePrint.parentNode.style.height = height * 0.7 + 'px';
 		consolePrint.parentNode.style.height = height * 0.3 + 'px';
 
 		var tplImg = $('tplImg');
 		if (tplImg) {
-			var width = (window.innerWidth || document.documentElement.clientWidth) - 60;
+			var width = (global.innerWidth || doc.documentElement.clientWidth) - 60;
 			tplImg.style.width = width * 0.5 + 'px';
 		}
 		
@@ -146,11 +147,9 @@
 			codeTip.scrollIntoView();
 			consoleTip.scrollIntoView();
 
-			var codeTipStyle = codeTip.style;
-			var consoleTipStyle = consoleTip.style;
-			codeTipStyle.visibility = codeTipStyle.visibility !== 'hidden' ? 'hidden' : 'visible';
-			consoleTipStyle.visibility = consoleTipStyle.visibility !== 'hidden' ? 'hidden' : 'visible';
+			codeTip.className = codeTip.className ? '' : 'hidden';
+			consoleTip.className = consoleTip.className ? '' : 'hidden';
 		}, 300);
 	}();
 
-})(window);
+})(window, document);

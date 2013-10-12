@@ -7,7 +7,7 @@
 	 */
 	Function.prototype.inherits = function(Parent) {
 		if (typeof Parent !== 'function') {
-			throw TypeError("Parent incorrect");
+			throw TypeError("Parent type incorrect");
 		}
 		this.prototype = new Parent();
 		this.prototype.constructor = this;
@@ -58,7 +58,7 @@
 	//检查索引值的范围
 	List.prototype.__rangeCheck__ = function(index, canBeSize) {
 		if (typeof index !== 'number') {
-			throw Error('index incorrect');
+			throw TypeError('index incorrect');
 		}
 
 		if (index === 0 && this.size() === 0) return;
@@ -89,7 +89,7 @@
 	}.inherits(List);//ArrayList继承了List
 
 	/**
-	 *ArrayList.create(); || new ArrayList([]); || new Array(Collection);
+	 *ArrayList.create(); || ArrayList.create([]); || ArrayList.create(Collection);
 	 *静态方法，创建一个ArrayList实例
 	 */
 	ArrayList.create = function(arg) {
@@ -164,7 +164,7 @@
 	 */
 	ArrayList.prototype.addAll = function(collection) {
 		if (!(collection instanceof Collection)) {
-			throw Error('not a Collection instance');
+			throw TypeError('not a Collection instance');
 		}
 		if (!collection.isEmpty()) {
 			this.__data__ = this.__data__.concat(collection.toArray());
@@ -178,7 +178,7 @@
 	ArrayList.prototype.insertAll = function(index, collection) {
 		this.__rangeCheck__(index, true);
 		if (!(collection instanceof Collection)) {
-			throw Error('not a Collection instance');
+			throw TypeError('not a Collection instance');
 		}
 		if (!collection.isEmpty()) {
 			Array.prototype.splice.apply(this.__data__, [parseInt(index), 0].concat(collection.toArray()));
@@ -462,7 +462,7 @@
 	 */
 	LinkedList.prototype.addAll = function (collection) {
 		if (!(collection instanceof Collection)) {
-			throw Error('not a Collection instance');
+			throw TypeError('not a Collection instance');
 		}
 		if (!collection.isEmpty()) {
 			this.insertAll(this.__size__, collection);
@@ -477,7 +477,7 @@
 		this.__rangeCheck__(index, true);
 
 		if (!(collection instanceof Collection)) {
-			throw Error('not a Collection instance');
+			throw TypeError('not a Collection instance');
 		}
 		if (collection.isEmpty()) return;
 
@@ -836,7 +836,7 @@
 	 */
 	HashSet.prototype.addAll = function(collection) {
 		if (!(collection instanceof Collection)) {
-			throw Error('not a Collection instance');
+			throw TypeError('not a Collection instance');
 		}
 		if (collection.isEmpty()) return;
 
@@ -1035,7 +1035,7 @@
 	 */
 	HashMap.prototype.putAll = function(map) {
 		if (!(map instanceof Map)) {
-			throw Error('not a Map instance');
+			throw TypeError('not a Map instance');
 		}
 		if (map.isEmpty()) return;
 
@@ -1531,7 +1531,7 @@
 		}
 	};
 
-	//沙箱模式
+	//沙箱机制，集合类可在函数内运行，避免污染全局变量
 	jcollections.run = function() {
 		var callback = Array.prototype.slice.call(arguments).pop(),
 			params = /\(.*?\)/.exec(callback + '')[0].replace(/\(|\s+|\)/g, '').split(','),

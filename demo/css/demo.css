@@ -12,3 +12,4 @@ body,pre{font-family: Courier, "Courier New", monospace;}
 #consoleTip{color:#333;font-size:22px;}
 #preCodes{display:none;}
 .disabled{background:gray !important;color:black !important;}
+.hidden{visibility:hidden}
