@@ -90,7 +90,7 @@ jcollections.run(function() {
 });
 ```
 
-第二种方式，类型前面不用加任何前缀，不同的是，需要在函数参数列表中事先声明类型：
+第二种方式，类型前面不用加任何前缀，不同的是，需要在函数参数列表中事先声明类型，run方法会根据依赖注入所需要的类型对象：
 
 ```javascript
 jcollections.run(function(ArrayList, LinkedList) {
@@ -112,6 +112,10 @@ var lnkList = LinkedList.create();//or LinkedList.create(aryList);
 ```
 
 **create**方法可以完成和构造函数相同的功能，在提示功能较好的IDE中，这样也许会很方便。
+
+下面是整体结构图：
+
+![整体结构图](http://scottliu2011.github.io/jcollections/demo/img/outline.jpg "整体结构图")
 
 ## API介绍
 
