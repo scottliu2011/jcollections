@@ -102,6 +102,18 @@ jcollections.run(function(ArrayList, LinkedList) {
 });
 ```
 
+上面这种方式非常不错，但是如果在发布时代码需要压缩，为了确保代码可以正确运行，就需要在run方法后面追加几个类型名称的参数，就像下面这样：
+
+```javascript
+jcollections.run(function(ArrayList, LinkedList) {
+	var aryList = new ArrayList(['hello', 'world']);
+   	console.log(aryList + '');
+
+   	var lnkList = new LinkedList(aryList);
+   	console.log(lnkList + '');
+}, 'ArrayList', 'LinkedList');
+```
+
 使用第二种方式时，可在参数列表里随意声明一到多个类型，也不用考虑声明顺序，只要声明的类型存在于jcollections包内，就可以正确运行。
 
 另外，每个集合类都提供了一个静态方法，用于创建实例，所以也可以这样写：

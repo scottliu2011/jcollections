@@ -1531,22 +1531,26 @@
 		}
 	};
 
-	//沙箱机制，集合类可在函数内运行，避免污染全局变量
+	//沙箱机制，依赖注入，集合类可在函数内运行，避免污染全局变量
 	jcollections.run = function() {
-		var callback = Array.prototype.slice.call(arguments).pop(),
-			params = /\(.*?\)/.exec(callback + '')[0].replace(/\(|\s+|\)/g, '').split(','),
+		var args = Array.prototype.slice.call(arguments),
+			fn = args.shift(),
+			injects = args,
+			fnInjects = /\(.*?\)/.exec(fn + '')[0].replace(/\(|\s+|\)/g, '').split(','),
 			applyParams = [];
+			
+		if (injects.length === fnInjects.length) {
+			fnInjects = injects;
+		}
 		
-		if (params[0]) {
-			for (var i = 0, len = params.length; i < len; i++) {
-				var type = params[i],
-					legal = this[type] && type !== 'exports' && type !== 'run';
-				if (!legal) throw TypeError('no such type: ' + type);
-				applyParams.push(this[type]);
-			}
+		for (var i = 0, len = fnInjects.length; i < len; i++) {
+			var type = fnInjects[i],
+				legal = this[type] && type !== 'exports' && type !== 'run';
+			if (!legal) throw TypeError('no such type: ' + type);
+			applyParams.push(this[type]);
 		}
 
-		callback.apply(this, applyParams);
+		fn.apply(this, applyParams);
 	};
 
 	global.jcollections = jcollections;//将jcollections包放置在全局区
