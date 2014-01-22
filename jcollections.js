@@ -1,6 +1,6 @@
 (function(global, undefined) {
 
-	"use strict";
+	'use strict';
 
 	/**
 	 *继承
@@ -380,7 +380,7 @@
 		entry.next.previous = entry.previous;
 		entry.previous.next = entry.next;
 
-		entry.next = entry.previous = null
+		entry.next = entry.previous = null;
 		entry.elem = null;
 
 		this.__size__--;

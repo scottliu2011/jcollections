@@ -1,6 +1,6 @@
 (function(global, undefined) {
 
-	"use strict";
+	'use strict';
 
 	var jcollections = global.jcollections,
 		mapLiberaryDefined = jcollections && jcollections.Map && jcollections.HashMap;
