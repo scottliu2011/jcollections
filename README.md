@@ -1,3 +1,5 @@
+## <a href="http://scottliu2011.github.com/jcollections/demo" target="_blank">演示地址</a>
+
 # jcollections
 
 **jcollections**是一个可以简化数据操作、提高开发效率的集合类框架，接口简单，容易上手；在API方面，它汲取了Java集合中优秀的设计思想，同时也增添了一些新的特性，最大程度上方便开发人员的使用。
@@ -870,9 +872,5 @@ while (iter.hasNext()) {
 }
 store.saveItems(resultMap);
 ```
-
-#### ================================================================
-
-## <a href="http://scottliu2011.github.com/jcollections/demo" target="_blank">演示地址</a>
 
 
